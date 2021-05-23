@@ -3,16 +3,14 @@ layout: page
 title: About
 permalink: /about/
 ---
+Hi, this site will probably contain some rants, findings, and any updates on anything that is going on.
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Hosted on: GCP Cloud Storage (I'm way too tight to pay for storage)
+Site built with: Jekyll
+CI: Github actions
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+If you spot anything or have questions, leave on issue on the project for this site
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+[My Github (+ more info about me)](https://github.com/broadstone-connorbrady)
 
-
-[jekyll-organization]: https://github.com/jekyll
+[Github Project](https://github.com/broadstone-connorbrady/platform-of-things)
