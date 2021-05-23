@@ -29,6 +29,19 @@ timetable system. Like cars? Make a parts picker. You'll find being able to lear
 you're actually in a business environment. It moves from being a chore to actually being quite fun. That's one of the main things that 
 attracts me to programming: watching your little system grow into something bigger.
 
-# Don't be afraid to write crap
-# Basic language
-# Don't worry about Jargon
+Oh, take regular breaks too, unless you're really enjoying. In that case, keep at it!
+
+Also don't be afraid to write crap code. There's a saying that goes "You can't make good crops without fertilizer"
+
+Don't worry too much about the fancy words too. Learning the theory is great, but they'll make a lot of sense as you use them.
+
+As for some direction, some basic high-level programming/scripting languages to kick yourself with could be:
+
+- Javascript
+- Python
+- LUA
+
+FYI don't Google `BASIC Programming Language` Or you'll be going back right back to the 80s
+
+Also try not to do what I did and learn Java as my first Object Orientated language. Jesus Christ, writing bad code in Java soon 
+bites you in the form of memory leaks and NPEs
