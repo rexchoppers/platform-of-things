@@ -5,6 +5,25 @@ permalink: /agony-choppers/
 ---
 A page for agony-aunt like questions.
 
+#### Your Github commit history is insane. Is it legit?
+100%. Since I started studying my degree, a lot of my code and assignments are posted onto Github. Also I do a fair bit 
+code wise throughout a normal working day.
+
+Even on Christmas Day 2020, I was up early in the morning trying to upgrade Lumen and do performance fixes. Kind of happens when 
+your hobby is also your job
+
+#### How to avoid burnout?
+Stop programming. Go on a walk; meet up with friends; drink a little; drink a lot and get plastered (Totally not talking from experience). 
+Either way keeping away from the screen will keep you sane. If you find you're just getting tired of the feature you're currently on, 
+I normally do something therapeutic for my company such as 
+
+- Code cleanups
+- Reviews
+- Write documentation
+
+Quick and easy tasks that you often feel good for doing.
+
+TL;DR - Get away from the screen, or if you can't do that at least play a game (Holdfast being a particular favourite of mine at the moment).
 
 #### How do I learn a new programming language?
 If you're experienced at programming, then you can probably pick another one up fairly easily (Exceptions apply: C, ASM,
