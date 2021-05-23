@@ -13,4 +13,5 @@ jobs:
       - run: |
           sudo apt-get update && sudo apt-get install ruby-full
           sudo gem install jekyll bundler
+          sudo gem install rexml
           sudo jekyll build
