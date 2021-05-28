@@ -1,0 +1,10 @@
+services:
+  jekyll:
+    image: bretfisher/jekyll-serve
+    volumes:
+      - .:/site
+    expose:
+      - "8080"
+    ports:
+      - '8080:4000'
+
