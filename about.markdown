@@ -3,14 +3,14 @@ layout: page
 title: About
 permalink: /about/
 ---
-
 ## Intro
 
 Contains rants, what's going on and other bits of stuff.
 
-I started off programming in 2012 when I was 13. I've been programming since then in several languahes 
+I started off programming in 2012 when I was 13. I've been programming since then in several languages; used many frameworks; done more integrations than I can remember and kept learning everything.
 
-  
+I'm currently a Senior Software developer
+
 
 ## Technical Skills
 
