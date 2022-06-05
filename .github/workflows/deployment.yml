@@ -23,4 +23,4 @@ jobs:
           echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc
           source ~/.bashrc
 
-          gem install jekyll bundler
+          sudo gem install jekyll bundler
