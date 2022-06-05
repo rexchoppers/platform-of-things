@@ -24,3 +24,7 @@ jobs:
           source ~/.bashrc
 
           sudo gem install jekyll bundler
+
+          jekyll build
+
+          
