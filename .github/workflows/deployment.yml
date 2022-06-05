@@ -29,4 +29,11 @@ jobs:
 
           bundle exec jekyll build
 
-          
+          zip -r site.zip _site/
+      
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: site-build
+          path: site.zip
+          retention-days: 5
