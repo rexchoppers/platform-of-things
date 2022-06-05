@@ -19,5 +19,7 @@ jobs:
       - uses: helaili/jekyll-action@v2
         with:
           build_only: true
-      - run: ls -a ../
-        
+      - run: |
+        ls -a
+        ls -a ../
+        ls -a ../../
