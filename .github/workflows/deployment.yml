@@ -43,7 +43,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.1
         with:
           fileName: 'creds.json'
-          encodedString: ${{ secrets.GCP_DEPLOYMENT }}
+          encodedString: '${{ secrets.GCP_DEPLOYMENT }}'
 
 
       - name: 'GCP SDK Auth'
