@@ -20,5 +20,5 @@ jobs:
         with:
           build_only: true
           target_path: _site
-        script: |
+        run: |
           ls -a
