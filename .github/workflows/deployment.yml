@@ -25,6 +25,8 @@ jobs:
 
           sudo gem install jekyll bundler
 
+          bundle install
+
           jekyll build
 
           
