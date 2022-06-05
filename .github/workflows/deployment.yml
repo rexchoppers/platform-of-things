@@ -19,6 +19,7 @@ jobs:
       - uses: helaili/jekyll-action@v2
         with:
           build_only: true
-          target_path: /_site
+          keep_history: true
+          target_path: /
       - run: ls -a /github
         
