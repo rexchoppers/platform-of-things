@@ -19,5 +19,6 @@ jobs:
       - uses:  helaili/jekyll-action@v2
         with:
           build_only: true
+          target_path: _site
       - run: ls -a
         
