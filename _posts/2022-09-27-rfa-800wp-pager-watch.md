@@ -24,12 +24,18 @@ From my research, I noticed this model of pager has been re-branded under many d
 
 Most of my information I obtained from the Alphapoc website after using Google Lens on my phone to look for similar models and how to program them. I'll re-iterate these however as this information is only in the form of a listing so could potentially be removed at any point.
 
-**Programming/Finding address**
+**View current pager configuration**
+* Hold down ▲ and ▼ to see all the pager's current configuration
+
+**Programming**
 
 * Press GREEN and ▲ for **3** seconds. A screen should appear asking you for a password.
 * Depending on your device, the default password should be 0000. To move the cursor, use the ▲ and ▼. To modify the numbers, use • and ▬ If your password is 0000, just edit the last number from 0 to 9 and then back to 0, when you press ▼, this should then accept the password and present you with the programming screen.
 
-From this screen, you can modify the addresses, frequencies, baud rates etc... I'd recommend using the baud rate of 512 as 1200/2400 crashed my device for some reason, so much so, I had to short the CPU pins to get it back into working order.
+From this screen, you can modify the addresses, frequencies, baud rates etc... I'd recommend using the baud rate of 512 as 1200/2400 crashed my device for some reason, so much so, I had to short the CPU pins to get it back into working order. (I think this was my mistake though)
 
 * Press • on **PROGRAM** to program the changes to EPROM or press • on **EXIT** to exit without saving changes
 
+**Other**
+
+Most of the information on setting time etc... Can be found in the instruction booklet. Most of the controls are the exact same as my Apollo RT-760 pager
