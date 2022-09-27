@@ -19,7 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Platform Of Things
-email: 
+email: ""
 description: >- # this means to ignore newlines until "baseurl:"
   What's going on, opinions and all that stuff
 baseurl: "" # the subpath of your site, e.g. /blog
