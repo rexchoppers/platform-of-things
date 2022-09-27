@@ -27,6 +27,14 @@ Most of my information I obtained from the Alphapoc website after using Google L
 **View current pager configuration**
 * Hold down ▲ and ▼ to see all the pager's current configuration
 
+**Sending a page using rpitx**
+
+Once again be careful using this
+
+```
+echo -e "1338888:I LIKE THE COFFEE" | sudo ./pocsag -f "459050000" -b 3 -r 512
+```
+
 **Programming**
 
 * Press GREEN and ▲ for **3** seconds. A screen should appear asking you for a password.
@@ -39,3 +47,21 @@ From this screen, you can modify the addresses, frequencies, baud rates etc... I
 **Other**
 
 Most of the information on setting time etc... Can be found in the instruction booklet. Most of the controls are the exact same as my Apollo RT-760 pager
+
+# Images
+
+**Home screen**
+
+![Home screen](https://storage.googleapis.com/rexchoppers-website-assets/general-screen.jpeg "Home screen")
+
+**Password screen**
+
+![Password screen](https://storage.googleapis.com/rexchoppers-website-assets/password-screen.jpeg "Password screen")
+
+**Programming: Page 1**
+
+![Programming: Page 1](https://storage.googleapis.com/rexchoppers-website-assets/programming-first-page.jpeg "Programming: Page 1")
+
+**Programming: Page 2**
+
+![Programming: Page 2](https://storage.googleapis.com/rexchoppers-website-assets/programming-second-page.jpeg "Programming: Page 2")
