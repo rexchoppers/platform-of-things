@@ -32,7 +32,7 @@ The particular pager came with the following:
 
 As expected, when I tried to use the mobile number, I got knocked back with the message "This service is now closed" due to several providers shutting down their paging networks.
 
-This device is currently locked to the frequency 138.075 MHz and unlike other devices, I was unable to find a setting to change the frequency
+This device is currently locked to the frequency 138.075 MHz. Whilst older models (Post 2011) can have their frequency changed, older/locked models will have their frequency locked. 
 
 This pager supports baud rates of 512, 1200 and 2400
 
@@ -49,12 +49,22 @@ Finding information for this device was incredibly difficult. No matter how much
 * Once done, press the GREEN button. A screen with "ADSYSBFRQT" will appear
 * Each 2 characters is a separate menu
     * AD: Configure capcode/addresses
-    * SY: ?
-    * SB: ?
-    * FR: ?
+    * SY: System settings
+    * SB: Not used anymore?
+    * FR: Frequency setting (My device was built in 2008 and cannot be programmed)
     * QT: Save and quit
 
 You should now be able to modify the address of the pager
+
+**Update: 28th September 2022**
+After doing some more research into these models, I managed to find a complete guide to programming these devices. I've stored down these PDFs for future use.
+
+[RT760B 2013 Programming](https://storage.googleapis.com/rexchoppers-website-assets/pagers/RT760B-2013-programming.pdf)
+
+[VP4 Pager Programming](https://storage.googleapis.com/rexchoppers-website-assets/pagers/vp4-pager-guide.pdf)
+
+
+I'm still trying to find a way to program this specific device using a serial interface but cannot find anything so far.
 
 **Sending a page using rpitx**
 
