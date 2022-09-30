@@ -94,7 +94,7 @@ I'm currently a Senior Software developer
 
 ## Built with
 
-**Hosted on:** GCP Cloud Storage (I'm way too tight to pay for storage)
+**Hosted on:** GCP Cloud Storage (I'm way too tight to pay for hosting)
 
   
 
