@@ -24,7 +24,7 @@ Our DevOps guy asked "Is there an easier way to do this?" To which I said "Give 
 
 # Repository
 
-[https://github.com/broadstone-connorbrady/k8s-secret-deployment-generator](https://github.com/broadstone-connorbrady/k8s-secret-deployment-generator)
+[https://github.com/rexchoppers/k8s-secret-deployment-generator](https://github.com/rexchoppers/k8s-secret-deployment-generator)
 
 All the setup instructions are in the repository
 

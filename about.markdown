@@ -108,7 +108,7 @@ I'm currently a Senior Software developer
 
 ## Other
 
-**Github:** https://github.com/broadstone-connorbrady
+**Github:** https://github.com/rexchoppers
 
   
 
@@ -116,4 +116,4 @@ I'm currently a Senior Software developer
 
   
 
-**Site Project:** https://github.com/broadstone-connorbrady/platform-of-things
+**Site Project:** https://github.com/rexchoppers/platform-of-things
