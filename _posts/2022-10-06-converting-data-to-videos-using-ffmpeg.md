@@ -25,10 +25,10 @@ I won't be able to share any Git repositories as these are private, but I am abl
 
 # The code
 
-## Step 1: Get the data
+#### Step 1: Get the data
 A simple enough step, grab sporting data from an API.
 
-## Step 2: Creating the HTML template
+#### Step 2: Creating the HTML template
 I'll go into the details of using **node-html-to-image** later on. The main aim was to build a simple screen in HTML that I could then convert later on into a .PNG format. After a bit of re-rigging, the code finally looked like this
 
 ```html
@@ -76,7 +76,7 @@ I'll go into the details of using **node-html-to-image** later on. The main aim 
 
 Forgive the use of PX. This is only a rough example template that should work for the next couple of steps
 
-## Step 3: Converting HTML to images
+#### Step 3: Converting HTML to images
 Once the data was injected into the HTML template, the next step was to put this template through the **node-html-to-image** library.
 
 NPM: https://www.npmjs.com/package/node-html-to-image
@@ -147,7 +147,7 @@ For some components such as a border, these did not react to styling changes suc
     </style>
 ```
 
-## Step 4: FFmpeg's concat demuxer
+#### Step 4: FFmpeg's concat demuxer
 
 More info [here](https://trac.ffmpeg.org/wiki/Concatenate)
 
@@ -192,7 +192,7 @@ file '/images/4.png'
 
 You've probably noticed that the final file is has a duplicated line. This is on purpose as FFmpeg has a weird quirk where it won't delay the last page for the time you've specified. This seemed to the be recommended fix and wasn't anything too taxing for us to sort out
 
-## Step 5: Generating the video
+#### Step 5: Generating the video
 
 I setup a small bash script for convenience sake and use **shelljs** to execute it. There was countless ways to do this but a bash script meant my DevOps friend wouldn't have to touch any of the code should they need to make any changes.
 
@@ -210,7 +210,7 @@ cp /app/images/output.mp4 /app/output/output.mp4
 
 The following bash file takes the `list.txt` file and eventually spits out our `output.mp4` file. 
 
-## Step 6: Hosting solutions
+#### Step 6: Hosting solutions
 
 We opted to use Kubernetes CronJob to spin up the code, create the output file and send that somewhere for streaming (I might add details about this later) The instance is then stopped and waits until it's next required to execute
 
