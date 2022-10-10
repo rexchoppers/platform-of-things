@@ -39,7 +39,17 @@ The following article from The BMJ [https://www.bmj.com/content/372/bmj.n684.ful
 I'm sure the problem here isn't the usefulness of pagers but the issue around encryption of data. In that case, this issue is already being solved [https://www.spok.com/solutions/paging-services/paging-devices/](https://www.spok.com/solutions/paging-services/paging-devices/)
 
 # Decoding
-There are plenty of articles on the internet with the same implementation as this. I'll re-iterate it on here for the sake of it though.
+For this example and since it's so well documented already, we'll pretend to decode a pager frequency.
+
+First, you'll need to find a frequency so either Google or find a frequency that sounds like one of the following below
+
+[POCSAG 512 bps](https://www.sigidwiki.com/images/b/b8/Pocsag5.mp3)
+
+[POCSAG 1200 bps](https://www.sigidwiki.com/images/9/97/Pocsag12.mp3)
+
+[POCSAG 2400 bps](https://www.sigidwiki.com/images/4/41/Pocsag24.mp3)
+
+And now we can decode. There are plenty of articles on the internet with the same implementation as this. I'll re-iterate it on here for the sake of it though.
 
 1. Install **RTL_FM**. I found [this](https://fuzzthepiguy.tech/rtl_fm-install/) tutorial very helpful for my RaspberryPi. RTL_FM will be the software that does the "listening"
 2. Install **multimon-ng** from [Github](https://github.com/EliasOenal/multimon-ng) This will do the "decoding" for the data coming in
@@ -59,7 +69,7 @@ As you can see, the raw data from **rtl_fm** is piped into **multimon-ng** for d
 
 ```go
 func main() {
-   	cmd := exec.Command("sh", "-c", "rtl_fm -f 153.350M -s 22050 -d 0 | multimon-ng -t raw -a POCSAG512 -a POCSAG1200 -a POCSAG2400 -a FLEX -a EAS -f alpha /dev/stdin")
+      cmd := exec.Command("sh", "-c", "rtl_fm -f 153.350M -s 22050 -d 0 | multimon-ng -t raw -a POCSAG512 -a POCSAG1200 -a POCSAG2400 -a FLEX -a EAS -f alpha /dev/stdin")
 
       stdout, err := cmd.StdoutPipe()
 
@@ -68,8 +78,8 @@ func main() {
 	   fmt.Println("The command is running")
 	   
       if err != nil {
-		   fmt.Println(err)
-	   }
+         fmt.Println(err)
+      }
 
       // Scan the output
       scanner := bufio.NewScanner(stdout)
@@ -79,8 +89,13 @@ func main() {
 
          // This removes any rubbish or decoding mistakes that resulted in an empty string
          if len(m) <= 0 {
-			   continue
-		   }
+            continue
+         }
+
+         // Save stuff down here!
       }
 }
 ```
+
+# Conclusion
+Whilst learning everything about radio has been fun, I unfortunately can't do much more with it due to the legal issues. Maybe I'll do something in a lab setting one day. But for now, happy decoding (If you can...)
