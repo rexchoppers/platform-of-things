@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Programming The Symbol MC70"
+title:  "Programming Software For The Symbol MC70"
 ---
 
 # Background
