@@ -16,7 +16,7 @@ Most of the warehouse equipment had a lot of support and was fairly easy write c
 
 The warehouse had a single PC with a barcode scanner that they used for loading in/out items to/from couriers. Whilst this worked well for small parcels, pallets, large/heavy items were an issue. The solution was to create an application on this device that would allow warehouse staff to easily load items in/out of the warehouse and from any loading bay. 
 
-I had minimal production experience with .NET and C# at this point, but wanted a challenge so I went ahead with a prototype application for this device. All seemed to go well...Until I wanted to send a HTTP request to the API.
+I had minimal production experience with .NET and C# at this point, but wanted a challenge (And I was still in my probation period) so I went ahead with a prototype application for this device. All seemed to go well...Until I wanted to send a HTTP request to the API.
 
 Note: I do not have permission to post my old employers code so any code I'll be posting will be from the initial open-source prototype we used as a proof of concept.
 
@@ -399,11 +399,161 @@ Drop me a message if you think I might have answers/code to a problem you have i
 # REST Requests
 During this period, the other develop and I had started to work on making an integration platform for clients to integrate into our system. In short, we created an API with an OpenAPI spec that was used externally for clients but also internally in the warehouse (With proper data and auth separation of course)
 
-I scanned through half of Google; old forums from the 2000s; Youtube; books etc... I could not find a "nice" way to send HTTP requests to the warehouse API. If we were building for the next version up of .NET, I could have followed [this](https://www.codeproject.com/Articles/255684/Create-and-Consume-RESTFul-Service-in-NET-Framewor) a bit easier.
+I scanned through half of Google; old forums from the 2000s; Youtube; books etc... There was not find a "nice" way to send HTTP requests to the warehouse API. If we were building for the next version up of .NET, I could have followed [this](https://www.codeproject.com/Articles/255684/Create-and-Consume-RESTFul-Service-in-NET-Framewor) a bit easier.
 
 After a few days of searching, I had eventually come up with a piece of code for our prototype. Please feel free to take this. I hope it helps someone out there.
 
 **My mood whilst writing this solution**
+
+![My mood whilst writing this solution](https://storage.googleapis.com/rexchoppers-website-assets/dot-net-before-solution.jpeg "My mood whilst writing this solution"){: width="250" }
+
+**The code**
+
+```c#
+class Rest
+    {
+        public class RequestResult {
+
+            public RequestResult(string response) {
+                string[] splitArray = response.Split(new Char[] { '_' });
+
+                if(splitArray[0] == "ERROR") {
+                    this.Success = false;
+
+                } else {
+                    this.Success = true;
+                }
+
+                this.Message = splitArray[1];
+            }
+
+            public bool Success { get; set; }
+            public string Message { get; set; }
+        }
+
+        public static string SendRequest(string url, string[] files, NameValueCollection postValues)
+        {
+            WebResponse webResponse2;
+            HttpWebRequest httpWebRequest2;
+
+            string response = "";
+
+            try
+            {
+                long length = 0;
+                string boundary = "----------------------------" +
+                DateTime.Now.Ticks.ToString("x");
+
+                httpWebRequest2 = (HttpWebRequest)WebRequest.Create(url);
+                httpWebRequest2.ContentType = "multipart/form-data; boundary=" + boundary;
+                httpWebRequest2.Method = "POST";
+                httpWebRequest2.Proxy = null;
+                httpWebRequest2.KeepAlive = true;
+
+                httpWebRequest2.Credentials =
+                System.Net.CredentialCache.DefaultCredentials;
+
+                Stream memStream = new System.IO.MemoryStream();
+
+                byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+                memStream.Write(boundarybytes, 0, boundarybytes.Length);
+                length += boundarybytes.Length;
+
+                string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n Content-Type: \"application/octet-stream\"\r\n\r\n";
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string header = string.Format(headerTemplate, i, files[i]);
+
+                    byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
+
+                    memStream.Write(headerbytes, 0, headerbytes.Length);
+                    length += headerbytes.Length;
+
+                    FileStream fileStream = new FileStream(files[i], FileMode.Open,
+                    FileAccess.Read);
+                    byte[] buffer = new byte[1024];
+
+                    int bytesRead = 0;
+
+                    while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                    {
+                        memStream.Write(buffer, 0, bytesRead);
+                        length += bytesRead;
+                    }
+
+                    memStream.Write(boundarybytes, 0, boundarybytes.Length);
+                    length += boundarybytes.Length;
+
+                    fileStream.Close();
+                }
+
+                string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+
+                foreach (string key in postValues.Keys)
+                {
+                    memStream.Write(boundarybytes, 0, boundarybytes.Length);
+                    string formitem = string.Format(formdataTemplate, key, postValues[key]);
+                    byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(formitem);
+                    memStream.Write(formitembytes, 0, formitembytes.Length);
+                }
+                memStream.Write(boundarybytes, 0, boundarybytes.Length);
+
+                httpWebRequest2.ContentLength = memStream.Length;
+
+                Stream requestStream = httpWebRequest2.GetRequestStream();
+
+                memStream.Position = 0;
+                byte[] tempBuffer = new byte[memStream.Length];
+                memStream.Read(tempBuffer, 0, tempBuffer.Length);
+                memStream.Close();
+                requestStream.Write(tempBuffer, 0, tempBuffer.Length);
+                requestStream.Close();
+
+                webResponse2 = httpWebRequest2.GetResponse();
+
+                Stream stream2 = webResponse2.GetResponseStream();
+                StreamReader reader2 = new StreamReader(stream2);
+
+                response = reader2.ReadToEnd();
+
+                Debug.Write(response);
+
+                webResponse2.Close();
+                httpWebRequest2 = null;
+                webResponse2 = null;
+            }
+
+            catch (Exception e)
+            {
+                Debug.Write(e.Message);
+                if (e is WebException)
+                {
+                    response = "W4M_NONETWORK";
+                }
+            }
+            return response;
+        }
+
+        public static RequestResult GetRequestResult(string response)
+        {
+            return new RequestResult(response);
+        }
+    }
+```
+
+**Pure ecstasy**
+
+![Pure ecstasy](https://storage.googleapis.com/rexchoppers-website-assets/dot-net-after-solution.jpeg "Pure ecstasy"){: width="250" }
+
+# Final Project + Final Words
+After the initial prototype and being able to say to my manager "Yes, this can be done" I quickly got a new project created and in December, we released the first version out to the warehouse. Whilst there were teething issues at the start, this solution made inbound and collections so much quicker. 
+
+I would say this has been one of the best projects I've ever done purely for the fact that what seemed impossible (or at least incredibly difficult) got done. It worked. We shouldn't have been devices that old to start with but we managed to come up with a great solution for a problem with limited resources available. 
+
+For more information on this project or if you just want to talk about it, drop me a message on LinkedIn. I went through hell getting this to work so if I can be of any help, I'll happily offer.
+
+If I find anymore information or remember anything else, I will add it to this article.
 
 # Handy links
 [Connecting MC70 to Wi-Fi](https://www.youtube.com/watch?v=t1Hl35FCOvc)
