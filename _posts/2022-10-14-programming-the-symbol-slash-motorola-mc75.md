@@ -12,6 +12,8 @@ Most of the warehouse equipment had a lot of support and was fairly easy write c
 
 [Image Source](https://www.ebay.co.uk/itm/184071112608?mkevt=1&mkcid=1&mkrid=710-53481-19255-0&campid=5338703918&toolid=20006%26customid%3Ds%253AGS%253Bgc%253A{gclid}%253Bpt%253A1%253Bchoc%253A2&customid=s%3AGS%3Bgc%3A{gclid}%3Bpt%3A1%3Bchoc%3A1)
 
+The warehouse had a single PC with a barcode scanner that they used for loading in/out items to/from couriers. Whilst this worked well for small parcels, pallets, large/heavy items would be an issue. The solution was to create an application on this device that would allow warehouse staff to easily load items in/out of the warehouse and from any loading bay. 
+
 I had minimal production experience with .NET and C# at this point, but wanted a challenge so I went ahead with a prototype application for this device. All seemed to go well...Until I wanted to send a HTTP request to the API.
 
 Note: I do not have permission to post my old employers code so any code I'll be posting will be from the initial open-source prototype we used as a proof of concept.
