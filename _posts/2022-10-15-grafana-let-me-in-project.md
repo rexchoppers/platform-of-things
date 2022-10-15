@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Grafana Let Me In Project (Cloud SQL IP Whitelisting)"
+title:  "Grafana Let Me In Project"
 ---
 
 # Background
