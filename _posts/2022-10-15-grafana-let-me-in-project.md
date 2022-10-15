@@ -4,7 +4,9 @@ title:  "Grafana Let Me In Project (Cloud SQL IP Whitelisting)"
 ---
 
 # Background
-Whilst we were using the 
+Whilst we were using the cloud version of Grafana (Free tier during testing) We needed a simple way to keep up with IP changes so we could whitelist them with our [Cloud SQL](https://cloud.google.com/sql) database. 
+
+As we were using GCP, it made sense to create a simple Cloud Function that was triggered everyday by a cron job via the [Cloud Scheduler](https://cloud.google.com/scheduler/docs/creating)
 
 # Features
 * Converts text to international morse code
