@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "About the UK's emergency alert system"
+toc: true
 ---
 
 # Background
@@ -32,9 +33,9 @@ From looking on social media, word of mouth and public forums, it seems the gene
 
 ![Social media reaction: 6](https://storage.googleapis.com/rexchoppers-website-assets/social-media-reaction-6.png "Social media reaction: 6"){: width="250" }
 
+There were some positive comments about the system, but these were few and far between. On the surface, I think these reactions are over the top, but I honestly don’t blame people for feeling like this.
 
-
-
+### Trust
 
 
 
