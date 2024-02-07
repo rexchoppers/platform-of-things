@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Unravelling Visonic Communication Protocol - Part 1"
+published: false
 ---
 
 # Overview
