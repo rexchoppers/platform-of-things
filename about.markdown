@@ -94,7 +94,7 @@ I'm currently a Technical Lead
 
 ## Built with
 
-**Hosted on:** GCP Cloud Storage (I'm way too tight to pay for hosting)
+**Hosted on:** AWS
 
   
 
