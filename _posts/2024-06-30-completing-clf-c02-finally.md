@@ -30,6 +30,6 @@ The exam itself is:
 I finished the exam in around 20 minutes. With this particular exam, it provides you with a pass/fail result at the end of the exam.
 
 # Conclusion
-Overall, a straightforward exam that provides a comprehensive overview of the AWS services. I'd recommend this exam to anyone who is looking to get into cloud computing or is looking to get a certification to back up their experience.
+Overall, a straightforward exam that provides a comprehensive overview of AWS services. I'd recommend this exam to anyone who is looking to get into cloud computing or is seeking certification to back up their experience.
 
-My advice especially if you're new to cloud computing is to get some hands-on experience with the services. AWS provides a free tier for 12 months which is more than enough time to get some hands-on experience with the services. It's all good knowing the theory, but practical experience is key.
+My advice, especially if you're new to cloud computing, is to get some hands-on experience with the services. AWS provides a free tier for 12 months, which is more than enough time to get some practical experience with the services. It's all good knowing the theory, but practical experience is key.
