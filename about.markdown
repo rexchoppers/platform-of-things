@@ -15,82 +15,59 @@ I'm currently a Technical Lead
 ## Technical Skills
 
 - Front End
-
 	- Angular
-
-	- React Native
-
 	- Ionic
-
 	- Flutter
 
-	- HTML/CSS/JS (The usual bits)
-
 - Back End
-
 	- PHP
-
-	- NodeJS (JS + TS)
-
+	- JS + TS
 	- Python
-
 	- Java
-
 	- GO
-
-	- C# (Used bits of)
-
+	- C#
 	- LUA
 
 - Databases
-
 	- Postgres
-
 	- MySQL
-
 	- MongoDB
-
 	- Redis
 
-	- MSSQL (Used bits of)
-
 - Cloud Providers
-
 	- GCP
-
 	- AWS
-
-	- Azure (Used bits of)
-
-	- Heroku
-
 	- Digital Ocean
 
-	- Hetzner
-
-- CI/CD
-
+- DevOps
 	- Github Actions
-
 	- Gitlab
-
-- MQs
-
-	- NATS MQ
-
-	- RabbitMQ
-
-- Other
-
-	- Android
-
-	- Linux
-
 	- Kubernetes
-
 	- Docker
 
-  
+- MQs
+	- NATS MQ
+	- RabbitMQ
+	- AWS SQS
+
+
+## Certifications
+- AWS Certified Cloud Practitioner
+	- Issued by: Amazon Web Services Training and Certification
+	- Issued: June 2024
+	- Expires: June 2027
+	- Credly: [Link](https://www.credly.com/badges/f4a8c0fa-6aa1-4aa6-82b8-432a26efe4ec/public_url)
+
+- BCS Level 3 Certificate in Programming
+	- Issued by: BCS, The Chartered Institute for IT
+	- Issued: May 2018
+	- Credential ID: Cert No: 00416605, Reg: UP37110888
+
+- BCS Level 3 Certificate in Software Development Context and Methodologies
+	- Issued by: BCS, The Chartered Institute for IT
+	- Issued: April 2018
+	- Credential ID: Cert No: 00413551, Reg: TR37069101
+
 
 ## Built with
 
@@ -108,12 +85,12 @@ I'm currently a Technical Lead
 
 ## Other
 
-**Github:** https://github.com/rexchoppers
+**Github:** [https://github.com/rexchoppers](https://github.com/rexchoppers)
 
   
 
-**LinkedIn:** https://www.linkedin.com/in/connor-b-50984311b/
+**LinkedIn:** [https://www.linkedin.com/in/connor-b-50984311b/](https://www.linkedin.com/in/connor-b-50984311b/)
 
   
 
-**Site Project:** https://github.com/rexchoppers/platform-of-things
+**Site Project:** [https://github.com/rexchoppers/platform-of-things](https://github.com/rexchoppers/platform-of-things)
