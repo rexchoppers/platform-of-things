@@ -244,9 +244,6 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Cubiscan Integration**
     - **Description**: Integrating Cubiscan into our applications
     - **Tech**: PHP (CodeIgniter), MySQL, Cubiscan, Javascript, C#, .NET
-- **Scheduler Project**
-    - **Description**: A project to schedule long running jobs
-    - **Tech**: PHP (CodeIgniter), C#, .NET, IIS
 - **Brandweer GPS Flutter Prototype**
     - **Description**: Prototype of a GPS system for the fire brigade. Integrating into their existing system
     - **Tech**: Flutter, Dart, Android, iOS
@@ -259,6 +256,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Client Y Project Start**
     - **Description**: R&D Project for Client Y
     - **Tech**: Python, Angular, DigitalOcean, MySQL
+- **Apprenticeship Final Project**
+    - **Description**: Final project for my apprenticeship. Music selection system
+    - **Tech**: C++ (QT)
 
 # 2018
 - **Major Online Re-selling Platform Integration**
@@ -282,6 +282,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **New WMS Integration**
     - **Description**: Integrating a new WMS  into our existing systems + processes
     - **Tech**: PHP (CodeIgniter), MySQL, Javascript
+- **Scheduler Project**
+    - **Description**: A project to schedule long running jobs
+    - **Tech**: PHP (CodeIgniter), C#, .NET, IIS
 
 # 2017
 - **Apprenticeship Started**
@@ -299,9 +302,59 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Symbol MC70 Software**
     - **Description**: Warehouse software for the Symbol MC70 using .NET 3.5 (Yes, you read that right)
     - **Tech**: PHP (CodeIgniter), C#, .NET, MySQL, Symbol MC70
-- **Label Auto-printing system**
+- **Label Auto-Printing System**
     - **Description**: Auto-printing system for our warehouse to speed up the packing process
     - **Tech**: Bash, Javascript
 - **College Finished**
     - **Description**: Finished college
     - **Tech**: N/A
+- **Confess Your Mess**
+    - **Description**: A website for people to confess their mess. Make so I could pick up CodeIgniter quickly
+    - **Tech**: PHP (CodeIgniter), MySQL, Javascript
+- **Jotel**
+    - **Description**: A hotel booking system for a college project. Used to pick up bits of C++
+    - **Tech**: C++, QT, MySQL
+- **Freelance Game Plugin Development**
+    - **Description**: Freelance game plugin development
+    - **Tech**: Java, LUA
+
+# 2016
+- **Positivity+**
+    - **Description**: Mental health app for a college project
+    - **Tech**: Android, Java, PHP, MySQL
+- **rAudit**
+    - **Description**: Hotel housekeeping auditing app. Requested by a family member who is a deputy manager at a hotel
+    - **Tech**: Android, Java, PHP, MySQL
+- **Freelance Game Plugin Development**
+    - **Description**: Freelance game plugin development
+    - **Tech**: Java, LUA
+
+# 2015
+- **Freelance Game Plugin Development**
+    - **Description**: Freelance game plugin development
+    - **Tech**: Java, LUA
+- **MowveIT**
+    - **Description**: A high school project to create a 2D game
+    - **Tech**: Java, LWJGL, OpenGL
+- **Linux Server Setup**
+    - **Description**: Setting up a Linux servers. NGINX, PHP, MySQL, Postgres, Redis, Apache2
+    - **Tech**: Linux, Bash
+
+# 2014
+- **Freelance Game Plugin Development**
+    - **Description**: Freelance game plugin development
+    - **Tech**: Java, LUA
+- **Linux Server Setup**
+    - **Description**: Setting up Linux servers. NGINX, PHP, MySQL, Postgres, Redis, Apache2
+    - **Tech**: Linux, Bash
+- **Blockhunt**
+    - **Description**: Popular game plugin
+    - **Tech**: Java
+
+# 2013
+- **Freelance Game Plugin Development**
+    - **Description**: Freelance game plugin development
+    - **Tech**: Java, LUA
+- **Linux Server Setup**
+    - **Description**: Setting up Linux servers. NGINX, PHP, MySQL, Postgres, Redis, Apache2
+    - **Tech**: Linux, Bash
