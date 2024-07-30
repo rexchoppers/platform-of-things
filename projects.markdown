@@ -6,7 +6,7 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
 
 # 2024
 - **MongoDB 7 Upgrade**: 
-    - **Description**: Upgrading MongoDB 6 to MongoDB 7 on my employer's API project without any downtime
+    - **Description**: Upgrading MongoDB 6 to MongoDB 7
     - **Tech**: MongoDB, PHP (Laravel)
 - **AWS CLF C02**:
     - **Description**: AWS Certified Cloud Practitioner as part of my initiative to display my knowledge in AWS
@@ -15,13 +15,13 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
     - **Description**: Integrating SSO into our mobile applications and integration Google SSO also on both web + mobile
     - **Tech**: PHP (Laravel), MySQL, MongoDB, GCP, React Native, ReactJS
 - **MongoDB 6 Upgrade**: 
-    - **Description**: Upgrading MongoDB 5 to MongoDB 6 on my employer's API project without any downtime
+    - **Description**: Upgrading MongoDB 5 to MongoDB 6
     - **Tech**: MongoDB, PHP (Laravel)
 - **Data Import Project**
     - **Description**: Improvements to the data import project to handle more data and improve the speed of the import process. From a slow, limited process to processing around 10k records in one go. 
     - **Tech**: PHP (Laravel), MySQL, MongoDB
 - **MySQL 8.0 Upgrade**
-    - **Description**: Upgrading MySQL 5.7 to MySQL 8.0 on my employer's API project without any downtime
+    - **Description**: Upgrading MySQL 5.7 to MySQL 8.0
     - **Tech**: MySQL, PHP (Laravel), AWS
 - **Public Information Page**
     - **Description**: A public information page for an anonymous source to look at information by just visiting a URL. All security considerations were taken into account.
@@ -33,7 +33,7 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
     - **Description**: Integrating CloudWatch into our API project to monitor the performance + logs of our API
     - **Tech**: AWS CloudWatch, PHP (Laravel)
 - **MongoDB 5 Upgrade**
-    - **Description**: Upgrading MongoDB 4 to MongoDB 5 on my employer's API project without any downtime
+    - **Description**: Upgrading MongoDB 4 to MongoDB 5
     - **Tech**: MongoDB, PHP (Laravel)
 - **Kubernetes Deployment Setup For Client X**
     - **Description**: Setting up a Kubernetes deployment for client X to deploy their API and web application
@@ -56,6 +56,9 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
 - **Atlas Search Prototype**
     - **Description**: Prototype of Atlas Search for quick search capabilities
     - **Tech**: MongoDB, PHP (Laravel), Atlas Search
+- **Open University: BCS Computing + IT**
+    - **Description**: One quarter of Year 3 of the BCS Computing + IT degree
+    - **Tech**: Java, JavaScript, HTML, CSS
 
 # 2023
 - **React Native App Setup**
@@ -73,3 +76,27 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
 - **CodeShip to Github Actions**
     - **Description**: Migrating from CodeShip to Github Actions. Inc deployment + unit tests
     - **Tech**: Github Actions, CodeShip, PHP (Laravel)
+- **PHP 7.4 Upgrade**
+    - **Description**: Upgrading PHP 7.3 to PHP 7.4
+    - **Tech**: PHP (Laravel), AWS, Elasticbeanstalk, Bash
+- **Mass Data Search Project**
+    - **Description**: A project to search through mass data and return results quickly
+    - **Tech**: PHP (Laravel), MySQL, MongoDB, AWS, Elasticbeanstalk
+- **Project Kone - Project Initiation**
+    - **Description**: Project initiation for Project Kone
+    - **Tech**: AWS, AWS Cognito, AWS CDK, AWS Lambda, Angular, .NET, C#, Postgres, Kubernetes, Docker, Github Actions, Flutter, Android, iOS
+- **AWMS - A Warehouse Management System**
+    - **Description**: Prototype of a warehouse management system
+    - **Tech**: Keycloak, Angular, GO, NodeJS, Postgres, Docker
+- **Upload Proxy Lambda**
+    - **Description**: A Lambda function to proxy uploads from S3
+    - **Tech**: AWS, AWS Lambda, AWS CDK, S3, TypeScript, Route53
+- **danmealwork.github.io**
+    - **Description**: Family member's online portfolio updates
+    - **Tech**: Jekyll, Ruby
+- **Cloud OpenFOAM Processing**
+    - **Description**: Prototype setting up OpenFOAM processing on GCP
+    - **Tech**: GCP, OpenFOAM, Bash, Docker, Pascal, C++
+- **Open University: BCS Computing + IT**
+    - **Description**: Second half of year 2 of the BCS Computing + IT degree
+    - **Tech**: Java, JavaScript, Python, HTML, CSS
