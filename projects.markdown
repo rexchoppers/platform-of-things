@@ -44,7 +44,7 @@ If you're interested in any of the projects, feel free to reach out to me
     - **Tech**: Kubernetes, Scaleway, PHP (Laravel), ReactJS, Github Actions
 - **Portal Project For Client Y**
     - **Description**: A portal project for client Y to manage their internal processes
-    - **Tech**: AWS, DynamoDB, AWS CDK, TypeScript, ReactJS, AWS Lambda, AWS Step Functions, AWS State Machines, Github Actions
+    - **Tech**: AWS, DynamoDB, AWS CDK, TypeScript, ReactJS, AWS Lambda, AWS S3, AWS Step Functions, AWS State Machines, Github Actions
 - **Project Kone**
     - **Description**: Confidential project for clients to manage machines
     - **Tech**: AWS, AWS Cognito, AWS CDK, AWS Lambda, Angular, .NET, C#, Postgres, Kubernetes, Docker, Github Actions, Flutter, Android, iOS
@@ -56,7 +56,7 @@ If you're interested in any of the projects, feel free to reach out to me
     - **Tech**: Jekyll, Ruby
 - **Client A Project Changes**
     - **Description**: Changes to Client A's existing project inline with business requirements 
-    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL
+    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL, Cloud Run, PHP (Laravel), Angular, Gitlab
 - **Atlas Search Prototype**
     - **Description**: Prototype of Atlas Search for quick search capabilities
     - **Tech**: MongoDB, PHP (Laravel), Atlas Search
@@ -117,7 +117,7 @@ If you're interested in any of the projects, feel free to reach out to me
     - **Tech**: Jekyll, Ruby
 - **Client A Project Changes**
     - **Description**: Changes to Client A's existing project inline with business requirements 
-    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL
+    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL, Cloud Run, PHP (Laravel), Angular, Gitlab
 - **Client B Project**
     - **Description**: Data scraping project
     - **Tech**: TypeScript, Kubernetes, Hetzner, Docker, NodeJS, ffmpeg
@@ -142,6 +142,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Government Agency API Integration**
     - **Description**: Integrating a government agency API (Never released) into our applications. This project verified a worker's identity against the a private agemcu database
     - **Tech**: PHP (Laravel), MySQL, Government API, Azure
+- **Machine Learning - Autofill Project Support**
+    - **Description**: A project to autofill data based on previous data
+    - **Tech**: Python, Docker, Kubernetes, GCP, MySQL
 
 # 2021
 - **Open University: BCS Computing + IT**
@@ -152,13 +155,16 @@ If you're interested in any of the projects, feel free to reach out to me
     - **Tech**: Docker, PHP (Laravel), MySQL, Redis, NodeJS, GCP, Postgres
 - **Interim Datawarehouse Project**
     - **Description**: An interim datawarehouse project to store data for reporting
-    - **Tech**: MySQL, Postgres, GCP, Bash, Docker
+    - **Tech**: MySQL, Postgres, GCP, Bash, Docker, Python
 - **Migration from NATS to RabbitMQ**
     - **Description**: Migrating from NATS to RabbitMQ (Backbone of the application)
     - **Tech**: NATS, RabbitMQ, PHP (Laravel), Docker, NodeJS, GCP, Kubernetes
 - **Laravel Upgrade 5.7 -> 5.8**
     - **Description**: Upgrading Laravel 5.7 -> 5.8
-    - **Tech**: PHP (Laravel), MySQL, Docker, GCP, Kubernetes
+    - **Tech**: PHP (Laravel), MySQL, Docker, GCP
+- **Laravel Upgrade 5.8 -> 6.0**
+    - **Description**: Upgrading Laravel 5.8 -> 6.0
+    - **Tech**: PHP (Laravel), MySQL, Docker, GCP
 - **Auth Microservice**
     - **Description**: Auth microservice for our applications + foundations for future microservices
     - **Tech**: MySQL, Docker, GCP, Kubernetes, NestJS, NodeJS, Typescript, NATS MQ
@@ -168,3 +174,42 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Larastan Integration**
     - **Description**: Integrating Larastan into our applications (Tighter code quality)
     - **Tech**: PHP (Laravel), Larastan, Docker
+- **Client A Project Changes**
+    - **Description**: Changes to Client A's existing project inline with business requirements 
+    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL, Cloud Run, PHP (Laravel), Angular, Gitlab
+- **Client C Project**
+    - **Description**: Game projects x2
+    - **Tech**: Java, NestJS, NATSMQ, Docker, Kubernetes, GCP, NodeJS, Typescript, Redis, AWS S3
+- **Client D Project**
+    - **Description**: Pricing Calculation Project
+    - **Tech**: NodeJS, Typescript, Powershell
+- **AWMS - A Warehouse Management System**
+    - **Description**: Prototype of a warehouse management system
+    - **Tech**: NestJS, NodeJS, Angular, Postgres, Docker, Kubernetes, NATS MQ
+
+# 2020
+- **Open University: BCS Computing + IT**
+    - **Description**: Starting year 1 of my BCS Computing + IT degree
+    - **Tech**: N/A
+- **Redis Geo-matching System**
+    - **Description**: A geo-matching system using Redis
+    - **Tech**: Redis, PHP (Laravel), Docker, GCP
+- **GCP App Engine Versioning**
+    - **Description**: Versioning of GCP App Engine. Basically, a way to deploy multiple versions of the same application and have the jobs for that specific version processed by that version too
+    - **Tech**: GCP, GCP AppEngine, PHP (Laravel), Docker, Bash
+- **FCM v2 Integration**
+    - **Description**: Integrating Firebase Cloud Messaging into our applications. We weren't able to use existing libraries due to the fact the API was so far behind version wise
+    - **Tech**: PHP (Laravel), MySQL, Firebase, Docker, Android, iOS, Ionic
+- **API Restructure**
+    - **Description**: Restructuring our API to be more modular and easier to maintain. Preperation for microservices
+    - **Tech**: PHP (Laravel), MySQL, Docker, GCP
+- **Client H R&D Project**
+    - **Description**: R&D project for Client H. Data processing from third parties + writing to Excel files
+    - **Tech**: Python, DigitalOcean, MySQL
+- **Client Y Project Start**
+    - **Description**: Start of Client A's project. Processing mass amounts of data + writing to Excel files
+    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL, Cloud Run, PHP (Laravel), Angular, Gitlab
+- **Royal Mail - Read Barcode From Image Prototype**
+    - **Description**: Prototype to read barcodes from images
+    - **Tech**: PHP (CodeIgniter)
+- 
