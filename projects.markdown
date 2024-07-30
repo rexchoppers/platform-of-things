@@ -2,13 +2,49 @@
 layout: post
 title:  "Projects"
 ---
-As humans, sometimes it's hard to see the bigger picture. We get caught up in the day-to-day and forget to look at the bigger picture. This page is a collection of projects I've worked on over the years. Some are small, big, open-source, employer projects, and some are just for fun.
+As humans, sometimes it's hard to see the bigger picture. We get caught up in the day-to-day and forget to look at the bigger picture. This page is a collection of projects I've worked on over the years. Some are big, small, open-source, employer projects, and some are just for fun.
 
 # 2024
 
-- MongoDB 7 Upgrade: Upgrading MongoDB 6 to MongoDB 7 on my employer's API project without any downtime
-- Mobile SSO Integration: Integrating SSO into our mobile applications and integration Google SSO also on both web + mobile
-- MongoDB 6 Upgrade: Upgrading MongoDB 5 to MongoDB 6 on my employer's API project without any downtime
-- Data Import Project
-    - Description: Improvements to the data import project to handle more data and improve the speed of the import process. From a slow, limited process to processing around 10k records in one go. 
-    - Tech: PHP (Laravel), MySQL, MongoDB
+- **MongoDB 7 Upgrade**: 
+    - **Description**: Upgrading MongoDB 6 to MongoDB 7 on my employer's API project without any downtime
+    - **Tech**: MongoDB, PHP (Laravel)
+- **AWS CLF C02**:
+    - **Description**: AWS Certified Cloud Practitioner as part of my initiative to display my knowledge in AWS
+    - **Tech**: AWS
+- **Mobile SSO Integration**: 
+    - **Description**: Integrating SSO into our mobile applications and integration Google SSO also on both web + mobile
+    - **Tech**: PHP (Laravel), MySQL, MongoDB, GCP, React Native, ReactJS
+- **MongoDB 6 Upgrade**: 
+    - **Description**: Upgrading MongoDB 5 to MongoDB 6 on my employer's API project without any downtime
+    - **Tech**: MongoDB, PHP (Laravel)
+- **Data Import Project**
+    - **Description**: Improvements to the data import project to handle more data and improve the speed of the import process. From a slow, limited process to processing around 10k records in one go. 
+    - **Tech**: PHP (Laravel), MySQL, MongoDB
+- **MySQL 8.0 Upgrade**
+    - **Description**: Upgrading MySQL 5.7 to MySQL 8.0 on my employer's API project without any downtime
+    - **Tech**: MySQL, PHP (Laravel), AWS
+- **Public Information Page**
+    - **Description**: A public information page for an anonymous source to look at information by just visiting a URL. All security considerations were taken into account.
+    - **Tech**: PHP (Laravel), MySQL, AWS, MongoDB, AWS CDK, TypeScript
+- **AWS Cost Saving Exercise**
+    - **Description**: A cost-saving exercise to reduce the cost of our AWS infrastructure. ~5k per month down to ~2k per month
+    - **Tech**: AWS
+- **CloudWatch API Integration**
+    - **Description**: Integrating CloudWatch into our API project to monitor the performance + logs of our API
+    - **Tech**: AWS CloudWatch, PHP (Laravel)
+- **MongoDB 5 Upgrade**
+    - **Description**: Upgrading MongoDB 4 to MongoDB 5 on my employer's API project without any downtime
+    - **Tech**: MongoDB, PHP (Laravel)
+- **Kubernetes Deployment Setup For Client X**
+    - **Description**: Setting up a Kubernetes deployment for client X to deploy their API and web application
+    - **Tech**: Kubernetes, Scaleway, PHP (Laravel), ReactJS, Github Actions
+- **Portal Project For Client Y**
+    - **Description**: A portal project for client Y to manage their internal processes
+    - **Tech**: AWS, DynamoDB, AWS CDK, TypeScript, ReactJS, AWS Lambda, AWS Step Functions, AWS State Machines, Github Actions
+- **Project Kone**
+    - **Description**: Confidential project for clients to manage machines
+    - **Tech**: AWS, AWS Cognito, AWS CDK, AWS Lambda, Angular, .NET, C#, Postgres, Kubernetes, Docker, Github Actions
+- **Project MCH**
+    - **Description**: Current closed-source project (Open Source soon) game project
+    - **Tech**: Java, Docker, Bash
