@@ -5,7 +5,6 @@ title:  "Projects"
 As humans, sometimes it's hard to see the bigger picture. We get caught up in the day-to-day and forget to look at the bigger picture. This page is a collection of projects I've worked on over the years. Some are big, small, open-source, employer projects, and some are just for fun.
 
 # 2024
-
 - **MongoDB 7 Upgrade**: 
     - **Description**: Upgrading MongoDB 6 to MongoDB 7 on my employer's API project without any downtime
     - **Tech**: MongoDB, PHP (Laravel)
@@ -44,7 +43,33 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
     - **Tech**: AWS, DynamoDB, AWS CDK, TypeScript, ReactJS, AWS Lambda, AWS Step Functions, AWS State Machines, Github Actions
 - **Project Kone**
     - **Description**: Confidential project for clients to manage machines
-    - **Tech**: AWS, AWS Cognito, AWS CDK, AWS Lambda, Angular, .NET, C#, Postgres, Kubernetes, Docker, Github Actions
+    - **Tech**: AWS, AWS Cognito, AWS CDK, AWS Lambda, Angular, .NET, C#, Postgres, Kubernetes, Docker, Github Actions, Flutter, Android, iOS
 - **Project MCH**
     - **Description**: Current closed-source project (Open Source soon) game project
     - **Tech**: Java, Docker, Bash
+- **danmealwork.github.io**
+    - **Description**: Family member's online portfolio updates
+    - **Tech**: Jekyll, Ruby
+- **Client A Project Changes**
+    - **Description**: Changes to Client A's existing project inline with business requirements 
+    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL
+- **Atlas Search Prototype**
+    - **Description**: Prototype of Atlas Search for quick search capabilities
+    - **Tech**: MongoDB, PHP (Laravel), Atlas Search
+
+# 2023
+- **React Native App Setup**
+    - **Description**: Fixing, updating and setting up a React Native app that was unable to load, update and run. Several updates on the app released
+    - **Tech**: React Native, TypeScript, Bash, iOS, Android, App/Play Store
+- **Penetration Testing**
+    - **Description**: Penetration testing project
+    - **Tech**: AWS, PHP (Laravel), MongoDB, MySQL
+- **Elasticbeanstalk Laravel SQS Updates**
+    - **Description**: Updates to the Laravel SQS setup on Elasticbeanstalk to handle more jobs and use `php artisan queue:work` instead of HTTP requests
+    - **Tech**: AWS, PHP (Laravel), SQS, Elasticbeanstalk, Bash
+- **SSO Integration (Microsoft)**
+    - **Description**: Integrating Microsoft SSO into our applications
+    - **Tech**: PHP (Laravel), MySQL, MongoDB, Azure, ReactJS
+- **CodeShip to Github Actions**
+    - **Description**: Migrating from CodeShip to Github Actions. Inc deployment + unit tests
+    - **Tech**: Github Actions, CodeShip, PHP (Laravel)
