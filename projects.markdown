@@ -212,4 +212,96 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Royal Mail - Read Barcode From Image Prototype**
     - **Description**: Prototype to read barcodes from images
     - **Tech**: PHP (CodeIgniter)
-- 
+- **GCP Cost Saving Exercise**
+    - **Description**: A cost-saving exercise to reduce the cost of our GCP infrastructure. ~2k per month down to ~£800 per month
+    - **Tech**: GCP
+- **Arduino Rocket Control System**
+    - **Description**: A rocket control system using Arduino - Helping with a relative's university project
+    - **Tech**: Arduino, C
+- **Projects for ex-employer**
+    - **Description**: Project for ex-employer
+    - **Tech**: PHP (CodeIgniter + Laravel), MySQL, Linux
+- **Client C Project**
+    - **Description**: Game projects x2
+    - **Tech**: Java, NestJS, NATSMQ, Docker, Kubernetes, GCP, NodeJS, Typescript, Redis, AWS S3
+
+# 2019
+- **Google Maps + Geocoding Integration**
+    - **Description**: Integrating Google Maps + Geocoding into our applications
+    - **Tech**: PHP (Laravel), MySQL, Redis, GCP, Google Maps API
+- **Finished Apprenticeship**
+    - **Description**: Finished my apprenticeship
+    - **Tech**: N/A
+- **Projects for ex-employer**
+    - **Description**: Project for ex-employer
+    - **Tech**: PHP (CodeIgniter + Laravel), MySQL, Linux
+- **Migration from IIS to Linux Server**
+    - **Description**: Migrating from our applications to a Linux server. Cloud Options were put forward but the cost was too high
+    - **Tech**: AWS, PHP (CodeIgniter), MySQL, GCP, Linux
+- **ReportBro Integration**
+    - **Description**: Integrating ReportBro into our applications
+    - **Tech**: PHP (CodeIgniter), Python, MySQL, ReportBro, Javascript
+- **Cubiscan Integration**
+    - **Description**: Integrating Cubiscan into our applications
+    - **Tech**: PHP (CodeIgniter), MySQL, Cubiscan, Javascript, C#, .NET
+- **Scheduler Project**
+    - **Description**: A project to schedule long running jobs
+    - **Tech**: PHP (CodeIgniter), C#, .NET, IIS
+- **Brandweer GPS Flutter Prototype**
+    - **Description**: Prototype of a GPS system for the fire brigade. Integrating into their existing system
+    - **Tech**: Flutter, Dart, Android, iOS
+- **Background Checking Integration**
+    - **Description**: Integrating background checking into our applications
+    - **Tech**: PHP (Laravel), MySQL, GCP
+- **Automated System For Check Government Agency Data**
+    - **Description**: Automated system to check a government agency data
+    - **Tech**: PHP (Laravel), MySQL, GCP, GCP CloudFunctions, Typescript, NodeJS
+- **Client Y Project Start**
+    - **Description**: R&D Project for Client Y
+    - **Tech**: Python, Angular, DigitalOcean, MySQL
+
+# 2018
+- **Major Online Re-selling Platform Integration**
+    - **Description**: Integrating a major online re-selling platform into our applications
+    - **Tech**: PHP (CodeIgniter), MySQL, GO
+- **Warehouse App For Major Online Re-selling Platform**
+    - **Description**: Warehouse app for a major online re-selling platform
+    - **Tech**: PHP (CodeIgniter), MySQL, Ionic, Angular, Typescript, NodeJS
+- **API Creation**
+    - **Description**: Creating an API for our applications and allowing third parties to access our data
+    - **Tech**: PHP (CodeIgniter), MySQL, Linux
+- **Carrier System Integration**
+    - **Description**: Integrating a carrier system into our existing systems + processes
+    - **Tech**: PHP (CodeIgniter), MySQL
+- **Apprenticeship Continuation**
+    - **Description**: Continuation of my apprenticeship
+    - **Tech**: N/A
+- **Support Ticketing Prototype**
+    - **Description**: Prototype of a support ticketing system
+    - **Tech**: PHP (CodeIgniter), MySQL, Javascript
+- **New WMS Integration**
+    - **Description**: Integrating a new WMS  into our existing systems + processes
+    - **Tech**: PHP (CodeIgniter), MySQL, Javascript
+
+# 2017
+- **Apprenticeship Started**
+    - **Description**: Started my apprenticeship
+    - **Tech**: N/A
+- **Zendesk - Portal Integration**
+    - **Description**: Integrating Zendesk for easier customer support
+    - **Tech**: PHP (CodeIgniter), MySQL, Zendesk API
+- **Metapack Integration**
+    - **Description**: Integrating Metapack carrier system into our existing systems + processes
+    - **Tech**: PHP (CodeIgniter), MySQL, Metapack API (SOAP)
+- **Custom ZPL Label Printing**
+    - **Description**: Custom ZPL label printing for our warehouse. Designing custom labels + Parameter injection
+    - **Tech**: PHP (CodeIgniter), MySQL, ZPL
+- **Symbol MC70 Software**
+    - **Description**: Warehouse software for the Symbol MC70 using .NET 3.5 (Yes, you read that right)
+    - **Tech**: PHP (CodeIgniter), C#, .NET, MySQL, Symbol MC70
+- **Label Auto-printing system**
+    - **Description**: Auto-printing system for our warehouse to speed up the packing process
+    - **Tech**: Bash, Javascript
+- **College Finished**
+    - **Description**: Finished college
+    - **Tech**: N/A
