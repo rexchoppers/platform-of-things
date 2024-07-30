@@ -89,7 +89,7 @@ I'm currently a Technical Lead
 
   
 
-**LinkedIn:** [https://www.linkedin.com/in/connor-b-50984311b/](https://www.linkedin.com/in/connor-b-50984311b/)
+**LinkedIn:** [https://www.linkedin.com/in/connor-brady-50984311b](https://www.linkedin.com/in/connor-brady-50984311b)
 
   
 
