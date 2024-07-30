@@ -4,6 +4,10 @@ title:  "Projects"
 ---
 As humans, sometimes it's hard to see the bigger picture. We get caught up in the day-to-day and forget to look at the bigger picture. This page is a collection of projects I've worked on over the years. Some are big, small, open-source, employer projects, and some are just for fun.
 
+Usually a lot of developers wouldn't bother to document their projects, but as I've got a range of experience across many languages/frameworks/integrations, I thought it would be a good idea to document them. This page is a living document and will be updated as I work on more projects.
+
+If you're interested in any of the projects, feel free to reach out to me
+
 # 2024
 - **MongoDB 7 Upgrade**: 
     - **Description**: Upgrading MongoDB 6 to MongoDB 7
@@ -58,7 +62,7 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
     - **Tech**: MongoDB, PHP (Laravel), Atlas Search
 - **Open University: BCS Computing + IT**
     - **Description**: One quarter of Year 3 of the BCS Computing + IT degree
-    - **Tech**: Java, JavaScript, HTML, CSS
+    - **Tech**: Java, Javascript, HTML, CSS
 
 # 2023
 - **React Native App Setup**
@@ -99,4 +103,68 @@ As humans, sometimes it's hard to see the bigger picture. We get caught up in th
     - **Tech**: GCP, OpenFOAM, Bash, Docker, Pascal, C++
 - **Open University: BCS Computing + IT**
     - **Description**: Second half of year 2 of the BCS Computing + IT degree
-    - **Tech**: Java, JavaScript, Python, HTML, CSS
+    - **Tech**: Java, Javascript, Python, HTML, CSS
+
+# 2022
+- **Open University: BCS Computing + IT**
+    - **Description**: First half of year 2 of the BCS Computing + IT degree
+    - **Tech**: Java, Javascript, Python, HTML, CSS
+- **danmealwork.github.io**
+    - **Description**: Family member's online portfolio updates
+    - **Tech**: Jekyll, Ruby
+- **Platform Of Things**
+    - **Description**: My own personal site filled with bits of stuff that might help other people one day
+    - **Tech**: Jekyll, Ruby
+- **Client A Project Changes**
+    - **Description**: Changes to Client A's existing project inline with business requirements 
+    - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL
+- **Client B Project**
+    - **Description**: Data scraping project
+    - **Tech**: TypeScript, Kubernetes, Hetzner, Docker, NodeJS, ffmpeg
+- **Arduino Code Fix**
+    - **Description**: Fixing Arduino code for an acquaintance
+    - **Tech**: Arduino, C++
+- **Pager Data Processing Project**
+    - **Description**: A project to process pager data
+    - **Tech**: Kubernetes, Raspberry Pi, NodeJS, GO, Postgres, Docker, RF Transmitter + Receiver
+- **Sendgrid Integration**
+    - **Description**: Integrating Sendgrid into our applications
+    - **Tech**: PHP (Laravel), MySQL, Sendgrid
+- **Yoti Integration**
+    - **Description**: Integrating Yoti into our applications
+    - **Tech**: MySQL, Yoti, Python, NodeJS, Typescript, NestJS, Postgres, Docker, Kubernetes
+- **K8s Secret Deployment Generator**
+    - **Description**: Quicky and hacky project to generate Kubernetes secret deployment files
+    - **Tech**: Kubernetes, Javascript, NodeJS, Docker
+- **GCP AppEngine to Kubernetes Migration**
+    - **Description**: Migrating from GCP AppEngine to Kubernetes
+    - **Tech**: GCP, Kubernetes, PHP (Laravel), MySQL, Docker
+- **Government Agency API Integration**
+    - **Description**: Integrating a government agency API (Never released) into our applications. This project verified a worker's identity against the a private agemcu database
+    - **Tech**: PHP (Laravel), MySQL, Government API, Azure
+
+# 2021
+- **Open University: BCS Computing + IT**
+    - **Description**: Whole of year 1 completed for my BCS Computing + IT degree
+    - **Tech**: Java, Javascript, Python, HTML, CSS
+- **Replicating Employer Infrastructure To Docker**
+    - **Description**: Replicating employer infrastructure to Docker for local development
+    - **Tech**: Docker, PHP (Laravel), MySQL, Redis, NodeJS, GCP, Postgres
+- **Interim Datawarehouse Project**
+    - **Description**: An interim datawarehouse project to store data for reporting
+    - **Tech**: MySQL, Postgres, GCP, Bash, Docker
+- **Migration from NATS to RabbitMQ**
+    - **Description**: Migrating from NATS to RabbitMQ (Backbone of the application)
+    - **Tech**: NATS, RabbitMQ, PHP (Laravel), Docker, NodeJS, GCP, Kubernetes
+- **Laravel Upgrade 5.7 -> 5.8**
+    - **Description**: Upgrading Laravel 5.7 -> 5.8
+    - **Tech**: PHP (Laravel), MySQL, Docker, GCP, Kubernetes
+- **Auth Microservice**
+    - **Description**: Auth microservice for our applications + foundations for future microservices
+    - **Tech**: MySQL, Docker, GCP, Kubernetes, NestJS, NodeJS, Typescript, NATS MQ
+- **Xero Upgrade**
+    - **Description**: Business critical Xero integration
+    - **Tech**: Xero, PHP (Laravel)
+- **Larastan Integration**
+    - **Description**: Integrating Larastan into our applications (Tighter code quality)
+    - **Tech**: PHP (Laravel), Larastan, Docker
