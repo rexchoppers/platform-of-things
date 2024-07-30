@@ -209,7 +209,7 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Client H R&D Project**
     - **Description**: R&D project for Client H. Data processing from third parties + writing to Excel files
     - **Tech**: Python, DigitalOcean, MySQL
-- **Client Y Project Start**
+- **Client A Project Start**
     - **Description**: Start of Client A's project. Processing mass amounts of data + writing to Excel files
     - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL, Cloud Run, PHP (Laravel), Angular, Gitlab
 - **Royal Mail - Read Barcode From Image Prototype**
