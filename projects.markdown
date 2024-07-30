@@ -186,6 +186,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **AWMS - A Warehouse Management System**
     - **Description**: Prototype of a warehouse management system
     - **Tech**: NestJS, NodeJS, Angular, Postgres, Docker, Kubernetes, NATS MQ
+- **Grafana Let Me In**
+    - **Description**: Quick and dirty project to allow Grafana into our Google Cloud SQL instances
+    - **Tech**: GCP, Grafana, Docker, Bash, NodeJS
 
 # 2020
 - **Open University: BCS Computing + IT**
