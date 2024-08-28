@@ -9,6 +9,12 @@ Usually a lot of developers wouldn't bother to document their projects, but as I
 If you're interested in any of the projects, feel free to reach out to me
 
 # 2024
+- **Atlas Search Integration**
+    - **Description**: Integrating Atlas Search into our applications
+    - **Tech**: MongoDB, PHP (Laravel), Atlas Search
+- **Multi-Queue SQS Migration**
+    - **Description**: Migrating from a single SQS queue to multiple SQS queues for better performance of our applications
+    - **Tech**: AWS, PHP (Laravel), SQS
 - **MongoDB 7 Upgrade**: 
     - **Description**: Upgrading MongoDB 6 to MongoDB 7
     - **Tech**: MongoDB, PHP (Laravel)
