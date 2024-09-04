@@ -63,9 +63,6 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Client A Project Changes**
     - **Description**: Changes to Client A's existing project inline with business requirements 
     - **Tech**: GO, GCP, Gitlab, Docker, Cloud Functions, MySQL, Cloud Run, PHP (Laravel), Angular, Gitlab
-- **Atlas Search Prototype**
-    - **Description**: Prototype of Atlas Search for quick search capabilities
-    - **Tech**: MongoDB, PHP (Laravel), Atlas Search
 - **Open University: BCS Computing + IT**
     - **Description**: One quarter of Year 3 of the BCS Computing + IT degree
     - **Tech**: Java, Javascript, HTML, CSS
