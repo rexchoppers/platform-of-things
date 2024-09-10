@@ -1,7 +1,6 @@
 ---
 layout: post
-title:  "Unravelling Visonic Communication Protocol - Part 1"
-published: false
+title:  "Unravelling Visonic Alarm Panel"
 ---
 
 # Overview
