@@ -31,22 +31,43 @@ URL: `POST http://<PANEL IP>:8181/remote/json-rpc`
 }
 ```
 
-## Random FTP Credentials
+#### Random FTP Credentials
 - 426, 0
 - 425, 0
 - 424, 0
 
 For some reason these addresses return FTP credentials. I'm not sure why but I was able to access the FTP server using these credentials and came across messages, debug logs etc... from other alarm systems
 
+#### Weird Gmail Credentials
+- 394, 0
+- 393, 0
 
+To my surprise, I found some Gmail credentials stored in the EEPROM. The email returned: `msp5.2cpu.visonic@gmail`.com. Obviously I won't post the password here but I'm not sure why these credentials are in here. Even worse, I was able to attempt a log in to the account but was stopped by the security checks.
 
+This is strange - Any sort of email I'd expect to be sent to a email address with the Visonic/Tyco/Johnson Controls domain.
 
+#### Panel Display Name
+- 355, 0
 
+This address returns the panel display name. For my panel this returned: `SECURITY SYSTEM` so I assume you can edit this via the EEPROM.
 
+#### Credentials? Nope
+- 181, 0
+- 181, 1
+- 38, 0
+- 37, 1
 
+I was hoping to find some sort of credentials in the EEPROM but I was unable to find anything. I assume it's in a different location. These 2 addresses returned:
 
-# Conclusion
+- 2234567890123456
+- 3234567890123456
 
+I saw somewhere that Visonic has some default encyrption keys but other reports say the encryption key is set between the Panel and PowerManage server. I'm not sure yet and I tried running these through a decryption tool. These might be correct encryption keys but I may be pushing through the wrong IV and vise versa.
+
+# Next Up
+I'll add more findings as I go along. I've tried creating a script to dump the entire EEPROM but I end up with the requests hanging. I presume the PowerLink module is rate limiting the requests or it simply can't handle them.
+
+Next steps will be to setup Home Assistant and replace the PowerLink module with a Ethernet to RS232 adapter.
 
 # Resources
 - [Visonic PmaxService Docs](https://rexchoppers.github.io/visonic-pmaxservice-docs)
