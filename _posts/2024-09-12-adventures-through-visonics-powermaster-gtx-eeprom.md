@@ -42,7 +42,7 @@ For some reason these addresses return FTP credentials. I'm not sure why but I w
 - 394, 0
 - 393, 0
 
-To my surprise, I found some Gmail credentials stored in the EEPROM. The email returned: `msp5.2cpu.visonic@gmail`.com. Obviously I won't post the password here but I'm not sure why these credentials are in here. Even worse, I was able to attempt a log in to the account but was stopped by the security checks.
+To my surprise, I found some Gmail credentials stored in the EEPROM. The email returned: `msp5.2cpu.visonic@gmail.com`. Obviously I won't post the password here but I'm not sure why these credentials are in here. Even worse, I was able to attempt a log in to the account but was stopped by the security checks.
 
 This is strange - Any sort of email I'd expect to be sent to a email address with the Visonic/Tyco/Johnson Controls domain.
 
