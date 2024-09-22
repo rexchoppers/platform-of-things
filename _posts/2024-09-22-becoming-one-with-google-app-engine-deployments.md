@@ -57,6 +57,171 @@ script:
     # Add the backend service to the NEG we created earlier
     - gcloud beta compute backend-services add-backend my-project-appengine-backend-$VERSION_STRING --project my-project --global --network-endpoint-group=my-project-appengine-$VERSION_STRING --network-endpoint-group-region=europe-west2 > /dev/null 2>&1 || FAILURE=true
 
+    # All components have been created successfully, so call our magic script to update the load balancer
+    - gcloud functions call gae-update-load-balancer --project my-project --region=europe-west2 --data "{\"majorVersion\":\"$MAJOR_VERSION\", \"gaeVersion\":\"$VERSION_STRING\"}"
 ```
 
-# Resources
+# What Happens Next
+We've created all the components needed for the load balancer to point to the correct version of the application. There is the: 
+
+- URL Map: This should have already been created when you've configured the load balancer in GCP
+- Network Endpoint Group (NEG)
+- Backend Service
+- Fresh GAE instance running the new version of the application
+
+# The Magic Script
+This script was created as a Google Cloud Function by myself and used to update the load balancer to point to the correct version of the application.
+
+```js
+const {google} = require('googleapis');
+const constants = require('./constants');
+ 
+const SCOPES = [
+    'https://www.googleapis.com/auth/cloud-platform'
+];
+ 
+const PROJECT = 'my-project';
+const URL_MAP = 'my-api-url-map';
+ 
+const auth = new google.auth.GoogleAuth({
+    keyFile: 'keyfile.json',
+    scopes: SCOPES
+});
+
+exports.getDefaultPathMatcher = async (pathMatchers) => {
+    if(pathMatchers === null) return null;
+ 
+    for (const [pathMatcherIndex, pathMatcher] of pathMatchers.entries()) {
+        if (pathMatcher.name !== constants.DEFAULT_TARGET_PATH_MATCHER) continue;
+        
+        return {
+            index: pathMatcherIndex,
+            pathMatcher: pathMatcher
+        }
+    }
+ 
+    return null;
+};
+ 
+exports.getVersionPathRule = async (pathRules, majorVersion) => {
+    if(pathRules === null || majorVersion === null) return null;
+ 
+    for (const [pathRuleIndex, pathRule] of pathRules.entries()) {
+        if(!pathRule.paths.includes('/v' + majorVersion.toString())) continue;
+ 
+        return {
+            index: pathRuleIndex,
+            pathRule: pathRule
+        }
+    }
+    return null;
+};
+ 
+exports.updatePathMatcherService = async (data, pathMatcher, pathRule, gaeVersion) => {
+    if(data === null || pathMatcher === null || pathRule === null || gaeVersion === null) return null;
+ 
+    data.pathMatchers[pathMatcher.index]
+        .pathRules[pathRule.index].service = pathRule.pathRule.service.replace(new RegExp(constants.REGEX_VERSION_NUMBER), gaeVersion);
+ 
+    return data;
+};
+ 
+exports.addPathMatcherService = async (data, pathMatcher, newPathRule) => {
+    if(data === null || pathMatcher === null || newPathRule === null) return null;
+ 
+    data.pathMatchers[pathMatcher.index].pathRules.push(newPathRule);
+ 
+    return data;
+};
+ 
+exports.createPathRule = async (majorVersion, gaeVersion) => {
+    return {
+        service: constants.URL_BACKEND_SERVICE_BASE_URL + gaeVersion,
+        paths: [
+            '/v' + majorVersion.toString(),
+            '/v' + majorVersion.toString() + '/*',
+        ],
+        routeAction: {
+            urlRewrite: {
+                pathPrefixRewrite: '/'
+            }
+        }
+    }
+};
+ 
+exports.updateLoadBalancer = async (computeClient, data, responseObject) => {
+    try {
+        await computeClient.urlMaps.patch({
+            project: PROJECT,
+            urlMap: URL_MAP,
+            requestBody: {
+                pathMatchers: data.pathMatchers
+            }
+        });
+ 
+        return responseObject.status(200).send({'message': 'Load balancer successfully updated'});
+    } catch (error) {
+        return responseObject.status(500).send({'error': error.message});
+    }
+};
+ 
+// majorVersion: 100
+// gaeVersion: v10-0-0
+exports.updateApiLoadBalancer = async (request, response) => {
+    // Check if method is POST - return response.status(500).send({'error': 'Operation not supported'});
+    // Perform request validation
+ 
+    const majorVersion = request.body.majorVersion;
+    const gaeVersion = request.body.gaeVersion;
+ 
+    const authClient = await auth.getClient();
+    const compute = google.compute({
+        version: 'v1',
+        project: PROJECT,
+        auth: authClient
+    });
+ 
+    const urlMaps = await compute.urlMaps.get({
+        project: PROJECT,
+        urlMap: URL_MAP
+    });
+ 
+    const urlMapData = urlMaps.data;
+ 
+    const pathMatchers = urlMapData.pathMatchers;
+ 
+    const defaultPathMatcher = await this.getDefaultPathMatcher(pathMatchers);
+ 
+    const pathRules = defaultPathMatcher.pathMatcher.pathRules;
+ 
+    const versionPathRule = await this.getVersionPathRule(pathRules, majorVersion);
+ 
+    // If there is a path rule setup for this version, then we can just update it
+    if(versionPathRule !== null) {
+        const updatedData = await this.updatePathMatcherService(urlMapData, defaultPathMatcher, versionPathRule, gaeVersion);
+
+        urlMapData.data = updatedData;
+ 
+        await this.updateLoadBalancer(compute, urlMapData.data, response);
+    } else {
+        const newPathRule = await this.createPathRule(majorVersion, gaeVersion);
+        const updatedData = await this.addPathMatcherService(urlMapData, defaultPathMatcher, newPathRule);
+ 
+        urlMapData.data = updatedData;
+ 
+        await this.updateLoadBalancer(compute, urlMapData.data, response);
+    }
+};
+```
+
+# And Now What?
+The load balancer mapping will point to the correct version of the application. For example if: v7.2.4 is deployed, the load balancer will point to the correct version of the application on URL: `https://my-api.com/v7/` and `https://my-api.com/v7/*`
+
+If the version doesn't exist, the load balancer will create this in the URL map and point to the correct version of the application.
+
+# Downsides
+- Grim solution to a problem that shouldn't exist
+- The old GAE instances will still be running and costing you money so you'll need to manually delete them (Same applies for BE services and NEG)
+
+# Conclusion
+Don't do this. But if you have to, I hope the above helps you out. If you're application is small then by all means feel free to use one of these PaaS services. But if you're looking for more flexibility and control, then I would recommend looking at Kubernetes or a completely different solution.
