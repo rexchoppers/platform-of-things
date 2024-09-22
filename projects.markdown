@@ -230,6 +230,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Client C Project**
     - **Description**: Game projects x2
     - **Tech**: Java, NestJS, NATSMQ, Docker, Kubernetes, GCP, NodeJS, Typescript, Redis, AWS S3
+- **Google App Engine Deployment Fixes**
+    - **Description**: Fixes to our Google App Engine deployments to allow for no downtime + multiple versions
+    - **Tech**: GCP, GAE, PHP (Laravel), Docker, Bash
 
 # 2019
 - **Google Maps + Geocoding Integration**
