@@ -47,7 +47,16 @@ script:
     # Deploy the GAE instance
     - gcloud --quiet --project my-project app deploy --version=$VERSION_STRING app.yaml
 
-    
+    # Create a Network Endpoint Group (NEG), and BE Service deployment
+    # Sometimes if we were redeploying the same version, we would get errors here which we didn't mind so they can be ignored
+    - gcloud beta compute network-endpoint-groups create my-project-appengine-$VERSION_STRING --project my-project --region=europe-west2 --network-endpoint-type=SERVERLESS --app-engine-app --app-engine-service=default --app-engine-version="${VERSION_STRING}" > /dev/null 2>&1 || FAILURE=true
+
+    # Create a backend service which will be used by the load balancer
+    - gcloud compute backend-services create --project my-project --global my-project-appengine-backend-$VERSION_STRING > /dev/null 2>&1 || FAILURE=true
+
+    # Add the backend service to the NEG we created earlier
+    - gcloud beta compute backend-services add-backend my-project-appengine-backend-$VERSION_STRING --project my-project --global --network-endpoint-group=my-project-appengine-$VERSION_STRING --network-endpoint-group-region=europe-west2 > /dev/null 2>&1 || FAILURE=true
+
 ```
 
 # Resources
