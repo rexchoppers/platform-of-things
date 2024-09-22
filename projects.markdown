@@ -8,6 +8,11 @@ Usually a lot of developers wouldn't bother to document their projects, but as I
 
 If you're interested in any of the projects, feel free to reach out to me
 
+# 2025 (Future)
+- **Open University: BCS Computing + IT**
+    - **Description**: Second quarter of Year 3 of the BCS Computing + IT degree
+    - **Tech**: N/A
+
 # 2024
 - **Atlas Search Integration**
     - **Description**: Integrating Atlas Search into our applications
