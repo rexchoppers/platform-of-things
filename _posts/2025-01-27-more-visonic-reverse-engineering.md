@@ -55,5 +55,7 @@ Various IDC cables and connectors can be found on AliExpress or eBay. I also had
 
 This approach is a bit of a bodge in order to intercept the serial communication between the panel and the PowerLink3 module. I'm hoping to use this to reverse engineer and contribute more to the HomeAssistant integration in future.
 
+I've also noticed that the PowerLink3 module has some DBG points on the PCB which if I get brave enough, I might try to solder some wires to.
+
 # C: Visonic PowerManage API
 Using an old Android device with LineageOS, I've managed to intercept the API calls between the Visonic PowerManage app and the server. Whilst there's no encryption information, if you're interested in the API calls, you can find them at: [https://rexchoppers.github.io/visonic-pmaxservice-docs/](https://rexchoppers.github.io/visonic-pmaxservice-docs/)
