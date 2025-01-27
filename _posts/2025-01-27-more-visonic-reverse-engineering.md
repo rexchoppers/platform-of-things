@@ -30,9 +30,9 @@ I have instead took the decision to intercept the serial communication between t
          | | | | |
 +---------------------------+
 |       Tapping Points      |  <-- Screw terminals or pin headers
-|   Pin 1: TX  [●]          |  <-- Example: Tap panel TX
-|   Pin 2: RX  [●]          |  <-- Example: Tap comms TX
-|   Pin 3: GND [●]          |  <-- Common ground tap
+|   Pin 4: TX  [●]          |  <-- Example: Tap panel TX
+|   Pin 3: RX  [●]          |  <-- Example: Tap comms TX
+|   Pin 2: GND [●]          |  <-- Common ground tap
 |   ...                     |
 |   Pin 10 [●]              |
 +---------------------------+
