@@ -9,11 +9,17 @@ Usually a lot of developers wouldn't bother to document their projects, but as I
 If you're interested in any of the projects, feel free to reach out to me
 
 # 2025 (Future)
+- **Visonic Information Gathering**
+    - **Description**: Gathering information on Visonic alarm systems (Open Source)
+    - **Tech**: MkDocs
 - **Open University: BCS Computing + IT**
     - **Description**: Second quarter of Year 3 of the BCS Computing + IT degree
     - **Tech**: N/A
 
 # 2024
+- **Visonic Information Gathering**
+    - **Description**: Gathering information on Visonic alarm systems (Open Source)
+    - **Tech**: MkDocs
 - **Atlas Search Integration**
     - **Description**: Integrating Atlas Search into our applications
     - **Tech**: MongoDB, PHP (Laravel), Atlas Search
@@ -73,6 +79,9 @@ If you're interested in any of the projects, feel free to reach out to me
     - **Tech**: Java, Javascript, HTML, CSS
 
 # 2023
+- **Visonic Information Gathering**
+    - **Description**: Gathering information on Visonic alarm systems (Open Source)
+    - **Tech**: MkDocs
 - **React Native App Setup**
     - **Description**: Fixing, updating and setting up a React Native app that was unable to load, update and run. Several updates on the app released
     - **Tech**: React Native, TypeScript, Bash, iOS, Android, App/Play Store
