@@ -16,3 +16,7 @@ www.rexchoppers.com
 ### Building
 
 * Run `bundle exec jekyll build` All assets will be built under the `_site` directory
+
+### Brain Dump
+- Versioned queues
+- RabbitMQ Integration
