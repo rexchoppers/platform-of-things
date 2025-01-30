@@ -157,7 +157,7 @@ If you're interested in any of the projects, feel free to reach out to me
     - **Description**: Migrating from GCP AppEngine to Kubernetes
     - **Tech**: GCP, Kubernetes, PHP (Laravel), MySQL, Docker
 - **Government Agency API Integration**
-    - **Description**: Integrating a government agency API (Never released) into our applications. This project verified a worker's identity against the a private agemcu database
+    - **Description**: Integrating a government agency API (Never released) into our applications. This project verified a worker's identity against the a private agency database
     - **Tech**: PHP (Laravel), MySQL, Government API, Azure
 - **Machine Learning - Autofill Project Support**
     - **Description**: A project to autofill data based on previous data
