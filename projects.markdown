@@ -18,6 +18,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Open University: BCS Computing + IT**
     - **Description**: Second quarter of Year 3 of the BCS Computing + IT degree
     - **Tech**: N/A
+- **danmealwork.github.io**
+    - **Description**: Family member's online portfolio updates
+    - **Tech**: Jekyll, Ruby
 
 # 2024
 - **Visonic Information Gathering**
