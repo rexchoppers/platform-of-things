@@ -21,6 +21,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **danmealwork.github.io**
     - **Description**: Family member's online portfolio updates
     - **Tech**: Jekyll, Ruby
+- **Employer Major Project**
+    - **Description**: Major project for employer
+    - **Tech**: PHP (Laravel), MySQL, MongoDB, AWS, Docker, Redis, Github Actions
 
 # 2024
 - **Visonic Information Gathering**
