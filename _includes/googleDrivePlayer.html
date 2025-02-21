@@ -1,0 +1,19 @@
+<div class="embed-container">
+    <iframe
+        {% if include.width %}
+            width="{{ include.width }}"
+        {% else %}
+            width="700"
+        {% endif %}
+
+        {% if include.height %}
+            height="{{ include.height }}"
+        {% else %}
+            height="480"
+        {% endif %}
+
+        src="https://drive.google.com/file/d/{{ include.id }}"
+        frameborder="0"
+        allowfullscreen="true">
+    </iframe>
+  </div>
