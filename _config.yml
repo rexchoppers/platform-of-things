@@ -35,7 +35,7 @@ plugins:
 
 markdown: kramdown
 kramdown:
-  toc_levels: 2..4
+  toc_levels: 1..4
 
 # Exclude from processing.
 # The following items will not be processed, by default.
