@@ -81,3 +81,86 @@ I had my MRI done at a separate clinic and results went back to the consultant. 
 **Sagittal - LT T1 TSE**
 
 {% include googleDrivePlayer.html id=page.sagittal-lt-t1-tse %}
+
+**MRI Findings**
+
+* Joint Effusion: Small effusion in the knee joint and a small Baker's cyst.
+* Bone Bruising
+  * Medial patella. 
+  * Lateral femoral condyle (suggesting recent patellar dislocation).
+* Osteochondral Injury: Mild injury in the lateral femoral condyle.
+* Patella & Trochlea:
+  * Patella alta.
+  * Type B trochlear dysplasia.
+* TTTG distance: 20 mm, indicating lateralized tibial tuberosity.
+* Ligaments:
+  * Mild MPFL sprain.
+* Cruciate & collateral ligaments: Normal.
+* Meniscus:
+  * Medial meniscus: Subtle tear in the posterior horn.
+  * Lateral meniscus: No tear detected.
+* Cartilage:
+  * Mild chondral irregularity in the medial facet of the retropatellar cartilage.
+
+
+Hallelujah - Sometimes you often think are you overreacting or is this actually as big of a deal as you think. I was relieved to have an answer. My knee hasn't dislocated completely (That would have been obvious) but it's been subluxating.
+
+# Join The Queue
+In a later appointment, the consultant and I discussed a plan of action. Whilst physiotherapy was an option, the consultant said that due to the nature of the injury, it was likely that surgery would be the best option to stabilise the knee.
+
+Originally, it was decided that the surgery would consist of two procedures. The first being a tibial tubercle osteotomy (TTO) to correct the TTTG distance and the second being the MPFL reconstruction. This changed however on surgery day as you'll see later.
+
+I joined the waiting list for surgery in November 2023.
+
+# Cancelled Surgery Date
+I was offered a date in January 2024 for the surgery. Unfortunately, it was cancelled due to the clinical priority of another patient which is fustrating but understandable. Back on the list...
+
+# Surgery Day
+The day finally came on the 16th of May 2023. 
+
+The surgeon spoke to me before the surgery and explained that after reviewing the MRI, he felt that the TTO might not be necessary as the TTTG distance was borderline and would depend on his findings of the arthroscopy. 
+
+Down the theatre I went. Under general anatheistic and that was the last I remember. After a barage of antibiotics, morphine, fluids, and a lot of poking and prodding, I woke up in recovery. 
+
+Overall I was put under at 9:11 and woke up at 12:48.
+
+The surgeon opted to not do the TTO and instead just performed the MPFL reconstruction using hamstring autograft. I was pretty happy about this as it meant less recovery time and also meant that I could start bearing weight on the leg sooner.
+
+Discharged the same day, I was sent home with a knee brace and crutches.
+
+# Recovery Period
+I'll bullet point these as it's easier to read:
+
+* First few weeks
+  * Pain management
+  * Small physio exercises
+  * Weight bearing as tolerated (I was able to walk on it straight away with crutch support)
+  * Few sleepless nights
+  * Plenty of orange juice (Mitigates the side effects from the painkillers. I won't say any more)
+  * I'd recommend a plastic leg cover for the shower. It's a life saver. I can't not shower for even a day.
+
+* 2-4 weeks
+  * More physio exercises
+  * Stables removed
+  * Moved onto a hinged brace
+  * Crutches only when needed
+  * Shower without the cover
+
+* 4-12 weeks
+  * Plenty more physio. This is the most important part of the recovery.
+  * No crutches
+  * Removal of braces at end of week 10
+  * Driving again (At this point, we did switch to an automatic car)
+  
+* 12 weeks onwards
+  * Discharged from the consultant after a final checkup in October
+  * Discharged from physio after a final checkup in October
+  * Back to normal life
+  * Still doing physio exercises at home
+
+# Now
+I don't regret the surgery at all. I can walk in slippery conditions without fear of my knee giving way. I can walk my dog with ease. Stairs are no longer a problem. I can even run a little bit.
+
+As far as I'm aware, I'm all fixed and happy. The only problem I have with it is slight stiffness in the knee after a really heavy day of using it but that's to be expected and I'm sure it will improve over time with physio.
+
+This is a poor article but I hope it helps someone. If you have any questions, feel free to ask.
