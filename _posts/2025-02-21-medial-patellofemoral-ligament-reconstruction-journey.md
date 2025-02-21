@@ -1,7 +1,11 @@
 ---
 layout: post
 title:  "Medial Patellofemoral Ligament (MPFL) Reconstruction Journey"
+toc: true
 ---
+
+* TOC
+{:toc}
 
 # Overview
 First of all, this isn't medical advice. And I am definitely not smart enough to be a doctor (Nor do I have the A-Levels) Please use this as a bit of a guide through my journey. Whilst I can't speak for everyone, this is my experience and I hope it helps you in some way.
@@ -38,4 +42,21 @@ Manchester Royal Infirmary A&E. After explaining to triage, I was sent to the fr
 **Coronal**
 
 ![Coronal](https://storage.googleapis.com/rexchoppers-website-assets/mpfl/2023-xray-2.png "Coronal"){: width="400" }
+
+The report from the radiologist was that everything looked fine apart from a small piece of bone that had chipped off. 
+
+- Fracture/Dislocation: No acute fracture or dislocation identified.
+- Joint Effusion: Moderate effusion in the suprapatellar bursa.
+- Lipohaemarthrosis: Not present.
+- Pellegrini-Stieda Lesion: Ossification at the proximal medial aspect of the medial femoral condyle, likely due to a previous avulsion fracture or ligamentous injury.
+- Additional Density: Seen in the posterior femorotibial joint on the HBL view but not on AP view.
+- Nature of Density: Unclear if degenerative or an old avulsion injury; not appearing acute.
+
+At this point, I was a bit gutted they hadn't found anything because I knew something was wrong. Because of clinical presentation, the doctor referred me to the orthopaedic department for further investigation.
+
+# Off to Orthopaedics
+After a few weeks on crutches, painkillers and only just being able to walk, I was seen by an orthopaedic consultant at the hospital. He ordered an MRI scan as my symptoms (In all honesty, probably poorly described by me) didn't fit a single diagnosis.
+
+# VRRRRR-VRRRR-VRRRR, CLICK-CLICK-CLICK, BUZZZZZZZ (MRI Scan)
+I had my MRI done at a separate clinic and results went back to the consultant. Answers finally came and my hunch was right all this time. 
 
