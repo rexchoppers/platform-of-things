@@ -2,6 +2,9 @@
 layout: post
 title:  "Medial Patellofemoral Ligament (MPFL) Reconstruction Journey"
 toc: true
+
+coronal-lt-pd-spair: 1kVMgmAQKWNI5EmSeEF4NbhUtVGFMYU62/preview
+
 ---
 
 * TOC
@@ -60,3 +63,6 @@ After a few weeks on crutches, painkillers and only just being able to walk, I w
 # VRRRRR-VRRRR-VRRRR, CLICK-CLICK-CLICK, BUZZZZZZZ (MRI Scan)
 I had my MRI done at a separate clinic and results went back to the consultant. Answers finally came and my hunch was right all this time. 
 
+**Coronal - LT PD/SPAIR**
+
+{% include googleDrivePlayer.html id=page.coronal-lt-pd-spair %}
