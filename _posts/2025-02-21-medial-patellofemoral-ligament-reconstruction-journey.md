@@ -4,6 +4,9 @@ title:  "Medial Patellofemoral Ligament (MPFL) Reconstruction Journey"
 toc: true
 
 coronal-lt-pd-spair: 1kVMgmAQKWNI5EmSeEF4NbhUtVGFMYU62/preview
+sagittal-lt-pd-spair: 113cxIsI4OegPUcey2mzGRl2i0tJD9Axj/preview
+axial-lt-pd-spair: 1UAUhOWPW5pcWy6qRnZ0pay9OURIIV0My/preview
+sagittal-lt-t1-tse: 1J_LI1JXQa1lCVCua6CeGt1Iib6FKn2rF/preview
 
 ---
 
@@ -66,3 +69,15 @@ I had my MRI done at a separate clinic and results went back to the consultant. 
 **Coronal - LT PD/SPAIR**
 
 {% include googleDrivePlayer.html id=page.coronal-lt-pd-spair %}
+
+**Sagittal - LT PD/SPAIR**
+
+{% include googleDrivePlayer.html id=page.sagittal-lt-pd-spair %}
+
+**Axial - LT PD/SPAIR**
+
+{% include googleDrivePlayer.html id=page.axial-lt-pd-spair %}
+
+**Sagittal - LT T1 TSE**
+
+{% include googleDrivePlayer.html id=page.sagittal-lt-t1-tse %}
