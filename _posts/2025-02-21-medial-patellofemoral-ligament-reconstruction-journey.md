@@ -29,3 +29,13 @@ July 2023. After giving my knee a lot of rest and avoiding certain movements, I 
 Before I start, I just want to say that the staff who work in the NHS are absolutely amazing. It's a shame the system is a political warzone. I believe as long as you're polite and respectful, they will do everything they can to help you. Make sure to push for what you think is right. I had a lot of gut feelings throughout this process and I'm glad I listened to them.
 
 Manchester Royal Infirmary A&E. After explaining to triage, I was sent to the fracture clinic for an X-Ray. 
+
+**Sagittal**
+
+![Sagittal](https://storage.googleapis.com/rexchoppers-website-assets/mpfl/2023-xray-1.png "Sagittal"){: width="400" }
+
+
+**Coronal**
+
+![Coronal](https://storage.googleapis.com/rexchoppers-website-assets/mpfl/2023-xray-2.png "Coronal"){: width="400" }
+
