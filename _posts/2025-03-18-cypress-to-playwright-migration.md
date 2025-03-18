@@ -85,7 +85,7 @@ export const viewportMobile = { name: 'mobile', width: 414, height: 869 }
 }
 ```
 
-# Migration tests from Cypress to Playwright
+# Moving tests from Cypress to Playwright
 AI will one day make me redundant, but until then, I have saved hours of time by throwing it the old Cypress tests and letting it convert them to Playwright tests. This is a great starting point, but it's not perfect. It's a good idea to go through each test and make sure it's doing what you expect. I had to make a few behaviour changes to get the tests to work as expected.
 
 # Test Files
