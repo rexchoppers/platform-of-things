@@ -24,6 +24,10 @@ And generally, I needed better performance and reliability. And found Playwright
 
 
 # Why Playwright?
+[https://playwright.dev/](https://playwright.dev/)
+
+[https://github.com/microsoft/playwright](https://github.com/microsoft/playwright)
+
 "Playwright is a powerful end-to-end testing framework developed by Microsoft that enables reliable and fast browser automation. It supports multiple browsers, including Chromium, Firefox, WebKit, and Edge, making it ideal for cross-browser testing. Playwright excels at handling multiple tabs, authentication flows, network interception, and mobile emulation, features that many other frameworks struggle with. It runs tests in parallel by default, significantly speeding up execution, and supports headless mode for CI/CD environments. With robust debugging tools, API testing capabilities, and auto-waiting for elements, Playwright is designed for testing modern web applications at scale while ensuring a smooth developer experience."
 
 For myself, it solved the majority of issues I had with Cypress. It also came with the "Trace" feature which is a game-changer for debugging tests in CI/CD environments.
