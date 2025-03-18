@@ -83,3 +83,106 @@ export const viewportMobile = { name: 'mobile', width: 414, height: 869 }
 # Migration tests from Cypress to Playwright
 AI will one day make me redundant, but until then, I have saved hours of time by throwing it the old Cypress tests and letting it convert them to Playwright tests. This is a great starting point, but it's not perfect. It's a good idea to go through each test and make sure it's doing what you expect. I had to make a few behaviour changes to get the tests to work as expected.
 
+# Test Files
+#### apps/login/playwright/tests/login.spec.ts
+```typescript
+import { test, expect } from '@playwright/test'
+import { baseUrl, viewportDesktop, viewportMobile } from '../consts'
+
+const viewports = [viewportDesktop, viewportMobile]
+
+test.describe('Login Actions', () => {
+  viewports.forEach((viewport) => {
+    test.describe(`${viewport.name}`, () => {
+      test.beforeEach(async ({ page }) => {
+        await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      })
+
+      test('Logging in multiple times', async ({ page }) => {
+        await page.goto(`${baseUrl}/login`, { waitUntil: 'domcontentloaded' })
+
+        // First login
+        await page.fill('input[name="email"]', 'sales@rexchoppers.com')
+        await page.fill('input[name="password"]', 'secret')
+        await page.click('button:has-text("Login to Rexchoppers")')
+
+        // Verify login
+        await expect(page.locator('[data-testid="user-avatar"]')).toHaveText('SP')
+
+        // Logout
+        await page.locator('[data-testid="user-avatar"]').click()
+        await page.locator('[data-testid="logout-menu-item"]').click()
+
+        // Ensure redirected to login
+        await expect(page).toHaveURL(/\/login/)
+
+        // Second login with different credentials
+        await page.fill('input[name="email"]', 'test@rexchoppers.com')
+        await page.fill('input[name="password"]', 'secret')
+        await page.click('button:has-text("Login to Rexchoppers")')
+
+        // Verify new user login
+        await expect(page.locator('[data-testid="user-avatar"]')).toHaveText('RR')
+      })
+
+      test('Wrong credentials', async ({ page }) => {
+        await page.goto(`${baseUrl}/login`, { waitUntil: 'domcontentloaded' })
+
+        await page.fill('input[name="email"]', 'sales@rexchoppers.com')
+        await page.fill('input[name="password"]', 'wrong_secret')
+        await page.click('button:has-text("Login to Rexchoppers")')
+
+        // Verify error message
+        await expect(page.locator('.MuiAlert-message')).toContainText('Please check your details and try again')
+      })
+
+      test('Not logged in redirect', async ({ page }) => {
+        await page.goto(`${baseUrl}/accounts`, { waitUntil: 'domcontentloaded' })
+
+        // Ensure redirected to login
+        await expect(page).toHaveURL(/\/login/)
+      })
+    })
+  })
+})
+```
+
+#### apps/login/playwright/tests/signup.spec.ts
+```typescript
+import { test, expect } from '@playwright/test'
+import { baseUrl, viewportDesktop, viewportMobile } from '../consts'
+
+const viewports = [viewportDesktop, viewportMobile]
+
+test.describe('Signup Actions', () => {
+  viewports.forEach((viewport) => {
+    test.describe(`Signup successful on ${viewport.name}`, () => {
+      test.beforeEach(async ({ page }) => {
+        await page.setViewportSize({ width: viewport.width, height: viewport.height })
+        await page.goto(`${baseUrl}/signup`, { waitUntil: 'domcontentloaded' })
+      })
+
+      test('Signup form submission', async ({ page }) => {
+        await page.fill('input[name="firstName"]', 'John')
+        await page.fill('input[name="lastName"]', 'Doe')
+        await page.fill('input[name="email"]', `${viewport.name}@rexchoppers.com`)
+        await page.fill('input[name="phoneNumber"]', '0800-000-000')
+
+        // Company name
+        await page.fill('input[name="companyName"]', 'Rexchoppers')
+
+        // Password
+        await page.fill('input[name="password"]', 'RexchoppersPassword')
+        await page.fill('input[name="confirmPassword"]', 'RexchoppersPassword')
+
+        // Submit form
+        await page.locator('button[data-testid="submit"]').click()
+
+        // Check if the user is on the accounts page
+        await expect(page).toHaveURL(/\/accounts/)
+      })
+    })
+  })
+})
+
+```
