@@ -15,15 +15,27 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Visonic Information Gathering**
     - **Description**: Gathering information on Visonic alarm systems (Open Source)
     - **Tech**: MkDocs
-- **Open University: BCS Computing + IT**
-    - **Description**: Second quarter of Year 3 of the BCS Computing + IT degree
-    - **Tech**: N/A
 - **danmealwork.github.io**
     - **Description**: Family member's online portfolio updates
     - **Tech**: Jekyll, Ruby
 - **Employer Major Project**
     - **Description**: Major project for employer
     - **Tech**: PHP (Laravel), MySQL, MongoDB, AWS, Docker, Redis, Github Actions
+- **Cypress -> Playwright Migration**
+    - **Description**: Migrating from Cypress to Playwright for our end-to-end tests
+    - **Tech**: ReactJS, Playwright, Github Actions
+- **CFDAAS (Computational Fluid Dynamics As A Service)**
+    - **Description**: A project to provide CFD as a service (Cloud based simulations)
+    - **Tech**: ReactJS, NodeJS, NestJS, Typescript, Docker
+- **PHP 8.0 Upgrade**
+    - **Description**: Upgrading PHP 7.4 -> PHP 8.0
+    - **Tech**: PHP (Laravel), AWS, Elasticbeanstalk, Bash
+- **Monolith -> Serverless Architecture**
+    - **Description**: Starting the migration from a monolith to a serverless architecture (SOA)
+    - **Tech**: PHP (Laravel), AWS, Lambda/DynamoDB/S3/API Gateway/CloudFront/Route53/CloudFormation, Bash, AWS CDK, Typescript
+- **AWS AIF-C01**:
+    - **Description**: AWS Certified AI Practitioner as part of my initiative to display my knowledge in AWS. Also a nice introduction into AWS Bedrock and AWS SageMaker
+    - **Tech**: AWS
 
 # 2024
 - **Visonic Information Gathering**
