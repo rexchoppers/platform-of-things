@@ -13,11 +13,10 @@ At one of my previous roles, our Gitlab pipelines ended up taking around 40 minu
 - Fixes were taking longer to get to production
 - Our pipelines minutes were being used up very quickly (Gitlab ain't cheap either)
 
- After a bit of research, we decided to turn off XDebug on the pipelines (In all fairness, it shouldn't have been on anyway) and use Pcov for code coverage.
+ After a bit of research, we decided to turn off XDebug on the pipelines (In all fairness, it shouldn't have been on anyway) and use pcov for code coverage.
 
 # Disclaimer
 - This example is from a pretty old project so the versions of the tools may be different.
-
 
 # What is pcov?
 [https://github.com/krakjoe/pcov](https://github.com/krakjoe/pcov)
@@ -44,7 +43,6 @@ unit_test:
 ```xml
        <env name="DRIVER" value="pcov"/>
 ```
-
 
 # Results
 - Our tests dropped from between 40-60 minutes to around 5 minutes
