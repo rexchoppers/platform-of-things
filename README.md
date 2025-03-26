@@ -20,3 +20,4 @@ www.rexchoppers.com
 ### Brain Dump
 - Versioned queues
 - RabbitMQ Integration
+- excimer for Sentry on Elasticbeanstalk
