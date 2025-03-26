@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Setting Up Code Coverage Using Pcov"
+title:  "Setting Up Code Coverage Using pcov"
 toc: true
 ---
 
@@ -19,13 +19,13 @@ At one of my previous roles, our Gitlab pipelines ended up taking around 40 minu
 - This example is from a pretty old project so the versions of the tools may be different.
 
 
-# What is Pcov?
+# What is pcov?
 [https://github.com/krakjoe/pcov](https://github.com/krakjoe/pcov)
 
 Quite simply, it's a code-coverage driver. It's small, lightweight and integrates well with PHPUnit.
 
 # Installation
-The installation is pretty simple. The following files required updating to get Pcov working.
+The installation is pretty simple. The following files required updating to get pcov working.
 
 ##### .gitlab-ci.yml
 ```yaml
@@ -47,11 +47,27 @@ unit_test:
 
 
 # Results
-- Much quicker tests and multiple browser support
-- The `trace` feature is a game-changer for debugging tests in CI/CD environments
-- On average these particual set of tests would take 10 minutes to run in Cypress, now they take less than 2 minutes
+- Our tests dropped from between 40-60 minutes to around 5 minutes
+- We were able to obtain code coverage for our tests and see where we were lacking
+- Bug fixes got to production quicker. A bug fix taking an hour to get to production is not ideal
 
-# Trace
-You may have noticed we uploaded traces as artifacts. Download these and head to [https://trace.playwright.dev/](https://trace.playwright.dev/) to view the traces. This will give a complete breakdown of the test, console, network and everything you need to debug the test. 
+# If you're on older PHPUnit versions
+If you're on an older version of PHPUnit, you may need to install the following package to get pcov working. This example is for more up to date versions of PHPUnit but when I was working on this project, we were using a much older version of PHPUnit.
 
-This has helped massively when we've had discrepancies between local and CI/CD environments.
+```bash
+composer require --dev pcov/clobber
+```
+
+##### .gitlab-ci.yml
+```yaml
+unit_test:
+  stage: test
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
+  script:
+    - pecl install pcov && docker-php-ext-enable pcov
+    - vendor/bin/pcov clobber # ADD THIS LINE
+    - php -d memory_limit=-1 -dpcov.enabled=1 -dpcov.directory=. -dpcov.exclude="~vendor~" ./vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never --log-junit report.xml
+```
