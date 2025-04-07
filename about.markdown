@@ -52,6 +52,12 @@ I'm currently a Technical Lead
 
 
 ## Certifications
+- AWS Certified AI Practitioner
+	- Issued by: Amazon Web Services Training and Certification
+	- Issued: April 2025
+	- Expires: April 2028
+	- Credly: **TBA**
+
 - AWS Certified Cloud Practitioner
 	- Issued by: Amazon Web Services Training and Certification
 	- Issued: June 2024
