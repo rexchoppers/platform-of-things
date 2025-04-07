@@ -33,4 +33,6 @@ I finished in around 40 minutes. This exam does not provide a pass/fail score st
 This exam was harder than CLF-C02. Even with vast amounts of preperation, the way the questions are worded can be tricky. Exam practice will be key to passing this exam and I would recommend doing as many practice exams as possible.
 
 # Conclusion
-Overall, a straightforward exam that provides a comprehensive overview of AWS services. I'd recommend this certification to anyone who is looking to get into cloud computing or is seeking certification to back up their experience.
+If you're looking for an easy introduction into AI as a whole, this is a good exam to start from. It'll teach you a lot of basic concepts and give you a good understanding of the AWS AI services.
+
+Roll on the next exam
