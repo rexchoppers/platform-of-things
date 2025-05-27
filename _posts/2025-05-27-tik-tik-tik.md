@@ -10,6 +10,7 @@ Wikipedia: [https://en.wikipedia.org/wiki/Speaking_clock](https://en.wikipedia.o
 
 BBC: [https://www.bbc.co.uk/news/magazine-14198506](https://www.bbc.co.uk/news/magazine-14198506)
 
+Telephones UK: [https://telephonesuk.org.uk/speaking-clock/](https://telephonesuk.org.uk/speaking-clock)
 
 # Plan
 The plan was:
