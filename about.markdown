@@ -56,7 +56,7 @@ I'm currently a Technical Lead
 	- Issued by: Amazon Web Services Training and Certification
 	- Issued: April 2025
 	- Expires: April 2028
-	- Credly: **TBA**
+	- Credly: [Link](https://www.credly.com/badges/c72ec1b5-edd0-44de-a357-5dbd51b40e7c/public_url)
 
 - AWS Certified Cloud Practitioner
 	- Issued by: Amazon Web Services Training and Certification
