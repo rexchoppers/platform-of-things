@@ -36,6 +36,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **AWS AIF-C01**:
     - **Description**: AWS Certified AI Practitioner as part of my initiative to display my knowledge in AWS. Also a nice introduction into AWS Bedrock and AWS SageMaker
     - **Tech**: AWS
+- **Tik Tik Tik**
+    - **Description**: One off prototype of a speaking clock that announces the time in a similar way to the old speaking clocks that were used in the UK
+    - **Tech**: Python, Icecast, Docker, NTP, TTS
 
 # 2024
 - **Visonic Information Gathering**
