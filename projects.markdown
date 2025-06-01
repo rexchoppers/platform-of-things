@@ -39,6 +39,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Tik Tik Tik**
     - **Description**: One off prototype of a speaking clock that announces the time in a similar way to the old speaking clocks that were used in the UK
     - **Tech**: Python, Icecast, Docker, NTP, TTS
+- **Laravel 6.0 -> 7.0 Upgrade**
+    - **Description**: Upgrading Laravel 6.0 -> 7.0
+    - **Tech**: PHP (Laravel), MySQL, MongoDB, Docker, AWS, Elasticbeanstalk
 
 # 2024
 - **Visonic Information Gathering**
