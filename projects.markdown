@@ -31,7 +31,7 @@ If you're interested in any of the projects, feel free to reach out to me
     - **Description**: Upgrading PHP 7.4 -> PHP 8.0
     - **Tech**: PHP (Laravel), AWS, Elasticbeanstalk, Bash
 - **Monolith -> Serverless Architecture**
-    - **Description**: Starting the migration from a monolith to a serverless architecture (SOA)
+    - **Description**: Starting the migration from a monolith to a serverless architecture
     - **Tech**: PHP (Laravel), AWS, Lambda/DynamoDB/S3/API Gateway/CloudFront/Route53/CloudFormation, Bash, AWS CDK, Typescript
 - **AWS AIF-C01**:
     - **Description**: AWS Certified AI Practitioner as part of my initiative to display my knowledge in AWS. Also a nice introduction into AWS Bedrock and AWS SageMaker
