@@ -45,6 +45,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Laravel 7.0 -> 8.0 Upgrade**
     - **Description**: Upgrading Laravel 7.0 -> 8.0
     - **Tech**: PHP (Laravel), MySQL, MongoDB, Docker, AWS, Elasticbeanstalk
+- **PHP 8.0 -> 8.1 Upgrade**
+    - **Description**: Upgrading PHP 8.0 -> 8.1
+    - **Tech**: PHP (Laravel), AWS, Elasticbeanstalk, Bash
 
 # 2024
 - **Visonic Information Gathering**
