@@ -48,7 +48,7 @@ If you're interested in any of the projects, feel free to reach out to me
 - **PHP 8.0 -> 8.1 Upgrade**
     - **Description**: Upgrading PHP 8.0 -> 8.1
     - **Tech**: PHP (Laravel), AWS, Elasticbeanstalk, Bash
-- **AWS DVA C02**
+- **AWS DVA-C02**
     - **Description**: AWS Certified Developer Associate as part of my initiative to display my knowledge in AWS
     - **Tech**: AWS
 
