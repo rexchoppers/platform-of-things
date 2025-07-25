@@ -4,7 +4,7 @@ title:  "Adding Supervisord to AWS Elastic Beanstalk (Updated for Amazon Linux 2
 ---
 
 # Overview
-A year ago, I wote a blog post on how to add Supervisord to AWS Elastic Beanstalk Worker instances (Post can be found [here](/2024/02/07/2024-02-07-adding-supervisord-to-aws-elasticbeanstalk)). This was on an older version of Amazon Linux, and since then, AWS has released a new version called Amazon Linux 2023. This post will cover how to set up Supervisord on the new Amazon Linux 2023. 
+A year ago, I wote a blog post on how to add Supervisord to AWS Elastic Beanstalk Worker instances (Post can be found [here](/2024/02/07/adding-supervisord-to-aws-elasticbeanstalk)). This was on an older version of Amazon Linux, and since then, AWS has released a new version called Amazon Linux 2023. This post will cover how to set up Supervisord on the new Amazon Linux 2023. 
 
 # 1: Adding Supervisord files
 Add the following configuration files to your Laravel project. For example, we'll be adding them in the `bin/supervisor` directory.
@@ -58,46 +58,47 @@ stopwaitsecs=3600
 **setup.sh**
 ```bash
 #!/bin/bash
+set -e
 
 echo "Supervisor - starting setup"
 
-if [ ! -f /usr/bin/supervisord ]; then
-    echo "installing supervisor"
-    easy_install supervisor
+# Install Supervisor if not available
+if ! command -v supervisord &> /dev/null; then
+    echo "Installing supervisor..."
+    pip3 install supervisor
 else
-    echo "supervisor already installed"
+    echo "Supervisor already installed"
 fi
 
-if [ ! -d /etc/supervisor ]; then
-    mkdir /etc/supervisor
-    echo "create supervisor directory"
+# Get path to supervisor commands
+SUPERVISORD=$(which supervisord)
+SUPERVISORCTL=$(which supervisorctl)
+
+# Check paths
+if [ ! -x "$SUPERVISORD" ]; then
+    echo "Error: supervisord not found"
+    exit 1
 fi
 
-if [ ! -d /etc/supervisor/conf.d ]; then
-    mkdir /etc/supervisor/conf.d
-    echo "create supervisor configs directory"
-fi
+# Create config directories
+mkdir -p /etc/supervisor/conf.d
+mkdir -p /var/run/supervisor
 
-# Create directory to store Socket file
-if [ ! -d /var/run/supervisor ]; then
-    mkdir /var/run/supervisor
-    echo "created supervisor socket directory"
-fi
+# Copy config files
+cp bin/supervisor/supervisord.conf /etc/supervisord.conf
+cp bin/supervisor/supervisord_laravel.conf /etc/supervisor/conf.d/supervisord_laravel.conf
 
-cat bin/supervisor/supervisord.conf > /etc/supervisor/supervisord.conf
-cat bin/supervisor/supervisord.conf > /etc/supervisord.conf
-cat bin/supervisor/supervisord_laravel.conf > /etc/supervisor/conf.d/supervisord_laravel.conf
-
-if ps aux | grep "[/]usr/bin/supervisord"; then
-    echo "supervisor is already running (Restart will happen after code deployment)"
+# Start supervisord if not running
+if ! pgrep -f "$SUPERVISORD" > /dev/null; then
+    echo "Starting supervisor..."
+    $SUPERVISORD -c /etc/supervisord.conf
 else
-    echo "starting supervisor"
-    /usr/bin/supervisord
+    echo "Supervisor already running"
 fi
 
-# Re-read and update supervisor configuration
-/usr/bin/supervisorctl reread
-/usr/bin/supervisorctl update
+# Reload configs
+$SUPERVISORCTL reread
+$SUPERVISORCTL update
 
 echo "Supervisor Configured!"
 ```
@@ -110,7 +111,7 @@ Once you've added all the configuration files and adjusted them to your requirem
 ```yaml
 container_commands:
     install_supervisor:
-        command: "bin/supervisor/setup.sh"
+        command: "bash bin/supervisor/setup.sh"
 ```
 
 This will run the `setup.sh` script during the deployment of your Laravel application to Elastic Beanstalk.
@@ -124,7 +125,9 @@ In the `.platform/hooks/postdeploy` directory, add the following configuration t
 ```bash
 #!/bin/bash
 
-/usr/bin/supervisorctl restart all
+SUPERVISORCTL=$(which supervisorctl)
+
+$SUPERVISORD restart all
 echo "Supervisor Restarted"
 ```
 
