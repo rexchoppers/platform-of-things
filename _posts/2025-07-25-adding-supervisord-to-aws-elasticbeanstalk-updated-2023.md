@@ -127,7 +127,7 @@ In the `.platform/hooks/postdeploy` directory, add the following configuration t
 
 SUPERVISORCTL=$(which supervisorctl)
 
-$SUPERVISORD restart all
+$SUPERVISORCTL restart all
 echo "Supervisor Restarted"
 ```
 
