@@ -307,6 +307,7 @@ So there's many things I'll be experimenting and tweaking with:
 - AWS Bedrock + SageMaker: I want to explore using AWS Bedrock and SageMaker for more scalable and efficient model training and deployment
 - Throw numbers at it: Average lab results, move into the field of processing lab values, highlighting abnormalities, and providing insights based on the data.
 
+
 As I said, this is a simple concept project more than anything. But provides a good foundation to build on. AI is here to stay and it's a fascinating field to be involved in.
 
 
