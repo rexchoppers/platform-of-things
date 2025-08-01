@@ -16,3 +16,54 @@ Tuning a model takes time, electricity and a lot of money. RAG is a way to use a
 You essentially have a pre-trained model that can answer general questions, and then you provide it with additional context or data to improve its responses for specific topics. In this case, the topic is anything veterinary related.
 
 Think about it like this: You have a doctor who knows a lot about the human body. You wouldn't expect them to remember every single detail about every patient they've ever seen, right? Instead, they have access to medical records, research papers, and other resources that help them make informed decisions. RAG works in a similar way by providing the model with relevant information to enhance its understanding and responses.
+
+# What's needed?
+So doing some research, I needed the following:
+
+- A pre-trained model that won't destroy my computer: I chose Phi-3-mini, which is a smaller version of the Phi-3 model.
+- A FastAPI project. Easy enough to setup.
+- A fair bit of data to give to the model.
+- A vector database to store the data and allow for quick retrieval. I used Qdrant - Easy enough to set up.
+
+# 1. Boilerplate FastAPI Project
+Boilerplate FastAPI project is easy enough to set up. An endpoint for querying the model. This AI Stuff is ready right?
+
+**main.py**
+```python
+@app.post("/q")
+async def query(query: Query):
+    # Logic will come in here later on
+```
+
+# 2. Setup the database
+Qdrant is a vector database that allows you to store and retrieve vectors efficiently. It's fairly easy to use and setup.
+
+**db/qdrany.py**
+```python
+import os
+
+from qdrant_client import QdrantClient
+
+qdrant = QdrantClient(
+    host=os.getenv("QDRANT_HOST", "localhost"),
+    port=int(os.getenv("QDRANT_PORT", "6333")),
+    api_key=os.getenv("QDRANT_API_KEY", None),
+    https=os.getenv("QDRANT_HTTPS", "False").lower() == "true",
+)
+```
+
+**docker-compose.yml**
+```yml
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+    restart: unless-stopped
+```
+
+Easy enough.
+
+# 3. Load the data
+
