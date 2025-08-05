@@ -3,6 +3,9 @@ layout: post
 title:  "VetGPT - RAG"
 ---
 
+* TOC
+{:toc}
+
 # Overview
 I love AI. Will it take over my job one day? Probably. Like most jobs, at some point something will come along that will do it better than I can. I'll then either pivot, choose a different career or become a goose farmer. Who knows? But until then, I love how more efficient life and work has become. As a result, I've started delving into the technical side of AI (A bit late to the party but jumping on every trend until it becomes mainstream is a gamble. NFTs for example...)
 

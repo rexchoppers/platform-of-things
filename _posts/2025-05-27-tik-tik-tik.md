@@ -3,6 +3,9 @@ layout: post
 title:  "Tik Tik Tik"
 ---
 
+* TOC
+{:toc}
+
 # Overview
 I love learning about older technology and how it worked to solve a problem that was present in that era. My inner nerd thought it'd be cool to make a simple speaking clock that would announce the time in a similar way to the old speaking clocks that were used in the UK.
 

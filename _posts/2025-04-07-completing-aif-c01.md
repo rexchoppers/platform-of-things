@@ -3,6 +3,9 @@ layout: post
 title:  "Completing AIF-C01"
 ---
 
+* TOC
+{:toc}
+
 # Overview
 I've gone to the dark side and whilst I used AI tools, I thought it was time to get certified. AIF-C01 is another certification from AWS, this time focusing on AI. The exam is designed for individuals who are looking to demonstrate their knowledge of AWS AI services.
 

@@ -3,6 +3,9 @@ layout: post
 title:  "Adding Supervisord to AWS Elastic Beanstalk (Updated for Amazon Linux 2023)"
 ---
 
+* TOC
+{:toc}
+
 # Overview
 A year ago, I wrote a blog post on how to add Supervisord to AWS Elastic Beanstalk Worker instances (Post can be found [here]({{ '/2024/02/07/adding-supervisord-to-aws-elasticbeanstalk/' | relative_url }})). This was on an older version of Amazon Linux, and since then, AWS has released a new version called Amazon Linux 2023. This post will cover how to set up Supervisord on the new Amazon Linux 2023.
 
