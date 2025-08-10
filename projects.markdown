@@ -51,6 +51,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **AWS DVA-C02**
     - **Description**: AWS Certified Developer Associate as part of my initiative to display my knowledge in AWS
     - **Tech**: AWS
+- **Station 3310**
+    - **Description**: A fun side project exploring the world of cryptography and number stations.
+    - **Tech**: Python
 
 # 2024
 - **Visonic Information Gathering**
