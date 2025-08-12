@@ -27,6 +27,7 @@ The technology stack has evolved for this project. It current uses:
 # Resources
 
 [Repository](https://github.com/Codox/Status-For-Systems)
+
 [Demo](https://demo.statusfor.systems/)
 
 # Contributing
