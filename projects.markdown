@@ -54,6 +54,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Station 3310**
     - **Description**: A fun side project exploring the world of cryptography and number stations.
     - **Tech**: Python
+- **Status For Systems**
+    - **Description**: Working on initial release for Status For Systems. An open-source status page.
+    - **Tech**: Dart, Flutter, Typescript, NestJS, MongoDB, DigitalOcean
 
 # 2024
 - **Visonic Information Gathering**
