@@ -52,6 +52,12 @@ I'm currently a Technical Lead
 
 
 ## Certifications
+- AWS Certified Developer – Associate
+	- Issued by: Amazon Web Services Training and Certification
+	- Issued: August 2025
+	- Expires: August 2028
+	- Credly: [Link](https://www.credly.com/badges/b0353804-1170-4d59-8d40-57be75173854/public_url)
+
 - AWS Certified AI Practitioner
 	- Issued by: Amazon Web Services Training and Certification
 	- Issued: April 2025
