@@ -57,6 +57,12 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Status For Systems**
     - **Description**: Working on initial release for Status For Systems. An open-source status page.
     - **Tech**: Dart, Flutter, Typescript, NestJS, MongoDB, DigitalOcean
+- **MCHunt**
+    - **Description**: Open-source game mod project
+    - **Tech**: Java, Docker, Bash
+- **Laravel 8.0 -> 9.0 Upgrade**
+    - **Description**: Upgrading Laravel 8.0 -> 9.0
+    - **Tech**: PHP (Laravel), MySQL, MongoDB, Docker, AWS, Elasticbeanstalk
 
 # 2024
 - **Visonic Information Gathering**
