@@ -18,6 +18,7 @@ www.rexchoppers.com
 * Run `bundle exec jekyll build` All assets will be built under the `_site` directory
 
 ### Brain Dump
+- Visonic updates
 - Updating Platform Branch - ElasticBeanstalk (Script or something?)
 - Versioned queues
 - RabbitMQ Integration
