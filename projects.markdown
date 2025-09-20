@@ -63,6 +63,9 @@ If you're interested in any of the projects, feel free to reach out to me
 - **Laravel 8.0 -> 9.0 Upgrade**
     - **Description**: Upgrading Laravel 8.0 -> 9.0
     - **Tech**: PHP (Laravel), MySQL, MongoDB, Docker, AWS, Elasticbeanstalk
+- **EB Platform Branch Update Tool**
+    - **Description**: A tool to update the platform branch of an Elasticbeanstalk environment
+    - **Tech**: AWS CLI, Bash
 
 # 2024
 - **Visonic Information Gathering**
