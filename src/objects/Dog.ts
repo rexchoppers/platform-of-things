@@ -239,10 +239,6 @@ export class Dog {
     this.mesh.position.set(x, y, z);
   }
 
-  public getPosition(): THREE.Vector3 {
-    return this.mesh.position.clone();
-  }
-
   public getDistanceToPlayer(playerPosition: THREE.Vector3): number {
     const dogFlat = new THREE.Vector3(this.mesh.position.x, 0, this.mesh.position.z);
     const playerFlat = new THREE.Vector3(playerPosition.x, 0, playerPosition.z);
@@ -252,10 +248,6 @@ export class Dog {
   public pet(): void {
     this.isPetted = true;
     this.pettedTimer = 2; // 2 seconds of happy response
-  }
-
-  public isBeingPetted(): boolean {
-    return this.isPetted;
   }
 
   public update(delta: number, playerPosition: THREE.Vector3, flatRadius: number = 40): void {

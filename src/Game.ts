@@ -42,7 +42,6 @@ export class Game {
   private isNearCreditsSign: boolean = false;
   private creditsSignPosition = { x: 8, z: 0 };
   private creditsSignInteractionDistance: number = 3;
-  private isShowingCredits: boolean = false;
 
   // FPS counter
   private fpsCounter: HTMLDivElement;
@@ -251,11 +250,6 @@ export class Game {
 
   private setupDogInteraction(): void {
     const interactHandler = () => {
-      // Credits panel takes priority if showing
-      if (this.isShowingCredits) {
-        this.hideCredits();
-        return;
-      }
       // Dog quote takes priority if showing
       if (this.isShowingDogQuote) {
         this.hideDogQuote();
@@ -298,11 +292,6 @@ export class Game {
     window.open('https://github.com/rexchoppers/platform-of-things/blob/master/CREDITS.md', '_blank');
   }
 
-  private hideCredits(): void {
-    this.uiManager.hideCreditsPanel();
-    this.isShowingCredits = false;
-  }
-
   private checkDogProximity(): void {
     if (!this.sceneManager.controls.isLocked) return;
 
@@ -342,15 +331,10 @@ export class Game {
     this.isNearCreditsSign = distance <= this.creditsSignInteractionDistance;
 
     // Show/hide prompt based on proximity
-    if (this.isNearCreditsSign && !wasNearSign && !this.isShowingCredits) {
+    if (this.isNearCreditsSign && !wasNearSign) {
       this.uiManager.showCreditsPrompt();
-    } else if (!this.isNearCreditsSign && wasNearSign && !this.isShowingCredits) {
+    } else if (!this.isNearCreditsSign && wasNearSign) {
       this.uiManager.hideCreditsPrompt();
-    }
-
-    // Hide credits if player walks away
-    if (!this.isNearCreditsSign && this.isShowingCredits) {
-      this.hideCredits();
     }
   }
 

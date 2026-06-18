@@ -52,27 +52,53 @@ export class PlanetManager {
     return this.currentFlatRadius;
   }
 
-  public getTerminal(): THREE.Group | null {
-    return this.terminal;
-  }
-
-  public getPortals(): THREE.Group[] {
-    return this.portals;
-  }
-
   public getDecorations(): THREE.Object3D[] {
     return this.decorations;
   }
 
+  // Free GPU resources (geometries, materials, textures, shadow maps) for an
+  // object removed from the scene. Materials/geometries flagged
+  // `userData.shared` are reused across planets and must NOT be disposed.
+  private static disposeObject(root: THREE.Object3D): void {
+    root.traverse((node) => {
+      const geometry = (node as THREE.Mesh).geometry;
+      if (geometry && !geometry.userData.shared) {
+        geometry.dispose();
+      }
+
+      const material = (node as THREE.Mesh).material;
+      if (material) {
+        const mats = Array.isArray(material) ? material : [material];
+        for (const mat of mats) {
+          if (mat.userData.shared) continue;
+          for (const value of Object.values(mat)) {
+            if (value instanceof THREE.Texture) value.dispose();
+          }
+          mat.dispose();
+        }
+      }
+
+      const light = node as THREE.Light;
+      if (light.isLight && light.shadow && light.shadow.map) {
+        light.shadow.map.dispose();
+      }
+    });
+  }
+
   private clearPlanet(): void {
-    if (this.ground) this.scene.remove(this.ground);
+    if (this.ground) {
+      this.scene.remove(this.ground);
+      PlanetManager.disposeObject(this.ground);
+      this.ground = null;
+    }
     if (this.terminal) {
       this.scene.remove(this.terminal);
+      PlanetManager.disposeObject(this.terminal);
       this.terminal = null;
     }
-    this.portals.forEach((p) => this.scene.remove(p));
-    this.portalLabels.forEach((l) => this.scene.remove(l));
-    this.decorations.forEach((d) => this.scene.remove(d));
+    this.portals.forEach((p) => { this.scene.remove(p); PlanetManager.disposeObject(p); });
+    this.portalLabels.forEach((l) => { this.scene.remove(l); PlanetManager.disposeObject(l); });
+    this.decorations.forEach((d) => { this.scene.remove(d); PlanetManager.disposeObject(d); });
     this.portals.length = 0;
     this.portalLabels.length = 0;
     this.decorations.length = 0;
@@ -94,25 +120,32 @@ export class PlanetManager {
     this.scene.fog = new THREE.FogExp2(config.skyColor, config.fogDensity);
     this.skybox.updateColors(config);
 
-    // Update lighting
-    if (this.ambientLight) this.scene.remove(this.ambientLight);
-    if (this.directionalLight) this.scene.remove(this.directionalLight);
+    // Update lighting - reuse the same lights across planets so the shadow map
+    // is allocated once instead of being recreated (and leaked) on every load.
+    if (!this.ambientLight) {
+      this.ambientLight = new THREE.AmbientLight(config.ambientColor, 0.6);
+      this.scene.add(this.ambientLight);
+    } else {
+      this.ambientLight.color.setHex(config.ambientColor);
+    }
 
-    this.ambientLight = new THREE.AmbientLight(config.ambientColor, 0.6);
-    this.scene.add(this.ambientLight);
-
-    this.directionalLight = new THREE.DirectionalLight(config.lightColor, config.lightIntensity);
-    this.directionalLight.position.set(50, 100, 50);
-    this.directionalLight.castShadow = true;
-    this.directionalLight.shadow.mapSize.width = 1024;
-    this.directionalLight.shadow.mapSize.height = 1024;
-    this.directionalLight.shadow.camera.near = 0.5;
-    this.directionalLight.shadow.camera.far = 500;
-    this.directionalLight.shadow.camera.left = -100;
-    this.directionalLight.shadow.camera.right = 100;
-    this.directionalLight.shadow.camera.top = 100;
-    this.directionalLight.shadow.camera.bottom = -100;
-    this.scene.add(this.directionalLight);
+    if (!this.directionalLight) {
+      this.directionalLight = new THREE.DirectionalLight(config.lightColor, config.lightIntensity);
+      this.directionalLight.position.set(50, 100, 50);
+      this.directionalLight.castShadow = true;
+      this.directionalLight.shadow.mapSize.width = 1024;
+      this.directionalLight.shadow.mapSize.height = 1024;
+      this.directionalLight.shadow.camera.near = 0.5;
+      this.directionalLight.shadow.camera.far = 500;
+      this.directionalLight.shadow.camera.left = -100;
+      this.directionalLight.shadow.camera.right = 100;
+      this.directionalLight.shadow.camera.top = 100;
+      this.directionalLight.shadow.camera.bottom = -100;
+      this.scene.add(this.directionalLight);
+    } else {
+      this.directionalLight.color.setHex(config.lightColor);
+      this.directionalLight.intensity = config.lightIntensity;
+    }
 
     // Create ground - skills planet gets larger flat area for flower beds
     this.currentFlatRadius = planetId === 'skills' ? 60 : 40;

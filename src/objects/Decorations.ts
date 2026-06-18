@@ -49,25 +49,16 @@ export class Decorations {
     // Stone
     stone: new THREE.MeshStandardMaterial({ color: 0x6b6b6b, roughness: 0.9, flatShading: true }),
     darkStone: new THREE.MeshStandardMaterial({ color: 0x4a4a4a, roughness: 0.8 }),
-    lightStone: new THREE.MeshStandardMaterial({ color: 0x8888a0, roughness: 0.7 }),
 
     // Metal
-    metal: new THREE.MeshStandardMaterial({ color: 0x8b7355, metalness: 0.6, roughness: 0.4 }),
-    brass: new THREE.MeshStandardMaterial({ color: 0xb5a642, metalness: 0.7, roughness: 0.3 }),
     darkMetal: new THREE.MeshStandardMaterial({ color: 0x3d3d3d }),
-    copper: new THREE.MeshStandardMaterial({ color: 0xb87333 }),
 
     // Nature
     leaves: new THREE.MeshStandardMaterial({ color: 0x2d5a27, flatShading: true }),
     bush: new THREE.MeshStandardMaterial({ color: 0x2a4a2a }),
-    grass: new THREE.MeshStandardMaterial({ color: 0x3d5c3d, roughness: 0.9 }),
-
-    // Fabric/Furniture
-    cushion: new THREE.MeshStandardMaterial({ color: 0x8b4557, roughness: 0.9 }),
 
     // Paper/Books
     paper: new THREE.MeshStandardMaterial({ color: 0xf5f5dc }),
-    scroll: new THREE.MeshStandardMaterial({ color: 0xd4b896, roughness: 0.9 }),
 
     // Book colors
     bookRed: new THREE.MeshStandardMaterial({ color: 0x8b0000, roughness: 0.9 }),
@@ -80,18 +71,12 @@ export class Decorations {
     bookNavy: new THREE.MeshStandardMaterial({ color: 0x191970, roughness: 0.9 }),
 
     // Emissive/Glow
-    flame: new THREE.MeshBasicMaterial({ color: 0xffaa22 }),
-    flameYellow: new THREE.MeshBasicMaterial({ color: 0xffdd44, transparent: true, opacity: 0.9 }),
-    flameCore: new THREE.MeshBasicMaterial({ color: 0xffffaa, transparent: true, opacity: 1 }),
     candle: new THREE.MeshStandardMaterial({ color: 0xf5f5dc }),
 
     // Misc
     black: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.9 }),
-    white: new THREE.MeshStandardMaterial({ color: 0xf5f5f5 }),
     roofDark: new THREE.MeshStandardMaterial({ color: 0x2a2a2a }),
-    lens: new THREE.MeshStandardMaterial({ color: 0x4488aa, metalness: 0.9, roughness: 0.1 }),
     mushroomCap: new THREE.MeshStandardMaterial({ color: 0xcc4444 }),
-    mushroomSpot: new THREE.MeshStandardMaterial({ color: 0xffffee }),
   };
 
   // Book materials array for random selection
@@ -105,6 +90,15 @@ export class Decorations {
     Decorations.mats.bookMaroon,
     Decorations.mats.bookNavy,
   ];
+
+  // Mark every shared material so scene teardown (PlanetManager.clearPlanet)
+  // never disposes them - they are reused across every planet load.
+  private static readonly _sharedInit = (() => {
+    for (const mat of Object.values(Decorations.mats)) {
+      mat.userData.shared = true;
+    }
+    return true;
+  })();
 
   // Check if position is too close to any portal tent
   private static isNearPortal(x: number, z: number): boolean {
@@ -3965,9 +3959,9 @@ export class Decorations {
       const isNearPortalAngle = (angle: number): boolean => {
         // Portals are roughly evenly distributed, avoid within ~30 degrees of each
         const normalizedAngle = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-        // Approximate portal positions - they spread evenly
-        for (let p = 0; p < 4; p++) {
-          const portalAngle = (p / 4) * Math.PI * 2 - Math.PI / 2;
+        // Approximate portal positions - they spread evenly (home has 5 portals)
+        for (let p = 0; p < 5; p++) {
+          const portalAngle = (p / 5) * Math.PI * 2 - Math.PI / 2;
           const diff = Math.abs(normalizedAngle - ((portalAngle + Math.PI * 2) % (Math.PI * 2)));
           const minDiff = Math.min(diff, Math.PI * 2 - diff);
           if (minDiff < 0.5) return true; // ~30 degrees clearance

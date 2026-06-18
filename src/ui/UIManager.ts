@@ -11,7 +11,6 @@ export class UIManager {
   public readonly dogQuote: HTMLElement;
   public readonly slidePrompt: HTMLElement;
   public readonly creditsPrompt: HTMLElement;
-  public readonly creditsPanel: HTMLElement;
   public readonly screenFade: HTMLElement;
   public readonly bookshelfPrompt: HTMLElement;
 
@@ -27,7 +26,6 @@ export class UIManager {
     this.dogQuote = document.getElementById('dog-quote')!;
     this.slidePrompt = document.getElementById('slide-prompt')!;
     this.creditsPrompt = document.getElementById('credits-prompt')!;
-    this.creditsPanel = document.getElementById('credits-panel')!;
     this.screenFade = document.getElementById('screen-fade')!;
     this.bookshelfPrompt = document.getElementById('bookshelf-prompt')!;
 
@@ -90,14 +88,6 @@ export class UIManager {
 
   public hideCreditsPrompt(): void {
     this.creditsPrompt.classList.remove('visible');
-  }
-
-  public showCreditsPanel(): void {
-    this.creditsPanel.classList.add('visible');
-  }
-
-  public hideCreditsPanel(): void {
-    this.creditsPanel.classList.remove('visible');
   }
 
   public showBookshelfPrompt(categoryName: string): void {

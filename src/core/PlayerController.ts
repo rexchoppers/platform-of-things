@@ -41,10 +41,6 @@ export class PlayerController {
     this.setupKeyboardControls();
   }
 
-  public setMovement(state: Partial<MovementState>): void {
-    Object.assign(this.movement, state);
-  }
-
   public jump(): void {
     if (this.isOnGround) {
       this.velocity.y = this.jumpForce;
@@ -82,19 +78,14 @@ export class PlayerController {
           this.movement.right = true;
           break;
         case 'Space':
-          if (this.isOnGround) {
-            this.velocity.y = this.jumpForce;
-            this.isOnGround = false;
-          }
+          this.jump();
           break;
         case 'ShiftLeft':
         case 'ShiftRight':
           this.movement.sprint = true;
           break;
         case 'KeyE':
-          if (this.onInteract) {
-            this.onInteract();
-          }
+          this.triggerInteract();
           break;
       }
     });

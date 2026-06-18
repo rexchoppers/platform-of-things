@@ -27,6 +27,9 @@ export class SlideRenderer {
     this.texture = new THREE.CanvasTexture(this.canvas);
     this.texture.minFilter = THREE.LinearFilter;
     this.texture.magFilter = THREE.LinearFilter;
+    // This texture lives for the whole session and is shared by the projector
+    // screen each time the story planet loads, so scene teardown must not dispose it.
+    this.texture.userData.shared = true;
   }
 
   public getTexture(): THREE.CanvasTexture {
