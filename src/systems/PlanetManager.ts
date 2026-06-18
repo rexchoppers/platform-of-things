@@ -27,6 +27,10 @@ export class PlanetManager {
   private portalLabels: THREE.Group[] = [];
   private decorations: THREE.Object3D[] = [];
 
+  // Flat list of only the decoration nodes that actually animate, collected once
+  // per planet load so the per-frame loop doesn't traverse the whole scene graph.
+  private animatedNodes: { node: THREE.Object3D; decIndex: number }[] = [];
+
   // Animation frame skipping for performance
   private animationFrame: number = 0;
 
@@ -78,8 +82,8 @@ export class PlanetManager {
         }
       }
 
-      const light = node as THREE.Light;
-      if (light.isLight && light.shadow && light.shadow.map) {
+      const light = node as THREE.Light & { shadow?: THREE.LightShadow };
+      if (light.isLight && light.shadow?.map) {
         light.shadow.map.dispose();
       }
     });
@@ -102,7 +106,28 @@ export class PlanetManager {
     this.portals.length = 0;
     this.portalLabels.length = 0;
     this.decorations.length = 0;
+    this.animatedNodes.length = 0;
     this.uiManager.hideHologramPanel();
+  }
+
+  // Walk each decoration once and record the handful of nodes that animate, so
+  // the per-frame loop iterates a short flat list instead of the whole tree.
+  private collectAnimatedNodes(): void {
+    this.animatedNodes.length = 0;
+    this.decorations.forEach((dec, decIndex) => {
+      dec.traverse((child) => {
+        const ud = child.userData;
+        if (
+          ud.isLanternFlame || ud.isLanternCore || ud.isLanternLight ||
+          ud.isCampfireFlame || ud.isCampfireCore || ud.isCampfireLight ||
+          ud.isFireflies || ud.isProjectorLight || ud.isProjectorGlow ||
+          ud.isProjectorDust || ud.isFloatingSkill || ud.isAuroraInstanced ||
+          ud.isFloatingCap || ud.isConfetti || ud.isConstellationChar
+        ) {
+          this.animatedNodes.push({ node: child, decIndex });
+        }
+      });
+    });
   }
 
   public loadPlanet(planetId: string): void {
@@ -178,6 +203,7 @@ export class PlanetManager {
       this.scene.add(d);
       this.decorations.push(d);
     });
+    this.collectAnimatedNodes();
 
     // Add hologram terminal on home planet
     if (planetId === 'home') {
@@ -286,8 +312,8 @@ export class PlanetManager {
 
     // Common animations for all planets (lanterns, etc.) - skip every other frame for performance
     if (this.animationFrame % 2 === 0) {
-      this.decorations.forEach((dec, decIndex) => {
-        dec.traverse((child) => {
+      for (const { node: child, decIndex } of this.animatedNodes) {
+        {
           // Lantern flame animation (works on all planets)
           if (child.userData.isLanternFlame) {
             const flicker = Math.sin(time * 8 + decIndex) * 0.02 + Math.sin(time * 12 + decIndex * 2) * 0.01;
@@ -446,8 +472,8 @@ export class PlanetManager {
             const baseOpacity = child.userData.isBrightStar ? 0.7 : 0.4;
             mat.opacity = baseOpacity + Math.sin(time * speed + phase) * 0.2;
           }
-        });
-      });
+        }
+      }
     }
   }
 

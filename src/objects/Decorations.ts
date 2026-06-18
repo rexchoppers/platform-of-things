@@ -91,14 +91,19 @@ export class Decorations {
     Decorations.mats.bookNavy,
   ];
 
-  // Mark every shared material so scene teardown (PlanetManager.clearPlanet)
-  // never disposes them - they are reused across every planet load.
-  private static readonly _sharedInit = (() => {
-    for (const mat of Object.values(Decorations.mats)) {
-      mat.userData.shared = true;
-    }
-    return true;
-  })();
+  // Shared geometries for the high-count scatter objects (trees, flowers, grass).
+  // Created once at unit size; each instance gets its dimensions from mesh.scale.
+  // Marked shared (see static block below) so scene teardown never disposes them.
+  private static readonly geos = {
+    treeTrunk: new THREE.CylinderGeometry(0.3, 0.5, 5, 8),
+    treeCone1: new THREE.ConeGeometry(3, 4, 8),
+    treeCone2: new THREE.ConeGeometry(2.2, 3, 8),
+    treeCone3: new THREE.ConeGeometry(1.4, 2, 8),
+    flowerStem: new THREE.CylinderGeometry(0.02, 0.02, 0.4, 3),
+    flowerHead: new THREE.IcosahedronGeometry(0.08, 0),
+    grassBlade: new THREE.PlaneGeometry(0.05, 1),
+    bookBox: new THREE.BoxGeometry(1, 1, 1),
+  };
 
   // Check if position is too close to any portal tent
   private static isNearPortal(x: number, z: number): boolean {
@@ -182,18 +187,14 @@ export class Decorations {
   private static createFlower(): THREE.Group {
     const flower = new THREE.Group();
 
-    // Stem - minimal segments
-    const stemGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.4, 3);
-    const stem = new THREE.Mesh(stemGeo, this.stemMaterial);
+    // Stem - minimal segments (shared geometry)
+    const stem = new THREE.Mesh(this.geos.flowerStem, this.stemMaterial);
     stem.position.y = 0.2;
     flower.add(stem);
 
-    // Flower head - single low-poly shape
+    // Flower head - single low-poly shape (shared geometry)
     const petalMat = this.flowerMaterials[Math.floor(Math.random() * this.flowerMaterials.length)];
-    const head = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.08, 0),
-      petalMat
-    );
+    const head = new THREE.Mesh(this.geos.flowerHead, petalMat);
     head.position.y = 0.4;
     flower.add(head);
 
@@ -1895,6 +1896,24 @@ export class Decorations {
     side: THREE.DoubleSide
   });
 
+  // Flag every long-lived shared material and geometry so scene teardown
+  // (PlanetManager.clearPlanet) never disposes them - they are reused across
+  // every planet load. Declared after all shared resources so it can see them.
+  static {
+    const shared: { userData: Record<string, unknown> }[] = [
+      ...Object.values(Decorations.mats),
+      ...Object.values(Decorations.geos),
+      ...Decorations.flowerMaterials,
+      Decorations.flowerCenterMaterial,
+      Decorations.stemMaterial,
+      Decorations.fernMaterial,
+      Decorations.grassMaterial,
+    ];
+    for (const resource of shared) {
+      resource.userData.shared = true;
+    }
+  }
+
   private static createTallGrass(): THREE.Group {
     const grass = new THREE.Group();
 
@@ -1902,8 +1921,9 @@ export class Decorations {
     const bladeCount = 3 + Math.floor(Math.random() * 3);
     for (let i = 0; i < bladeCount; i++) {
       const height = 0.4 + Math.random() * 0.4;
-      const bladeGeo = new THREE.PlaneGeometry(0.05, height);
-      const blade = new THREE.Mesh(bladeGeo, this.grassMaterial);
+      // Shared unit-height blade scaled to this blade's height
+      const blade = new THREE.Mesh(this.geos.grassBlade, this.grassMaterial);
+      blade.scale.y = height;
       blade.position.set(
         (Math.random() - 0.5) * 0.3,
         height / 2,
@@ -1988,33 +2008,28 @@ export class Decorations {
     const tree = new THREE.Group();
 
     const trunkHeight = 5 * scale;
-    const trunkGeo = new THREE.CylinderGeometry(0.3 * scale, 0.5 * scale, trunkHeight, 8);
-    const trunk = new THREE.Mesh(trunkGeo, this.mats.trunk);
+    // Shared unit geometries scaled per instance (foliage cones use bushiness on x/z only)
+    const trunk = new THREE.Mesh(this.geos.treeTrunk, this.mats.trunk);
+    trunk.scale.setScalar(scale);
     trunk.position.y = trunkHeight / 2;
     trunk.castShadow = true;
     tree.add(trunk);
 
     // Layered foliage - bushiness affects width
-    const leaves1 = new THREE.Mesh(
-      new THREE.ConeGeometry(3 * scale * bushiness, 4 * scale, 8),
-      this.mats.leaves
-    );
+    const leaves1 = new THREE.Mesh(this.geos.treeCone1, this.mats.leaves);
+    leaves1.scale.set(scale * bushiness, scale, scale * bushiness);
     leaves1.position.y = trunkHeight + 1 * scale;
     leaves1.castShadow = true;
     tree.add(leaves1);
 
-    const leaves2 = new THREE.Mesh(
-      new THREE.ConeGeometry(2.2 * scale * bushiness, 3 * scale, 8),
-      this.mats.leaves
-    );
+    const leaves2 = new THREE.Mesh(this.geos.treeCone2, this.mats.leaves);
+    leaves2.scale.set(scale * bushiness, scale, scale * bushiness);
     leaves2.position.y = trunkHeight + 3 * scale;
     leaves2.castShadow = true;
     tree.add(leaves2);
 
-    const leaves3 = new THREE.Mesh(
-      new THREE.ConeGeometry(1.4 * scale * bushiness, 2 * scale, 8),
-      this.mats.leaves
-    );
+    const leaves3 = new THREE.Mesh(this.geos.treeCone3, this.mats.leaves);
+    leaves3.scale.set(scale * bushiness, scale, scale * bushiness);
     leaves3.position.y = trunkHeight + 4.5 * scale;
     leaves3.castShadow = true;
     tree.add(leaves3);
@@ -4695,6 +4710,13 @@ export class Decorations {
         top.position.set(0, 5, 0);
         shelf.add(top);
 
+        // Books share one geometry (scaled per book) and a small per-shelf palette
+        // of materials instead of allocating a fresh geometry + material per book.
+        const bookColors = [0x8b0000, 0x00008b, 0x006400, 0x4b0082, 0x8b4513, 0x2f4f4f, shelfColor];
+        const bookMaterials = bookColors.map(
+          (c) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.7 })
+        );
+
         // Shelves (4 levels)
         const shelfGeo = new THREE.BoxGeometry(3.8, 0.1, 0.6);
         for (let i = 0; i < 4; i++) {
@@ -4707,13 +4729,9 @@ export class Decorations {
           for (let b = 0; b < booksOnShelf && b < 6; b++) {
             const bookHeight = 0.7 + Math.random() * 0.3;
             const bookWidth = 0.15 + Math.random() * 0.1;
-            const bookGeo = new THREE.BoxGeometry(bookWidth, bookHeight, 0.4);
-            const bookColors = [0x8b0000, 0x00008b, 0x006400, 0x4b0082, 0x8b4513, 0x2f4f4f, shelfColor];
-            const bookMat = new THREE.MeshStandardMaterial({
-              color: bookColors[Math.floor(Math.random() * bookColors.length)],
-              roughness: 0.7
-            });
-            const book = new THREE.Mesh(bookGeo, bookMat);
+            const bookMat = bookMaterials[Math.floor(Math.random() * bookMaterials.length)];
+            const book = new THREE.Mesh(this.geos.bookBox, bookMat);
+            book.scale.set(bookWidth, bookHeight, 0.4);
             book.position.set(-1.5 + b * 0.55 + Math.random() * 0.1, 0.55 + i * 1.2 + bookHeight / 2, 0.05);
             book.rotation.z = (Math.random() - 0.5) * 0.1;
             shelf.add(book);

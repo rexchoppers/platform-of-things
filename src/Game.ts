@@ -409,11 +409,15 @@ export class Game {
       obj.traverse((child) => {
         if (child instanceof THREE.Mesh && child.userData.isProjectorScreen) {
           this.screenMesh = child;
-          // Apply the slide texture to the screen
+          // Replace the screen's placeholder material with the live slide texture,
+          // disposing the one it shipped with so it isn't leaked.
+          const previous = child.material;
           const material = new THREE.MeshBasicMaterial({
             map: this.slideRenderer.getTexture(),
           });
           this.screenMesh.material = material;
+          if (Array.isArray(previous)) previous.forEach((m) => m.dispose());
+          else previous.dispose();
           // Render idle screen initially, or current slide if player is near
           const playerPos = this.sceneManager.camera.position;
           const dx = playerPos.x - this.screenPosition.x;
