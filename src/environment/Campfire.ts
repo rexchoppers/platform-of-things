@@ -75,15 +75,21 @@ export class Campfire {
   public readonly group = new THREE.Group();
   private readonly light: THREE.PointLight;
   private readonly materials: THREE.ShaderMaterial[] = [];
+  private readonly brightest: number;
+  private readonly flickerOffset = Math.random() * 100;
 
-  constructor(position: THREE.Vector3) {
+  constructor(
+    position: THREE.Vector3,
+    private readonly fireSize = 1
+  ) {
     this.group.position.copy(position);
+    this.brightest = LIGHT_INTENSITY * fireSize;
 
     this.group.add(this.createParticles(FLAMES));
     this.group.add(this.createParticles(SPARKS));
 
-    this.light = new THREE.PointLight(new THREE.Color(1.0, 0.46, 0.16), LIGHT_INTENSITY, LIGHT_RANGE, 2);
-    this.light.position.y = 0.8;
+    this.light = new THREE.PointLight(new THREE.Color(1.0, 0.46, 0.16), this.brightest, LIGHT_RANGE * (0.5 + fireSize * 0.5), 2);
+    this.light.position.y = 0.8 * fireSize;
     this.group.add(this.light);
   }
 
@@ -99,9 +105,9 @@ export class Campfire {
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        size: { value: style.size },
-        rise: { value: style.rise },
-        spread: { value: style.spread },
+        size: { value: style.size * this.fireSize },
+        rise: { value: style.rise * this.fireSize },
+        spread: { value: style.spread * this.fireSize },
         speed: { value: style.speed },
         pixelsPerUnit: { value: 1000 },
         hot: { value: style.hot },
@@ -122,8 +128,9 @@ export class Campfire {
 
   public update(time: number, pixelsPerUnit: number): void {
     // Uneven sine waves read as a living flame instead of a pulse.
-    const flicker = 0.86 + 0.08 * Math.sin(time * 9.1) + 0.04 * Math.sin(time * 23.7) + 0.02 * Math.sin(time * 41.3);
-    this.light.intensity = LIGHT_INTENSITY * flicker;
+    const t = time + this.flickerOffset;
+    const flicker = 0.86 + 0.08 * Math.sin(t * 9.1) + 0.04 * Math.sin(t * 23.7) + 0.02 * Math.sin(t * 41.3);
+    this.light.intensity = this.brightest * flicker;
 
     for (const material of this.materials) {
       material.uniforms.time.value = time;

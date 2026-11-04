@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import { planets } from '../config/planets';
-import { PlayerController } from '../core/PlayerController';
-import { UIManager } from '../ui/UIManager';
 
 /** A portal tent's door, from a marker in the world's .blend. Its front faces (sin yaw, cos yaw). */
 export interface PortalData {
@@ -13,9 +11,6 @@ export interface PortalData {
 }
 
 const TRIGGER_RADIUS = 1.5;
-const RETURN_DISTANCE = 4.5;
-const FADE_MS = 450;
-const HOLD_MS = 1700;
 
 const DOOR_WIDTH = 3;
 const DOOR_HEIGHT = 3.6;
@@ -26,18 +21,13 @@ const MOTE_SIZE = 0.13;
 
 const LABEL_FONT = "'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif";
 
-/** Glow, motes, and a name for each portal tent, plus the walk-in fade. No real lights, to protect FPS. */
+/** Glow, motes, and a name for each portal tent. No real lights, to protect FPS. */
 export class Portals {
   public readonly group = new THREE.Group();
   private readonly time = { value: 0 };
   private readonly pixelsPerUnit = { value: 1000 };
-  private isTraveling = false;
 
-  constructor(
-    private readonly portals: PortalData[],
-    private readonly ui: UIManager,
-    private readonly player: PlayerController
-  ) {
+  constructor(private readonly portals: PortalData[]) {
     for (const portal of portals) {
       const tent = new THREE.Group();
       tent.position.set(portal.x, portal.y, portal.z);
@@ -202,34 +192,16 @@ export class Portals {
     return label;
   }
 
-  // Only Hearth exists so far. Once a world is rebuilt, its tent should load it here instead.
-  private enter(portal: PortalData): void {
-    this.isTraveling = true;
-    this.player.setFrozen(true);
-    this.ui.showPortalMessage(planets[portal.world].name);
-
-    window.setTimeout(() => {
-      const outX = Math.sin(portal.yaw);
-      const outZ = Math.cos(portal.yaw);
-      this.player.resetPosition(portal.x + outX * RETURN_DISTANCE, portal.z + outZ * RETURN_DISTANCE, portal.yaw + Math.PI);
-    }, FADE_MS);
-    window.setTimeout(() => this.ui.hidePortalMessage(), FADE_MS + HOLD_MS);
-    window.setTimeout(() => {
-      this.player.setFrozen(false);
-      this.isTraveling = false;
-    }, FADE_MS * 2 + HOLD_MS);
-  }
-
-  public update(time: number, pixelsPerUnit: number, playerPosition: THREE.Vector3): void {
+  public update(time: number, pixelsPerUnit: number): void {
     this.time.value = time;
     this.pixelsPerUnit.value = pixelsPerUnit;
+  }
 
-    if (this.isTraveling) return;
+  /** The tent whose door the player has walked into, if any. */
+  public findEntered(playerPosition: THREE.Vector3): PortalData | null {
     for (const portal of this.portals) {
-      if (Math.hypot(playerPosition.x - portal.x, playerPosition.z - portal.z) < TRIGGER_RADIUS) {
-        this.enter(portal);
-        return;
-      }
+      if (Math.hypot(playerPosition.x - portal.x, playerPosition.z - portal.z) < TRIGGER_RADIUS) return portal;
     }
+    return null;
   }
 }

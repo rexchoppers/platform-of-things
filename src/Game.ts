@@ -3,7 +3,7 @@ import { SceneManager } from './core/SceneManager';
 import { PlayerController } from './core/PlayerController';
 import { Skybox } from './environment/Skybox';
 import { ShootingStars } from './environment/ShootingStars';
-import { WorldManager } from './systems/WorldManager';
+import { WorldEntered, WorldManager } from './systems/WorldManager';
 import { Interactions } from './systems/Interactions';
 import { Dog } from './objects/Dog';
 import { MusicSystem } from './systems/MusicSystem';
@@ -20,7 +20,7 @@ export class Game {
   private readonly playerController: PlayerController;
   private readonly worldManager: WorldManager;
   private readonly fpsCounter: HTMLDivElement;
-  private interactions: Interactions | null = null;
+  private readonly interactions: Interactions;
   private isWorldReady = false;
   private frameCount = 0;
   private lastFpsUpdate = 0;
@@ -29,7 +29,10 @@ export class Game {
     const { scene, camera, controls } = this.sceneManager;
 
     this.playerController = new PlayerController(camera, controls);
-    this.worldManager = new WorldManager(scene, camera, this.skybox, this.uiManager, this.playerController);
+    this.interactions = new Interactions(camera, this.dog, this.uiManager, this.playerController);
+    this.worldManager = new WorldManager(scene, camera, this.skybox, this.uiManager, this.playerController, (entered) =>
+      this.onWorldEntered(entered)
+    );
 
     scene.add(this.skybox.getMesh());
     scene.add(this.shootingStars.group);
@@ -57,25 +60,21 @@ export class Game {
 
   public async start(): Promise<void> {
     this.uiManager.setLoading(true);
-    await this.worldManager.load('home');
-
-    const manifest = this.worldManager.manifest;
-    if (manifest) {
-      const position = (point: number[]) => new THREE.Vector3(point[0], point[1], point[2]);
-      this.dog.mesh.position.copy(position(manifest.dogStart));
-      this.interactions = new Interactions(
-        this.sceneManager.camera,
-        this.dog,
-        this.uiManager,
-        this.playerController,
-        position(manifest.creditsSign),
-        position(manifest.firePoint)
-      );
-    }
-
+    await this.worldManager.start('home');
     this.animate();
     this.isWorldReady = true;
     this.uiManager.setLoading(false);
+  }
+
+  private onWorldEntered({ manifest, slideshow, isFirstWorld }: WorldEntered): void {
+    // Ivy starts on her bed in the first world, and comes along through tents after that.
+    if (isFirstWorld) {
+      this.dog.mesh.position.fromArray(manifest.dogStart);
+    } else {
+      const player = this.sceneManager.camera.position;
+      this.dog.mesh.position.set(player.x + 2, player.y, player.z + 2);
+    }
+    this.interactions.setWorld(manifest, slideshow);
   }
 
   private animate = (): void => {
@@ -97,7 +96,7 @@ export class Game {
     this.worldManager.update(time, this.sceneManager.renderer.domElement.height);
     this.playerController.update(delta);
     this.dog.update(delta, this.sceneManager.camera.position);
-    this.interactions?.update();
+    this.interactions.update();
     this.sceneManager.render();
   };
 }

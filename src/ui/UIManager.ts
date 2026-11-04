@@ -6,6 +6,7 @@ export class UIManager {
   public readonly statsScreen = document.getElementById('stats-screen')!;
   public readonly firePrompt = document.getElementById('fire-prompt')!;
   public readonly getUpPrompt = document.getElementById('get-up-prompt')!;
+  public readonly projectorPrompt = document.getElementById('projector-prompt')!;
   public readonly dogPrompt = document.getElementById('dog-prompt')!;
   public readonly dogQuote = document.getElementById('dog-quote')!;
   public readonly creditsPrompt = document.getElementById('credits-prompt')!;
@@ -15,6 +16,7 @@ export class UIManager {
   private readonly planetDescription = document.getElementById('planet-description')!;
   private readonly screenFade = document.getElementById('screen-fade')!;
   private readonly portalName = document.getElementById('portal-name')!;
+  private readonly portalNote = document.getElementById('portal-note')!;
   private hasStarted = false;
 
   constructor() {
@@ -37,8 +39,9 @@ export class UIManager {
     }
   }
 
-  public showPortalMessage(worldName: string): void {
+  public showPortalMessage(worldName: string, note: string): void {
     this.portalName.textContent = worldName;
+    this.portalNote.textContent = note;
     this.screenFade.classList.add('visible');
   }
 

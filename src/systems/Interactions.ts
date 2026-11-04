@@ -1,11 +1,14 @@
 import * as THREE from 'three';
 import { Dog } from '../objects/Dog';
 import { PlayerController } from '../core/PlayerController';
+import { WorldManifest } from '../environment/WorldAssets';
+import { Slideshow } from './Slideshow';
 import { UIManager } from '../ui/UIManager';
 
 const DOG_RANGE = 3;
 const CREDITS_RANGE = 3;
 const FIRE_RANGE = 5;
+const PROJECTOR_RANGE = 3.5;
 const CREDITS_URL = 'https://github.com/rexchoppers/platform-of-things/blob/master/CREDITS.md';
 
 interface Target {
@@ -15,9 +18,9 @@ interface Target {
   use: () => void;
 }
 
-/** Prompts and E-key actions. With several things in reach, E uses the one you're looking at. */
+/** Prompts and E-key actions for the current world. With several things in reach, E uses the one you're looking at. */
 export class Interactions {
-  private readonly targets: Target[];
+  private targets: Target[] = [];
   private readonly forward = new THREE.Vector3();
   private current: Target | null = null;
   private isShowingQuote = false;
@@ -27,13 +30,20 @@ export class Interactions {
     private readonly camera: THREE.PerspectiveCamera,
     private readonly dog: Dog,
     private readonly ui: UIManager,
-    private readonly player: PlayerController,
-    signPosition: THREE.Vector3,
-    firePosition: THREE.Vector3
+    private readonly player: PlayerController
   ) {
+    player.setInteractCallback(() => this.interact());
+  }
+
+  public setWorld(manifest: WorldManifest, slideshow: Slideshow | null): void {
+    if (this.isShowingQuote) this.setQuote(false);
+    if (this.isSitting) this.setSitting(false);
+    for (const target of this.targets) target.prompt.classList.remove('visible');
+    this.current = null;
+
+    const at = (point: number[]): THREE.Vector3 => new THREE.Vector3().fromArray(point);
+    const { dog, ui } = this;
     this.targets = [
-      { position: firePosition, range: FIRE_RANGE, prompt: ui.firePrompt, use: () => this.setSitting(true) },
-      { position: signPosition, range: CREDITS_RANGE, prompt: ui.creditsPrompt, use: () => window.open(CREDITS_URL, '_blank') },
       {
         position: dog.mesh.position,
         range: DOG_RANGE,
@@ -44,7 +54,25 @@ export class Interactions {
         },
       },
     ];
-    player.setInteractCallback(() => this.interact());
+    if (manifest.firePoint) {
+      this.targets.push({ position: at(manifest.firePoint), range: FIRE_RANGE, prompt: ui.firePrompt, use: () => this.setSitting(true) });
+    }
+    if (manifest.creditsSign) {
+      this.targets.push({
+        position: at(manifest.creditsSign),
+        range: CREDITS_RANGE,
+        prompt: ui.creditsPrompt,
+        use: () => window.open(CREDITS_URL, '_blank'),
+      });
+    }
+    if (manifest.projector && slideshow) {
+      this.targets.push({
+        position: at(manifest.projector),
+        range: PROJECTOR_RANGE,
+        prompt: ui.projectorPrompt,
+        use: () => slideshow.next(),
+      });
+    }
   }
 
   private interact(): void {

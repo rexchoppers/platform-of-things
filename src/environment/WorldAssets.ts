@@ -3,19 +3,25 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { ColliderData } from './Collisions';
 import { Heightfield } from './Terrain';
 import { PortalData } from '../systems/Portals';
+import { ScreenData } from '../systems/Slideshow';
 import hearthModelUrl from '../assets/worlds/hearth/world.glb?url';
 import hearthHeightsUrl from '../assets/worlds/hearth/heights.bin?url';
 import hearthManifest from '../assets/worlds/hearth/manifest.json';
+import chronicleModelUrl from '../assets/worlds/chronicle/world.glb?url';
+import chronicleHeightsUrl from '../assets/worlds/chronicle/heights.bin?url';
+import chronicleManifest from '../assets/worlds/chronicle/manifest.json';
 
 /** Read from marker Empties in the world's .blend. Positions are game [x, y, z]. */
 export interface WorldManifest {
   heightfield: { size: number; resolution: number };
   spawn: { x: number; z: number; facing: number; walkRadius: number };
-  firePoint: number[];
-  lanternLights: number[][];
-  deskLamp: number[];
   dogStart: number[];
-  creditsSign: number[];
+  firePoint: number[] | null;
+  creditsSign: number[] | null;
+  projector: number[] | null;
+  screen: ScreenData | null;
+  campfires: { position: number[]; size: number }[];
+  pointLights: { position: number[]; colour: number[]; candela: number; range: number }[];
   colliders: ColliderData[];
   portals: PortalData[];
 }
@@ -29,6 +35,7 @@ export interface LoadedWorld {
 // Worlds built in Blender. See blender/README.md.
 const SOURCES: Record<string, { modelUrl: string; heightsUrl: string; manifest: WorldManifest }> = {
   home: { modelUrl: hearthModelUrl, heightsUrl: hearthHeightsUrl, manifest: hearthManifest },
+  story: { modelUrl: chronicleModelUrl, heightsUrl: chronicleHeightsUrl, manifest: chronicleManifest },
 };
 
 // Object names start with their group's name in the .blend.
@@ -167,7 +174,30 @@ async function loadHeights(url: string, manifest: WorldManifest): Promise<Height
   return { size, resolution, data };
 }
 
-export async function loadWorld(worldId: string): Promise<LoadedWorld> {
+export function hasWorld(worldId: string): boolean {
+  return worldId in SOURCES;
+}
+
+// Each world downloads once, and stays ready for the rest of the visit.
+const loading = new Map<string, Promise<LoadedWorld>>();
+
+export function loadWorld(worldId: string): Promise<LoadedWorld> {
+  let world = loading.get(worldId);
+  if (!world) {
+    world = fetchWorld(worldId);
+    world.catch(() => loading.delete(worldId)); // Lets a later visit try again
+    loading.set(worldId, world);
+  }
+  return world;
+}
+
+export function preloadWorlds(): void {
+  for (const worldId of Object.keys(SOURCES)) {
+    loadWorld(worldId).catch((error) => console.error(`Failed to preload world "${worldId}"`, error));
+  }
+}
+
+async function fetchWorld(worldId: string): Promise<LoadedWorld> {
   const source = SOURCES[worldId];
   const [gltf, heightfield] = await Promise.all([
     new GLTFLoader().loadAsync(source.modelUrl),
