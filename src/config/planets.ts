@@ -18,7 +18,7 @@ export const planets: Record<string, PlanetConfig> = {
     skyColor: 0x1a1a2e,
     ambientColor: 0x404060,
     lightColor: 0xffffff,
-    lightIntensity: 1,
+    lightIntensity: 0.78,
     fogDensity: 0.008,
     description: 'My stuff.',
   },
@@ -77,13 +77,4 @@ export const planets: Record<string, PlanetConfig> = {
     fogDensity: 0.009,
     description: 'Stuff I made.',
   },
-};
-
-export const portalConnections: Record<string, string[]> = {
-  home: ['story', 'skills', 'education', 'articles', 'projects'],
-  story: ['home'],
-  skills: ['home'],
-  education: ['home'],
-  articles: ['home'],
-  projects: ['home', 'skills'],
 };

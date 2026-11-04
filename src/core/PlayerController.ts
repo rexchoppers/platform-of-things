@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+import { Collisions } from '../environment/Collisions';
 import { Terrain } from '../environment/Terrain';
 
 interface MovementState {
@@ -27,12 +28,14 @@ export class PlayerController {
   private readonly gravity = 50;
   private readonly jumpForce = 20;
   public readonly playerHeight = 2;
+  private readonly bodyRadius = 0.45;
+  private readonly stepHeight = 0.35;
 
   private isOnGround = true;
   private maxDistance = 90;
 
-  // Interaction callback
   private onInteract: (() => void) | null = null;
+  private isFrozen = false;
 
   constructor(
     private readonly camera: THREE.PerspectiveCamera,
@@ -42,16 +45,16 @@ export class PlayerController {
   }
 
   public jump(): void {
-    if (this.isOnGround) {
+    if (this.isOnGround && !this.isFrozen) {
       this.velocity.y = this.jumpForce;
       this.isOnGround = false;
     }
   }
 
-  public triggerInteract(): void {
-    if (this.onInteract) {
-      this.onInteract();
-    }
+  /** Holds the player still, with mouse look still working, while they sit by the fire. */
+  public setFrozen(isFrozen: boolean): void {
+    this.isFrozen = isFrozen;
+    this.velocity.set(0, 0, 0);
   }
 
   public setInteractCallback(callback: () => void): void {
@@ -85,7 +88,7 @@ export class PlayerController {
           this.movement.sprint = true;
           break;
         case 'KeyE':
-          this.triggerInteract();
+          this.onInteract?.();
           break;
       }
     });
@@ -116,8 +119,8 @@ export class PlayerController {
     });
   }
 
-  public update(delta: number, currentFlatRadius: number): void {
-    if (!this.controls.isLocked) return;
+  public update(delta: number): void {
+    if (!this.controls.isLocked || this.isFrozen) return;
 
     // Friction
     this.velocity.x -= this.velocity.x * 8.0 * delta;
@@ -146,53 +149,32 @@ export class PlayerController {
     this.controls.moveForward(-this.velocity.z * delta);
     this.camera.position.y += this.velocity.y * delta;
 
-    // Platform collision check - block player from walking into platforms they can't access
-    const currentGroundHeight = this.camera.position.y - this.playerHeight;
-    const collision = Terrain.checkPlatformCollision(
-      this.camera.position.x,
-      this.camera.position.z,
-      currentGroundHeight
-    );
-    if (collision.blocked) {
-      this.camera.position.x += collision.pushX;
-      this.camera.position.z += collision.pushZ;
+    // Keep player in bounds
+    const position = this.camera.position;
+    const playerDist = Math.hypot(position.x, position.z);
+    if (playerDist > this.maxDistance) {
+      const scale = this.maxDistance / playerDist;
+      position.x *= scale;
+      position.z *= scale;
     }
 
-    // Ground collision - sample terrain height at player position
-    // Pass current ground-relative height for platform access checks
-    const terrainY = Terrain.getTerrainHeight(
-      this.camera.position.x,
-      this.camera.position.z,
-      currentFlatRadius,
-      currentGroundHeight
+    // Walk into solid things, and stand on anything low enough
+    const feet = position.y - this.playerHeight;
+    Collisions.resolve(position, this.bodyRadius, feet, this.stepHeight);
+    const floor = Math.max(
+      Terrain.getHeight(position.x, position.z),
+      Collisions.surfaceAt(position.x, position.z, feet, this.stepHeight)
     );
-    const groundLevel = terrainY + this.playerHeight;
+    const groundLevel = floor + this.playerHeight;
 
-    // Always keep player above terrain (handles both falling and walking uphill)
-    if (this.camera.position.y <= groundLevel) {
-      this.camera.position.y = groundLevel;
+    // Always keep player above the floor (handles both falling and walking uphill)
+    if (position.y <= groundLevel) {
+      position.y = groundLevel;
       this.velocity.y = 0;
       this.isOnGround = true;
     } else {
-      // Player is above ground - check if they're close enough to be considered "on ground"
-      // This allows jumping to work properly
-      const distanceToGround = this.camera.position.y - groundLevel;
-      if (distanceToGround < 0.1) {
-        this.isOnGround = true;
-      } else {
-        this.isOnGround = false;
-      }
-    }
-
-    // Keep player in bounds
-    const playerDist = Math.sqrt(
-      this.camera.position.x * this.camera.position.x +
-        this.camera.position.z * this.camera.position.z
-    );
-    if (playerDist > this.maxDistance) {
-      const scale = this.maxDistance / playerDist;
-      this.camera.position.x *= scale;
-      this.camera.position.z *= scale;
+      // Close enough to the floor counts as on it, so jumping stays reliable
+      this.isOnGround = position.y - groundLevel < 0.1;
     }
   }
 
@@ -200,9 +182,8 @@ export class PlayerController {
     this.maxDistance = distance;
   }
 
-  public resetPosition(flatRadius: number, spawnX: number = 0, spawnZ: number = 0, facingAngle: number = 0): void {
-    const spawnTerrainY = Terrain.getTerrainHeight(spawnX, spawnZ, flatRadius);
-    this.camera.position.set(spawnX, spawnTerrainY + this.playerHeight, spawnZ);
+  public resetPosition(x: number, z: number, facingAngle: number): void {
+    this.camera.position.set(x, Terrain.getHeight(x, z) + this.playerHeight, z);
     this.camera.rotation.set(0, facingAngle, 0);
     this.velocity.set(0, 0, 0);
     this.isOnGround = true;
