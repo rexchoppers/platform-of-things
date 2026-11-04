@@ -10,7 +10,7 @@ Writes to src/assets/worlds/<name>/:
     world.glb       Terrain and everything on it, instanced with EXT_mesh_gpu_instancing
     heights.bin     Little-endian Float32 grid sampled from the Terrain object
     manifest.json   Heightfield size, collision shapes, and marker Empties such as Spawn, DogStart,
-                    Portal.*, FirePoint, Screen, and any Empty with a light_candela property
+                    Portal.*, FirePoint, Screen, Aurora, Logo.*, and any Empty with a light_candela property
 """
 
 import json
@@ -52,6 +52,7 @@ FOOTPRINT_OVERRIDES = {
     "speaker": {"radius": 0.55},
     "projector": {"radius": 0.45},
     "film_camera": {"radius": 0.34},
+    "stone_plinth": {"radius": 1.4},
 }
 
 
@@ -110,6 +111,18 @@ def read_markers():
         "creditsSign": optional_position("CreditsSign"),
         "projector": optional_position("Projector"),
         "screen": read_screen(),
+        "aurora": optional_position("Aurora"),
+        "logos": [
+            {
+                "position": to_game(obj.location),
+                "uv": [round(value, 5) for value in obj["uv"]],
+                "width": round(obj["width"], 3),
+                "height": round(obj["height"], 3),
+                "colour": [round(channel, 3) for channel in obj["colour"]],
+            }
+            for obj in objects
+            if obj.name.startswith("Logo.")
+        ],
         "campfires": [
             {"position": to_game(obj.location), "size": obj["size"]} for obj in objects if obj.name.startswith("Campfire.")
         ],

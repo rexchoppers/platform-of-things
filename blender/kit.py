@@ -656,7 +656,7 @@ def show_unlit_in_preview(material_name):
 def add_game_fog(colour, density):
     """Mix every material toward the fog colour exactly as three.js FogExp2 does."""
     for material in bpy.data.materials:
-        if not material.use_nodes:
+        if not material.use_nodes or material.get("no_fog"):
             continue
         tree = material.node_tree
         output = next(n for n in tree.nodes if n.type == "OUTPUT_MATERIAL")

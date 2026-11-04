@@ -45,6 +45,8 @@ class Site:
         self.grass_base = options.get("grass_base", GROUND * 0.7)
         self.grass_tip = options.get("grass_tip", GRASS)
         self.grass_count = options.get("grass_count", 17000)
+        self.undergrowth_start = options.get("undergrowth_start", 0.0)  # Keeps bushes and rocks out of a big clearing
+        self.flower_ring = options.get("flower_ring", (8.0, 24.0))
 
 
 def standard_materials():
@@ -415,18 +417,18 @@ def scatter_ground_cover(world, rng, site, cover, solid, shrub):
     # Undergrowth makes the edge of the walkable area read as thick forest.
     group = world.group("Ferns")
     for _ in range(340):
-        x, y = kit.annulus_point(rng, 19.0, 70.0)
+        x, y = kit.annulus_point(rng, max(19.0, site.undergrowth_start), 70.0)
         if not site.blocked(x, y):
             world.place(group, ferns[rng.integers(2)], x, y, rng.uniform(0.85, 1.6), rng.uniform(0, math.tau))
 
     group = world.group("Bushes")
     for _ in range(190):
-        x, y = kit.annulus_point(rng, 22.5, 80.0)
+        x, y = kit.annulus_point(rng, max(22.5, site.undergrowth_start), 80.0)
         world.place(group, bushes[rng.integers(2)], x, y, rng.uniform(0.8, 1.7), rng.uniform(0, math.tau), 0.1, rng.uniform(0.85, 1.2))
 
     group = world.group("Rocks")
     for _ in range(120):
-        x, y = kit.annulus_point(rng, 15.0, 110.0)
+        x, y = kit.annulus_point(rng, max(15.0, site.undergrowth_start), 110.0)
         if not site.blocked(x, y, 1.5):
             size = 0.22 + 1.1 * rng.random() ** 2.4
             world.place(group, rocks[rng.integers(3)], x, y, size, rng.uniform(0, math.tau), size * 0.18, 1.0, 0.3, rng)
@@ -438,7 +440,7 @@ def scatter_ground_cover(world, rng, site, cover, solid, shrub):
     group = world.group("Flowers")
     keys = list(flowers)
     for _ in range(46):
-        cx, cy = kit.annulus_point(rng, 8.0, 24.0)
+        cx, cy = kit.annulus_point(rng, *site.flower_ring)
         if site.blocked(cx, cy, 1.5):
             continue
         patch = flowers[keys[rng.integers(len(keys))]]
@@ -449,18 +451,18 @@ def scatter_ground_cover(world, rng, site, cover, solid, shrub):
 
     group = world.group("Mushrooms")
     for _ in range(26):
-        cx, cy = kit.annulus_point(rng, 19.0, 60.0)
+        cx, cy = kit.annulus_point(rng, max(19.0, site.undergrowth_start), 60.0)
         for _ in range(int(rng.integers(2, 6))):
             x, y = cx + rng.uniform(-0.8, 0.8), cy + rng.uniform(-0.8, 0.8)
             world.place(group, mushrooms[rng.integers(2)], x, y, rng.uniform(0.75, 1.5), rng.uniform(0, math.tau))
 
     group = world.group("Deadwood")
     for _ in range(14):
-        x, y = kit.annulus_point(rng, 18.0, 80.0)
+        x, y = kit.annulus_point(rng, max(18.0, site.undergrowth_start), 80.0)
         if not site.blocked(x, y, 2.0):
             world.place(group, logs[rng.integers(2)], x, y, rng.uniform(0.8, 1.3), rng.uniform(0, math.tau), -0.2)
     for _ in range(18):
-        x, y = kit.annulus_point(rng, 15.0, 60.0)
+        x, y = kit.annulus_point(rng, max(15.0, site.undergrowth_start), 60.0)
         if not site.blocked(x, y, 2.0):
             world.place(group, stumps[0], x, y, rng.uniform(0.7, 1.25), rng.uniform(0, math.tau))
 
