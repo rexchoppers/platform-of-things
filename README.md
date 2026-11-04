@@ -4,27 +4,9 @@ A 3D interactive portfolio website built with Three.js. Explore different worlds
 
 ## Overview
 
-Platform of Things is a first-person exploration experience where each section of a traditional portfolio is represented as a unique world with its own atmosphere, decorations, and interactive elements.
+Platform of Things is a first-person exploration experience where each section of a traditional portfolio is a world to walk around.
 
-### Worlds
-
-| World | Name | Section | Description |
-|-------|------|---------|-------------|
-| Home | Hearth | Welcome | Central hub with portals to all other worlds |
-| Story | Chronicle | My Story | A cinema-style space showcasing my journey |
-| Skills | Grove | Skills | Technology logos displayed as flower beds with aurora effects |
-| Education | Haven | Education | Stage with qualifications and certifications |
-| Articles | Inkwell | Articles | Library with interactive bookshelves |
-| Projects | Workshop | Projects | Showcases what I build |
-
-## Features
-
-- First-person controls with WASD movement and mouse look
-- Portal-based navigation between worlds
-- Interactive elements (hologram terminal, bookshelves, credits sign)
-- Dynamic atmospheric effects (fireflies, aurora, floating text constellations)
-- Companion dog named Ivy that follows you around
-- Ambient music and environmental decorations
+The worlds are being rebuilt in Blender, one at a time, starting with Hearth: a campsite in a forest clearing under a moving night sky. Everything from the previous version is in [`archive/`](archive/README.md), ready to bring back.
 
 ## Controls
 
@@ -42,6 +24,7 @@ Platform of Things is a first-person exploration experience where each section o
 ## Tech Stack
 
 - **Three.js** - 3D graphics library
+- **Blender** - World building and sky baking
 - **TypeScript** - Type-safe JavaScript
 - **Vite** - Build tool and dev server
 
@@ -87,14 +70,15 @@ npm run preview
 ## Project Structure
 
 ```
+archive/             # The previous game and items, kept for restoring
+blender/             # World sources and export scripts (see blender/README.md)
 src/
-├── assets/          # Images, logos, and media files
-├── config/          # Planet configurations
-├── core/            # Core game logic (PlayerController)
-├── environment/     # Terrain, Skybox
-├── objects/         # 3D objects (Portal, Terminal, Decorations, Dog)
-├── systems/         # Game systems (PlanetManager)
-├── ui/              # UI management
+├── assets/          # Music, sky textures, and exported worlds
+├── config/          # World colours and names
+├── core/            # Scene and player
+├── environment/     # Sky, terrain, campfire, and world loading
+├── systems/         # World manager and music
+├── ui/              # Start screen and HUD
 ├── Game.ts          # Main game class
 ├── main.ts          # Entry point
 └── style.css        # Styles
