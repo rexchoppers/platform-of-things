@@ -634,6 +634,13 @@ def light_back_faces_like_game(material_name):
     tree.links.new(add.outputs[0], output.inputs["Surface"])
 
 
+def remove_sheen():
+    """The game draws the world fully matte."""
+    for material in bpy.data.materials:
+        if material.use_nodes and "Principled BSDF" in material.node_tree.nodes:
+            material.node_tree.nodes["Principled BSDF"].inputs["Specular IOR Level"].default_value = 0.0
+
+
 def show_unlit_in_preview(material_name):
     """The game draws this material with no lighting, showing its vertex colours as they are."""
     tree = bpy.data.materials[material_name].node_tree
@@ -738,7 +745,7 @@ def render_preview(scene, camera, path, samples=64):
         scene.cycles.device = "CPU"
     scene.cycles.samples = samples
     scene.cycles.use_denoising = True
-    scene.cycles.max_bounces = 2
+    scene.cycles.max_bounces = 0  # The game has no bounced light
     scene.render.resolution_x = 1280
     scene.render.resolution_y = 720
     scene.render.resolution_percentage = 100

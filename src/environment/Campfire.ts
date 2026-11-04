@@ -30,8 +30,8 @@ const SPARKS: ParticleStyle = {
   cool: new THREE.Color(1.0, 0.3, 0.05),
 };
 
-const LIGHT_INTENSITY = 110; // Candela. Blender previews assume the same.
-const LIGHT_RANGE = 40;
+const LIGHT_INTENSITY = 70; // Candela. Blender previews assume the same.
+const LIGHT_RANGE = 24; // A pool of light around the camp that stops short of the forest
 
 const VERTEX_SHADER = `
   uniform float time;

@@ -63,7 +63,7 @@ export class Skybox {
 
           const float PI = 3.14159265359;
           const float MOON_RADIUS = 0.052; // Radians. Larger than life, so its face can be seen
-          const float MOON_BRIGHTNESS = 0.68;
+          const float MOON_BRIGHTNESS = 0.56;
           const mat3 STAR_TILT = mat3(
             1.0, 0.0, 0.0,
             0.0, 0.8253, 0.5646,

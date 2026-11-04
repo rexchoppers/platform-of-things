@@ -31,10 +31,10 @@ SKY_PREVIEW = os.path.join(ROOT, "blender", ".preview", "sky_composite.exr")
 SEED = 20261104
 
 # Hearth's colours from src/config/planets.ts, used only for the preview.
-SKY = kit.linear(0x1a1a2e)
+SKY = kit.linear(0x12131f)
 FOG_DENSITY = 0.008
-AMBIENT_INTENSITY = 2.8  # Must match AMBIENT_INTENSITY in WorldManager.ts
-MOONLIGHT = 0.78  # Must match Hearth's lightIntensity in planets.ts
+AMBIENT_INTENSITY = 0.9  # Must match AMBIENT_INTENSITY in WorldManager.ts
+MOONLIGHT = 0.42  # Must match Hearth's lightIntensity in planets.ts
 MOON_DIRECTION = (-0.4, 0.79, 0.47)  # Blender axes. Must match MOON_DIRECTION in Skybox.ts.
 
 # ---------------------------------------------------------------------------
@@ -65,6 +65,10 @@ def desk_spot(right, forward):
 
 
 CABIN = (-15.5, 13.5)
+CABIN_FRONT = -np.array(CABIN) / np.linalg.norm(CABIN)
+CABIN_SIDE = np.array((CABIN_FRONT[1], -CABIN_FRONT[0]))
+CABIN_LAMP = tuple(np.array(CABIN) + CABIN_FRONT * 3.9 + CABIN_SIDE * 1.5)  # Beside the door step
+CABIN_DOOR = tuple(np.array(CABIN) + CABIN_FRONT * 3.0)
 PET_BED = (6.5, -9.0)
 CREDITS_SIGN = (5.6, -12.4)
 PROP_LAYOUT = [
@@ -447,6 +451,17 @@ def build_camp(world, solid, cloth):
         yaw = math.atan2(-y, -x) if x else 0.0
         world.place(camp, post, x, y, yaw=yaw)
         world.place(glow, glass, x, y, yaw=yaw)
+
+    # The cabin's lamp leans its arm over the door step, and lights it.
+    lamp_yaw = math.atan2(CABIN_DOOR[1] - CABIN_LAMP[1], CABIN_DOOR[0] - CABIN_LAMP[0])
+    world.place(camp, post, *CABIN_LAMP, yaw=lamp_yaw)
+    world.place(glow, glass, *CABIN_LAMP, yaw=lamp_yaw)
+    world.marker(
+        "LanternLight.2",
+        CABIN_LAMP[0] + math.cos(lamp_yaw) * 0.52,
+        CABIN_LAMP[1] + math.sin(lamp_yaw) * 0.52,
+        2.1,
+    )
 
     world.place(camp, woodpile(solid), *WOODPILE, yaw=0.5)
     world.place(camp, chopping_block(solid), *CHOPPING_BLOCK)
@@ -858,11 +873,13 @@ def render_previews(scene, folder):
     for name in ("GroundCover", "Broadleaf", "Shrub"):
         kit.light_back_faces_like_game(name)
     kit.show_unlit_in_preview("PropGlow")
+    kit.remove_sheen()
     kit.add_game_fog(SKY, FOG_DENSITY)
     kit.add_preview_world(scene, SKY_PREVIEW, SKY, AMBIENT * AMBIENT_INTENSITY)
 
     moon = bpy.data.lights.new("Moon", "SUN")
     moon.energy = MOONLIGHT
+    moon.color = (0.72, 0.8, 1.0)  # Must match MOONLIGHT_TINT in WorldManager.ts
     moon.angle = math.radians(2.0)
     moon_object = bpy.data.objects.new("Moon", moon)
     moon_object.rotation_euler = Vector(MOON_DIRECTION).to_track_quat("Z", "Y").to_euler()
@@ -878,11 +895,11 @@ def render_previews(scene, folder):
         obj.location = location
         scene.collection.objects.link(obj)
 
-    point("Fire", (0, 0, 1.0), 110.0, (1.0, 0.46, 0.16))
+    point("Fire", (0, 0, 1.0), 70.0, (1.0, 0.46, 0.16))
     point("DeskLamp", bpy.data.objects["DeskLamp"].location, 1.6, (1.0, 0.91, 0.79))
-    for index in range(2):
+    for index in range(3):
         marker = bpy.data.objects[f"LanternLight.{index}"]
-        point(f"Lantern{index}", marker.location, 7.0, (1.0, 0.62, 0.27))
+        point(f"Lantern{index}", marker.location, 4.0, (1.0, 0.62, 0.27))
 
     flame = kit.MeshBuilder()
     for radius, tip, x in ((0.42, 1.25, 0.0), (0.26, 0.9, 0.3), (0.26, 0.85, -0.28)):
@@ -895,8 +912,7 @@ def render_previews(scene, folder):
 
     shots = {
         "spawn": ((0.0, -17.0, 2.0), (0.0, 0.0, 2.0)),
-        "portals_north": ((0.0, -4.0, 2.0), (6.0, 18.0, 3.0)),
-        "portal_close": ((11.5, -9.0, 2.0), (15.0, -15.0, 2.4)),
+        "cabin": ((-8.5, 6.0, 2.0), (-14.5, 12.5, 1.8)),
     }
     for name, (position, target) in shots.items():
         camera = kit.add_preview_camera(scene, position, target)

@@ -10,9 +10,10 @@ import { PlayerController } from '../core/PlayerController';
 import { Portals } from './Portals';
 import { UIManager } from '../ui/UIManager';
 
-const AMBIENT_INTENSITY = 2.8; // Blender previews assume the same.
-const LANTERN_INTENSITY = 7; // Candela
-const LANTERN_RANGE = 14;
+const AMBIENT_INTENSITY = 0.9; // Low, so the moon does most of the lighting. Blender previews assume the same.
+const MOONLIGHT_TINT = new THREE.Color(0.72, 0.8, 1.0); // Moonlight reads cool against warm firelight
+const LANTERN_INTENSITY = 4; // Candela
+const LANTERN_RANGE = 10;
 const DESK_LAMP_INTENSITY = 1.6; // Candela. Small and short range, so it barely costs anything.
 const DESK_LAMP_RANGE = 5;
 const SHADOW_REACH = 75; // Half the width of the area the moon's shadow map covers
@@ -82,6 +83,7 @@ export class WorldManager {
 
   private createMoonlight(color: number, intensity: number): THREE.DirectionalLight {
     const moonlight = new THREE.DirectionalLight(color, intensity);
+    moonlight.color.multiply(MOONLIGHT_TINT);
     moonlight.position.copy(MOON_DIRECTION).multiplyScalar(120);
     moonlight.castShadow = true;
     moonlight.shadow.mapSize.set(2048, 2048);

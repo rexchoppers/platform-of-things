@@ -46,11 +46,18 @@ interface MaterialPatch {
   // Leaf and blade normals are authored to light as one soft shape. three flips normals
   // on back faces, which would turn half of those surfaces black.
   keepBackFaceNormals?: boolean;
+  // Multiplies the material's colours.
+  brightness?: number;
 }
 
+// The world draws fully matte. The default material adds a pale sheen that washes out dark
+// surfaces in moonlight, and it costs more to draw. Glowing materials are left as they are.
 const MATERIAL_PATCHES: Record<string, MaterialPatch> = {
-  Foliage: { sway: 0.00095 },
-  Broadleaf: { sway: 0.0022, keepBackFaceNormals: true },
+  Ground: {},
+  Solid: {},
+  Cloth: {},
+  Foliage: { sway: 0.00095, brightness: 0.85 },
+  Broadleaf: { sway: 0.0022, keepBackFaceNormals: true, brightness: 0.85 },
   Shrub: { sway: 0.035, keepBackFaceNormals: true },
   GroundCover: { keepBackFaceNormals: true },
 };
@@ -60,6 +67,18 @@ const swayTime = { value: 0 };
 
 export function updateWorldAnimation(time: number): void {
   swayTime.value = time;
+}
+
+function createMatteMaterial(source: THREE.MeshStandardMaterial, patch: MaterialPatch): THREE.MeshLambertMaterial {
+  const material = new THREE.MeshLambertMaterial({
+    name: source.name,
+    map: source.map,
+    vertexColors: source.vertexColors,
+    side: source.side,
+  });
+  material.color.setScalar(patch.brightness ?? 1);
+  patchMaterial(material, patch);
+  return material;
 }
 
 function patchMaterial(material: THREE.Material, patch: MaterialPatch): void {
@@ -114,6 +133,7 @@ function prepareMeshes(root: THREE.Group): void {
   const random = seededRandom(20261104);
   // Screens, lit windows, and sign lettering show their colours regardless of lighting.
   const unlit = new THREE.MeshBasicMaterial({ vertexColors: true });
+  const matte = new Map<string, THREE.Material>();
   root.traverse((node) => {
     const mesh = node as THREE.Mesh;
     if (!mesh.isMesh) return;
@@ -121,9 +141,12 @@ function prepareMeshes(root: THREE.Group): void {
     mesh.castShadow = inGroup(mesh.name, CASTS_SHADOW);
     mesh.receiveShadow = !inGroup(mesh.name, SKIPS_RECEIVING_SHADOW);
 
-    const material = mesh.material as THREE.Material;
+    const material = mesh.material as THREE.MeshStandardMaterial;
     const patch = MATERIAL_PATCHES[material.name];
-    if (patch) patchMaterial(material, patch);
+    if (patch) {
+      if (!matte.has(material.name)) matte.set(material.name, createMatteMaterial(material, patch));
+      mesh.material = matte.get(material.name)!;
+    }
     if (material.name === 'PropGlow') mesh.material = unlit;
 
     const instanced = mesh as THREE.InstancedMesh;
