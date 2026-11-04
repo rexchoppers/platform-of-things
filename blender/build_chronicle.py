@@ -221,12 +221,11 @@ def build_cinema(world, materials, tree_anchors):
         world.place(camp, seats[1 - index], x + outward * 0.5, y + 2.7, yaw=outward * 0.25)
 
     # String lights on posts in a horseshoe around the audience, open toward the screen.
+    # The wire behind the tent clears its back wall because every post is kept.
     anchors = []
     for i in range(14):
         angle = math.radians(122.0 + i * (296.0 / 13.0))
         x, y = math.cos(angle) * STRING_LIGHT_RADIUS, math.sin(angle) * STRING_LIGHT_RADIUS
-        if math.hypot(x - TENT[0], y - TENT[1]) < 6.0:
-            continue
         put("light_post", x, y, 0.0)
         anchors.append(np.array([x, y, 3.5]))
     wire, bulbs = landscape.string_lights(anchors, SEED + 220, solid, bulb_glow, sag=0.4, steps=10)
@@ -299,6 +298,7 @@ def main():
             "seats": ((-9.5, 1.5, 2.0), (2.0, 20.0, 6.0)),
             "snack": ((-5.0, -8.5, 2.0), (-13.0, -5.0, 1.2)),
             "projector": ((-3.0, -7.5, 2.0), (2.5, -1.0, 1.2)),
+            "tent": ((-5.0, -9.5, 2.0), (0.0, -20.0, 2.6)),
         }
         landscape.render_previews(SITE, scene, os.path.abspath(preview), shots)
 
