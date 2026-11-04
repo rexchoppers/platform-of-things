@@ -7,9 +7,12 @@ Worlds are built in Blender and exported to `src/assets/worlds/<name>/`. The gam
 | `worlds/hearth.blend` | Hearth's terrain, campsite, forest, and ground cover. Open this to edit the world. |
 | `worlds/sky.blend` | Galaxy glow nodes shared by every world. |
 | `build_hearth.py` | Regenerates `hearth.blend` from scratch. This overwrites hand edits. |
+| `worlds/chronicle.blend` | Chronicle's cinema, forest, and ground cover. |
+| `build_chronicle.py` | Regenerates `chronicle.blend` from scratch. This overwrites hand edits. |
 | `build_sky.py` | Regenerates `sky.blend` and bakes `src/assets/sky/`. |
 | `export_world.py` | Exports an open `.blend` into the game's assets. |
-| `hearth_props.py` | Hearth's everyday items: cabin, desk, bicycle, and so on. |
+| `hearth_props.py`, `chronicle_props.py` | Each world's items: cabin, desk, projector, and so on. |
+| `landscape.py` | Forest, ground cover, painted ground, terrain, portal tents, and previews that worlds share. |
 | `kit.py` | Shared colours, models, placement, and preview code for world scripts. |
 
 ## Edit a world
@@ -24,13 +27,17 @@ Worlds are built in Blender and exported to `src/assets/worlds/<name>/`. The gam
   --python blender/export_world.py -- hearth
 ```
 
+For Chronicle, open `chronicle.blend` and export with `-- chronicle`.
+
 ## Move the spawn point or fire
 
 Move these Empties in Blender, then export:
 
 - `Spawn` sets where the player starts. The player always starts facing `FirePoint`.
 - `FirePoint` sets where the flames and firelight appear.
-- `LanternLight.*` set where lantern light comes from. `DeskLamp` does the same for the desk lamp.
+- Any Empty with a `light_candela` property is a point light, with `light_colour` and `light_range`.
+- `Screen` and `Projector` set where Chronicle's slides and projector beam appear.
+- `Campfire.*` add flames and firelight, with a `size` property. Move one along with its stones.
 - `Portal.*` set each portal tent's door. Move one along with its tent, and rotate nothing: its `yaw` property sets which way the door faces.
 - `DogStart` sets where Ivy starts. `CreditsSign` sets where the credits prompt appears, so move it along with the sign.
 
