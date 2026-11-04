@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { planets } from '../config/planets';
+import { Aurora } from '../environment/Aurora';
 import { Campfire } from '../environment/Campfire';
 import { Collisions } from '../environment/Collisions';
 import { Fireflies } from '../environment/Fireflies';
+import { FloatingLogos } from '../environment/FloatingLogos';
 import { ProjectorBeam } from '../environment/ProjectorBeam';
 import { MOON_DIRECTION, Skybox } from '../environment/Skybox';
 import { Terrain } from '../environment/Terrain';
@@ -153,6 +155,12 @@ export class WorldManager {
       }
     }
 
+    const aurora = manifest.aurora ? new Aurora(manifest.aurora) : null;
+    if (aurora) group.add(aurora.mesh);
+
+    const logos = manifest.logos?.length ? new FloatingLogos(manifest.logos) : null;
+    if (logos) group.add(logos.group);
+
     return {
       id,
       manifest,
@@ -164,6 +172,8 @@ export class WorldManager {
         portals.update(time, pixelsPerUnit);
         for (const campfire of campfires) campfire.update(time, pixelsPerUnit);
         beam?.update(time, pixelsPerUnit);
+        aurora?.update(time);
+        logos?.update(time);
       },
     };
   }

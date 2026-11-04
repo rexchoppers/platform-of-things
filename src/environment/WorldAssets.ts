@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { ColliderData } from './Collisions';
+import { LogoData } from './FloatingLogos';
 import { Heightfield } from './Terrain';
 import { PortalData } from '../systems/Portals';
 import { ScreenData } from '../systems/Slideshow';
@@ -10,6 +11,9 @@ import hearthManifest from '../assets/worlds/hearth/manifest.json';
 import chronicleModelUrl from '../assets/worlds/chronicle/world.glb?url';
 import chronicleHeightsUrl from '../assets/worlds/chronicle/heights.bin?url';
 import chronicleManifest from '../assets/worlds/chronicle/manifest.json';
+import groveModelUrl from '../assets/worlds/grove/world.glb?url';
+import groveHeightsUrl from '../assets/worlds/grove/heights.bin?url';
+import groveManifest from '../assets/worlds/grove/manifest.json';
 
 /** Read from marker Empties in the world's .blend. Positions are game [x, y, z]. */
 export interface WorldManifest {
@@ -20,6 +24,8 @@ export interface WorldManifest {
   creditsSign: number[] | null;
   projector: number[] | null;
   screen: ScreenData | null;
+  aurora?: number[] | null;
+  logos?: LogoData[];
   campfires: { position: number[]; size: number }[];
   pointLights: { position: number[]; colour: number[]; candela: number; range: number }[];
   colliders: ColliderData[];
@@ -36,13 +42,14 @@ export interface LoadedWorld {
 const SOURCES: Record<string, { modelUrl: string; heightsUrl: string; manifest: WorldManifest }> = {
   home: { modelUrl: hearthModelUrl, heightsUrl: hearthHeightsUrl, manifest: hearthManifest },
   story: { modelUrl: chronicleModelUrl, heightsUrl: chronicleHeightsUrl, manifest: chronicleManifest },
+  skills: { modelUrl: groveModelUrl, heightsUrl: groveHeightsUrl, manifest: groveManifest },
 };
 
 // Object names start with their group's name in the .blend.
 const CASTS_SHADOW = ['Campsite', 'Props', 'TreesHero', 'Rocks', 'Bushes', 'Deadwood'];
 // Foliage gets its depth from vertex colours. Receiving shadows too only adds stripes.
 const SKIPS_RECEIVING_SHADOW = ['TreesHero', 'TreesMid', 'TreesFar', 'Bushes'];
-const VARIES_PER_INSTANCE = ['TreesHero', 'TreesMid', 'TreesFar', 'Bushes', 'Grass', 'Ferns'];
+const VARIES_PER_INSTANCE = ['TreesHero', 'TreesMid', 'TreesFar', 'Bushes', 'Grass', 'Ferns', 'BedFlowers', 'BedLeaves'];
 
 const inGroup = (name: string, groups: string[]): boolean => groups.some((group) => name.startsWith(group));
 
@@ -55,10 +62,12 @@ interface MaterialPatch {
   keepBackFaceNormals?: boolean;
   // Multiplies the material's colours.
   brightness?: number;
+  // Shows vertex colours as they are, whatever the lighting.
+  unlit?: boolean;
 }
 
 // The world draws fully matte. The default material adds a pale sheen that washes out dark
-// surfaces in moonlight, and it costs more to draw. Glowing materials are left as they are.
+// surfaces in moonlight, and it costs more to draw. Glowing materials not listed are left as they are.
 const MATERIAL_PATCHES: Record<string, MaterialPatch> = {
   Ground: {},
   Solid: {},
@@ -67,6 +76,8 @@ const MATERIAL_PATCHES: Record<string, MaterialPatch> = {
   Broadleaf: { sway: 0.0022, keepBackFaceNormals: true, brightness: 0.85 },
   Shrub: { sway: 0.035, keepBackFaceNormals: true },
   GroundCover: { keepBackFaceNormals: true },
+  PropGlow: { unlit: true }, // Screens, lit windows, and sign lettering
+  BedFlower: { unlit: true, sway: 0.18 },
 };
 
 // Shared by every swaying material, so one number moves the whole forest.
@@ -76,13 +87,9 @@ export function updateWorldAnimation(time: number): void {
   swayTime.value = time;
 }
 
-function createMatteMaterial(source: THREE.MeshStandardMaterial, patch: MaterialPatch): THREE.MeshLambertMaterial {
-  const material = new THREE.MeshLambertMaterial({
-    name: source.name,
-    map: source.map,
-    vertexColors: source.vertexColors,
-    side: source.side,
-  });
+function createPatchedMaterial(source: THREE.MeshStandardMaterial, patch: MaterialPatch): THREE.Material {
+  const settings = { name: source.name, map: source.map, vertexColors: source.vertexColors, side: source.side };
+  const material = patch.unlit ? new THREE.MeshBasicMaterial(settings) : new THREE.MeshLambertMaterial(settings);
   material.color.setScalar(patch.brightness ?? 1);
   patchMaterial(material, patch);
   return material;
@@ -138,9 +145,7 @@ function varyInstanceColours(mesh: THREE.InstancedMesh, random: () => number): v
 
 function prepareMeshes(root: THREE.Group): void {
   const random = seededRandom(20261104);
-  // Screens, lit windows, and sign lettering show their colours regardless of lighting.
-  const unlit = new THREE.MeshBasicMaterial({ vertexColors: true });
-  const matte = new Map<string, THREE.Material>();
+  const patched = new Map<string, THREE.Material>();
   root.traverse((node) => {
     const mesh = node as THREE.Mesh;
     if (!mesh.isMesh) return;
@@ -151,10 +156,9 @@ function prepareMeshes(root: THREE.Group): void {
     const material = mesh.material as THREE.MeshStandardMaterial;
     const patch = MATERIAL_PATCHES[material.name];
     if (patch) {
-      if (!matte.has(material.name)) matte.set(material.name, createMatteMaterial(material, patch));
-      mesh.material = matte.get(material.name)!;
+      if (!patched.has(material.name)) patched.set(material.name, createPatchedMaterial(material, patch));
+      mesh.material = patched.get(material.name)!;
     }
-    if (material.name === 'PropGlow') mesh.material = unlit;
 
     const instanced = mesh as THREE.InstancedMesh;
     if (instanced.isInstancedMesh && inGroup(mesh.name, VARIES_PER_INSTANCE)) {
