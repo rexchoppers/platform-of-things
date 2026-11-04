@@ -9,8 +9,8 @@ Reads whatever is in the open file, so hand edits made in Blender carry through.
 Writes to src/assets/worlds/<name>/:
     world.glb       Terrain and everything on it, instanced with EXT_mesh_gpu_instancing
     heights.bin     Little-endian Float32 grid sampled from the Terrain object
-    manifest.json   Heightfield size, collision shapes, plus the marker Empties: Spawn, FirePoint,
-                    LanternLight.*, DeskLamp, DogStart, CreditsSign, Portal.*
+    manifest.json   Heightfield size, collision shapes, and marker Empties such as Spawn, DogStart,
+                    Portal.*, FirePoint, Screen, and any Empty with a light_candela property
 """
 
 import json
@@ -34,10 +34,10 @@ SOLID_GROUPS = ("Campsite", "Props", "Deadwood", "Rocks", "TreesHero", "TreesMid
 # Too small to trip over, or not on the ground.
 NO_COLLISION = (
     "coffee_cup", "book_stack", "paper_stack", "leash", "dog_toys", "rubber_duck", "stepping_stone",
-    "bird_house", "radio", "light_wire", "fire_logs", "tripod",
+    "bird_house", "radio", "light_wire", "fire_logs", "tripod", "clapperboard", "picnic_blanket",
 )
 # Uneven tops that would leave the player hovering in mid air.
-NEVER_STAND_ON = ("bicycle", "garden_tools", "bench")
+NEVER_STAND_ON = ("bicycle", "garden_tools", "bench", "director_chair", "projector", "film_camera")
 TALLEST_TO_STAND_ON = 1.1
 SMALLEST_FOOTPRINT = 0.2
 TRUNK_RADIUS = 0.36  # At ground level, for a tree at scale 1
@@ -47,6 +47,11 @@ FOOTPRINT_OVERRIDES = {
     "cabin": {"half": (3.35, 2.85)},
     "fire_ring": {"radius": 1.4},
     "lantern_post": {"radius": 0.14},
+    "light_post": {"radius": 0.12},
+    "screen_frame": {"half": (11.0, 0.4)},
+    "speaker": {"radius": 0.55},
+    "projector": {"radius": 0.45},
+    "film_camera": {"radius": 0.34},
 }
 
 
@@ -75,31 +80,53 @@ def write_heightfield(path, tree):
     print(f"WORLD heightfield: min {data.min():.2f} max {data.max():.2f}")
 
 
+def optional_position(name):
+    obj = bpy.data.objects.get(name)
+    return to_game(obj.location) if obj else None
+
+
+def read_screen():
+    screen = bpy.data.objects.get("Screen")
+    if not screen:
+        return None
+    return {"position": to_game(screen.location), "yaw": round(screen["yaw"], 4), "width": screen["width"], "height": screen["height"]}
+
+
 def read_markers():
+    objects = sorted(bpy.data.objects, key=lambda o: o.name)
     spawn = bpy.data.objects["Spawn"]
-    fire = bpy.data.objects["FirePoint"]
     x, _, z = to_game(spawn.location)
-    fire_x, _, fire_z = to_game(fire.location)
-    # Camera yaw that faces the fire. three.js cameras look down -Z at yaw 0.
-    facing = math.atan2(-(fire_x - x), -(fire_z - z))
+    # The player starts facing look_at, or the fire if the world has no look_at.
+    if "look_at" in spawn:
+        target_x, target_z = spawn["look_at"][0], -spawn["look_at"][1]
+    else:
+        target_x, _, target_z = to_game(bpy.data.objects["FirePoint"].location)
+    # Camera yaw that faces the target. three.js cameras look down -Z at yaw 0.
+    facing = math.atan2(-(target_x - x), -(target_z - z))
     return {
-        "spawn": {
-            "x": x,
-            "z": z,
-            "facing": round(facing, 4),
-            "walkRadius": spawn["walk_radius"],
-        },
-        "firePoint": to_game(fire.location),
-        "deskLamp": to_game(bpy.data.objects["DeskLamp"].location),
+        "spawn": {"x": x, "z": z, "facing": round(facing, 4), "walkRadius": spawn["walk_radius"]},
+        "dogStart": to_game(bpy.data.objects["DogStart"].location),
+        "firePoint": optional_position("FirePoint"),
+        "creditsSign": optional_position("CreditsSign"),
+        "projector": optional_position("Projector"),
+        "screen": read_screen(),
+        "campfires": [
+            {"position": to_game(obj.location), "size": obj["size"]} for obj in objects if obj.name.startswith("Campfire.")
+        ],
         "portals": [
             dict(zip(("x", "y", "z"), to_game(obj.location)), world=obj["target"], yaw=round(obj["yaw"], 4))
-            for obj in sorted(bpy.data.objects, key=lambda o: o.name)
+            for obj in objects
             if obj.name.startswith("Portal.")
         ],
-        "dogStart": to_game(bpy.data.objects["DogStart"].location),
-        "creditsSign": to_game(bpy.data.objects["CreditsSign"].location),
-        "lanternLights": [
-            to_game(obj.location) for obj in sorted(bpy.data.objects, key=lambda o: o.name) if obj.name.startswith("LanternLight")
+        "pointLights": [
+            {
+                "position": to_game(obj.location),
+                "colour": [round(channel, 3) for channel in obj["light_colour"]],
+                "candela": obj["light_candela"],
+                "range": obj["light_range"],
+            }
+            for obj in objects
+            if "light_candela" in obj
         ],
     }
 
@@ -123,7 +150,7 @@ def collider_for(obj):
     for prefix, override in FOOTPRINT_OVERRIDES.items():
         if name.startswith(prefix):
             if "radius" in override:
-                return [x, z, override["radius"], None]
+                return [x, z, round(override["radius"] * obj.scale.x, 3), None]
             return [x, z, *override["half"], round(obj.rotation_euler.z, 4), None]
 
     corners = np.empty(len(obj.data.vertices) * 3)

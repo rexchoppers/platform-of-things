@@ -339,21 +339,21 @@ def rock(name, material, seed):
     return b.build(name, material, smooth=False)
 
 
-def grass_tuft(name, material, seed, blades, tall):
+def grass_tuft(name, material, seed, blades, tall, base=GROUND * 0.7, tip=GRASS):
     rng = np.random.default_rng(seed)
     b = MeshBuilder()
     for _ in range(blades):
         angle = rng.uniform(0.0, math.tau)
-        base = (rng.uniform(-0.2, 0.2), rng.uniform(-0.2, 0.2))
+        origin = (rng.uniform(-0.2, 0.2), rng.uniform(-0.2, 0.2))
         side = (math.cos(angle) * 0.02, math.sin(angle) * 0.02)
         lean_angle = rng.uniform(0.0, math.tau)
         lean = rng.uniform(0.04, 0.16) * tall
         blade_height = rng.uniform(0.22, 0.42) * tall
-        tip_colour = GRASS * rng.uniform(1.25, 1.7)
-        a = b.vert((base[0] - side[0], base[1] - side[1], -0.02), GROUND * 0.7)
-        c = b.vert((base[0] + side[0], base[1] + side[1], -0.02), GROUND * 0.7)
+        tip_colour = tip * rng.uniform(1.25, 1.7)
+        a = b.vert((origin[0] - side[0], origin[1] - side[1], -0.02), base)
+        c = b.vert((origin[0] + side[0], origin[1] + side[1], -0.02), base)
         t = b.vert(
-            (base[0] + math.cos(lean_angle) * lean, base[1] + math.sin(lean_angle) * lean, blade_height),
+            (origin[0] + math.cos(lean_angle) * lean, origin[1] + math.sin(lean_angle) * lean, blade_height),
             tip_colour,
         )
         b.face(a, c, t)
