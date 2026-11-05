@@ -88,6 +88,27 @@ def text_mesh(body, size, material, location, colour=(0.9, 0.9, 0.85), align="CE
     return mesh
 
 
+def join_meshes(name, meshes, material):
+    """Several coloured meshes as one, so they're one draw call. Uses up the meshes it's given."""
+    verts, faces, colours = [], [], []
+    for mesh in meshes:
+        start = len(verts)
+        verts += [tuple(vertex.co) for vertex in mesh.vertices]
+        faces += [[index + start for index in polygon.vertices] for polygon in mesh.polygons]
+        values = np.empty(len(mesh.vertices) * 4, dtype=np.float32)
+        mesh.color_attributes["Col"].data.foreach_get("color", values)
+        colours.append(values)
+        bpy.data.meshes.remove(mesh)
+
+    joined = bpy.data.meshes.new(name)
+    joined.from_pydata(verts, [], faces)
+    attribute = joined.color_attributes.new("Col", "FLOAT_COLOR", "POINT")
+    attribute.data.foreach_set("color", np.concatenate(colours))
+    joined.color_attributes.active_color = attribute
+    joined.materials.append(material)
+    return joined
+
+
 def string_lights(anchors, seed, wire_material, bulb_material, sag=0.55, steps=12):
     """Warm bulbs on a wire strung between points. Returns the wire mesh and the bulb mesh."""
     rng = np.random.default_rng(seed)

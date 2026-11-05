@@ -10,7 +10,7 @@ Writes to src/assets/worlds/<name>/:
     world.glb       Terrain and everything on it, instanced with EXT_mesh_gpu_instancing
     heights.bin     Little-endian Float32 grid sampled from the Terrain object
     manifest.json   Heightfield size, collision shapes, and marker Empties such as Spawn, DogStart,
-                    Portal.*, FirePoint, Screen, Aurora, Confetti, Logo.*, and any Empty with a light_candela property
+                    Portal.*, FirePoint, Screen, Aurora, Confetti, Constellation, Link.*, Logo.*, and any Empty with a light_candela property
 """
 
 import json
@@ -35,9 +35,10 @@ SOLID_GROUPS = ("Campsite", "Props", "Deadwood", "Rocks", "TreesHero", "TreesMid
 NO_COLLISION = (
     "coffee_cup", "book_stack", "paper_stack", "leash", "dog_toys", "rubber_duck", "stepping_stone",
     "bird_house", "radio", "light_wire", "fire_logs", "tripod", "clapperboard", "picnic_blanket", "aisle_carpet",
+    "reading_rug",
 )
 # Uneven tops that would leave the player hovering in mid air.
-NEVER_STAND_ON = ("bicycle", "garden_tools", "bench", "director_chair", "projector", "film_camera")
+NEVER_STAND_ON = ("bicycle", "garden_tools", "bench", "director_chair", "projector", "film_camera", "reading_chair", "anvil")
 TALLEST_TO_STAND_ON = 1.1
 # Taller than that, but with steps leading up.
 ALWAYS_STAND_ON = ("stage_platform", "stage_step")
@@ -56,6 +57,8 @@ FOOTPRINT_OVERRIDES = {
     "film_camera": {"radius": 0.34},
     "stone_plinth": {"radius": 1.4},
     "banner_pole": {"radius": 0.14},
+    "floor_lamp": {"radius": 0.3},
+    "stone_forge": {"half": (1.35, 0.95)},
 }
 
 
@@ -116,6 +119,12 @@ def read_markers():
         "screen": read_screen(),
         "aurora": optional_position("Aurora"),
         "confetti": optional_position("Confetti"),
+        "constellation": optional_position("Constellation"),
+        "links": [
+            {"position": to_game(obj.location), "label": obj["label"], "url": obj["url"]}
+            for obj in objects
+            if obj.name.startswith("Link.")
+        ],
         "logos": [
             {
                 "position": to_game(obj.location),

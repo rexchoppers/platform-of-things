@@ -5,7 +5,6 @@ Fronts face local -Y. Colours are the ones these items have always had.
 
 import math
 
-import bpy
 import numpy as np
 
 import kit
@@ -126,22 +125,11 @@ def board_lines():
 
 def board_text(material):
     """Every line of the board in one mesh, so it's one draw call."""
-    verts, faces, colours = [], [], []
-    for text, size, x, z, colour, align in board_lines():
-        mesh = landscape.text_mesh(text, size, material, (x, -0.09, z), colour, align)
-        start = len(verts)
-        verts += [tuple(vertex.co) for vertex in mesh.vertices]
-        faces += [[index + start for index in polygon.vertices] for polygon in mesh.polygons]
-        colours += [(*colour, 1.0)] * len(mesh.vertices)
-        bpy.data.meshes.remove(mesh)
-
-    joined = bpy.data.meshes.new("board_text")
-    joined.from_pydata(verts, [], faces)
-    attribute = joined.color_attributes.new("Col", "FLOAT_COLOR", "POINT")
-    attribute.data.foreach_set("color", np.array(colours, dtype=np.float32).ravel())
-    joined.color_attributes.active_color = attribute
-    joined.materials.append(material)
-    return joined
+    lines = [
+        landscape.text_mesh(text, size, material, (x, -0.09, z), colour, align)
+        for text, size, x, z, colour, align in board_lines()
+    ]
+    return landscape.join_meshes("board_text", lines, material)
 
 
 def banner_pole(m):
