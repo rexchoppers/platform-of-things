@@ -3,6 +3,7 @@ import { planets } from '../config/planets';
 import { Aurora } from '../environment/Aurora';
 import { Campfire } from '../environment/Campfire';
 import { Collisions } from '../environment/Collisions';
+import { Confetti } from '../environment/Confetti';
 import { Fireflies } from '../environment/Fireflies';
 import { FloatingLogos } from '../environment/FloatingLogos';
 import { ProjectorBeam } from '../environment/ProjectorBeam';
@@ -161,6 +162,9 @@ export class WorldManager {
     const logos = manifest.logos?.length ? new FloatingLogos(manifest.logos) : null;
     if (logos) group.add(logos.group);
 
+    const confetti = manifest.confetti ? new Confetti(manifest.confetti) : null;
+    if (confetti) group.add(confetti.points);
+
     return {
       id,
       manifest,
@@ -174,6 +178,7 @@ export class WorldManager {
         beam?.update(time, pixelsPerUnit);
         aurora?.update(time);
         logos?.update(time);
+        confetti?.update(time, pixelsPerUnit);
       },
     };
   }

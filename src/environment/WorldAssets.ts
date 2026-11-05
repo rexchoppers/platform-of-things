@@ -14,6 +14,9 @@ import chronicleManifest from '../assets/worlds/chronicle/manifest.json';
 import groveModelUrl from '../assets/worlds/grove/world.glb?url';
 import groveHeightsUrl from '../assets/worlds/grove/heights.bin?url';
 import groveManifest from '../assets/worlds/grove/manifest.json';
+import havenModelUrl from '../assets/worlds/haven/world.glb?url';
+import havenHeightsUrl from '../assets/worlds/haven/heights.bin?url';
+import havenManifest from '../assets/worlds/haven/manifest.json';
 
 /** Read from marker Empties in the world's .blend. Positions are game [x, y, z]. */
 export interface WorldManifest {
@@ -25,6 +28,7 @@ export interface WorldManifest {
   projector: number[] | null;
   screen: ScreenData | null;
   aurora?: number[] | null;
+  confetti?: number[] | null;
   logos?: LogoData[];
   campfires: { position: number[]; size: number }[];
   pointLights: { position: number[]; colour: number[]; candela: number; range: number }[];
@@ -43,6 +47,7 @@ const SOURCES: Record<string, { modelUrl: string; heightsUrl: string; manifest: 
   home: { modelUrl: hearthModelUrl, heightsUrl: hearthHeightsUrl, manifest: hearthManifest },
   story: { modelUrl: chronicleModelUrl, heightsUrl: chronicleHeightsUrl, manifest: chronicleManifest },
   skills: { modelUrl: groveModelUrl, heightsUrl: groveHeightsUrl, manifest: groveManifest },
+  education: { modelUrl: havenModelUrl, heightsUrl: havenHeightsUrl, manifest: havenManifest },
 };
 
 // Object names start with their group's name in the .blend.
@@ -78,6 +83,7 @@ const MATERIAL_PATCHES: Record<string, MaterialPatch> = {
   GroundCover: { keepBackFaceNormals: true },
   PropGlow: { unlit: true }, // Screens, lit windows, and sign lettering
   BedFlower: { unlit: true, sway: 0.18 },
+  Banner: { sway: 0.028, keepBackFaceNormals: true }, // Modelled hanging down from its origin
 };
 
 // Shared by every swaying material, so one number moves the whole forest.
@@ -114,7 +120,7 @@ function patchMaterial(material: THREE.Material, patch: MaterialPatch): void {
         #ifdef USE_INSTANCING
           vec2 swayRoot = instanceMatrix[3].xz;
         #else
-          vec2 swayRoot = vec2(0.0);
+          vec2 swayRoot = modelMatrix[3].xz;
         #endif
         float swayPhase = swayRoot.x * 0.13 + swayRoot.y * 0.17;
         float swayBend = swayStrength * transformed.y * transformed.y;
