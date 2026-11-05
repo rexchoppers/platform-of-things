@@ -4,6 +4,7 @@ import { Aurora } from '../environment/Aurora';
 import { Campfire } from '../environment/Campfire';
 import { Collisions } from '../environment/Collisions';
 import { Confetti } from '../environment/Confetti';
+import { Constellation } from '../environment/Constellation';
 import { Fireflies } from '../environment/Fireflies';
 import { FloatingLogos } from '../environment/FloatingLogos';
 import { ProjectorBeam } from '../environment/ProjectorBeam';
@@ -165,6 +166,9 @@ export class WorldManager {
     const confetti = manifest.confetti ? new Confetti(manifest.confetti) : null;
     if (confetti) group.add(confetti.points);
 
+    const constellation = manifest.constellation ? new Constellation(manifest.constellation) : null;
+    if (constellation) group.add(constellation.points);
+
     return {
       id,
       manifest,
@@ -179,6 +183,7 @@ export class WorldManager {
         aurora?.update(time);
         logos?.update(time);
         confetti?.update(time, pixelsPerUnit);
+        constellation?.update(time, pixelsPerUnit);
       },
     };
   }

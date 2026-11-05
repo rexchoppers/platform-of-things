@@ -17,6 +17,12 @@ import groveManifest from '../assets/worlds/grove/manifest.json';
 import havenModelUrl from '../assets/worlds/haven/world.glb?url';
 import havenHeightsUrl from '../assets/worlds/haven/heights.bin?url';
 import havenManifest from '../assets/worlds/haven/manifest.json';
+import inkwellModelUrl from '../assets/worlds/inkwell/world.glb?url';
+import inkwellHeightsUrl from '../assets/worlds/inkwell/heights.bin?url';
+import inkwellManifest from '../assets/worlds/inkwell/manifest.json';
+import workshopModelUrl from '../assets/worlds/workshop/world.glb?url';
+import workshopHeightsUrl from '../assets/worlds/workshop/heights.bin?url';
+import workshopManifest from '../assets/worlds/workshop/manifest.json';
 
 /** Read from marker Empties in the world's .blend. Positions are game [x, y, z]. */
 export interface WorldManifest {
@@ -29,6 +35,8 @@ export interface WorldManifest {
   screen: ScreenData | null;
   aurora?: number[] | null;
   confetti?: number[] | null;
+  constellation?: number[] | null;
+  links?: { position: number[]; label: string; url: string }[]; // E here opens this page
   logos?: LogoData[];
   campfires: { position: number[]; size: number }[];
   pointLights: { position: number[]; colour: number[]; candela: number; range: number }[];
@@ -48,6 +56,8 @@ const SOURCES: Record<string, { modelUrl: string; heightsUrl: string; manifest: 
   story: { modelUrl: chronicleModelUrl, heightsUrl: chronicleHeightsUrl, manifest: chronicleManifest },
   skills: { modelUrl: groveModelUrl, heightsUrl: groveHeightsUrl, manifest: groveManifest },
   education: { modelUrl: havenModelUrl, heightsUrl: havenHeightsUrl, manifest: havenManifest },
+  articles: { modelUrl: inkwellModelUrl, heightsUrl: inkwellHeightsUrl, manifest: inkwellManifest },
+  projects: { modelUrl: workshopModelUrl, heightsUrl: workshopHeightsUrl, manifest: workshopManifest },
 };
 
 // Object names start with their group's name in the .blend.

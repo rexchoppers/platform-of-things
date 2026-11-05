@@ -9,12 +9,14 @@ const DOG_RANGE = 3;
 const CREDITS_RANGE = 3;
 const FIRE_RANGE = 5;
 const PROJECTOR_RANGE = 3.5;
+const LINK_RANGE = 3;
 const CREDITS_URL = 'https://github.com/rexchoppers/platform-of-things/blob/master/CREDITS.md';
 
 interface Target {
   position: THREE.Vector3;
   range: number;
   prompt: HTMLElement;
+  label?: string; // Fills in the prompt's <span>, for prompts several targets share
   use: () => void;
 }
 
@@ -73,6 +75,15 @@ export class Interactions {
         use: () => slideshow.next(),
       });
     }
+    for (const { position, label, url } of manifest.links ?? []) {
+      this.targets.push({
+        position: at(position),
+        range: LINK_RANGE,
+        prompt: ui.linkPrompt,
+        label,
+        use: () => window.open(url, '_blank'),
+      });
+    }
   }
 
   private interact(): void {
@@ -118,9 +129,11 @@ export class Interactions {
     if (this.isShowingQuote && this.dog.getDistanceToPlayer(this.camera.position) > DOG_RANGE) {
       this.setQuote(false);
     }
-    this.current = this.isSitting || this.isShowingQuote ? null : this.pickTarget();
-    for (const target of this.targets) {
-      target.prompt.classList.toggle('visible', target === this.current);
-    }
+    const next = this.isSitting || this.isShowingQuote ? null : this.pickTarget();
+    if (next === this.current) return;
+    this.current?.prompt.classList.remove('visible');
+    if (next?.label) next.prompt.querySelector('span')!.textContent = next.label;
+    next?.prompt.classList.add('visible');
+    this.current = next;
   }
 }

@@ -10,6 +10,7 @@ export class UIManager {
   public readonly dogPrompt = document.getElementById('dog-prompt')!;
   public readonly dogQuote = document.getElementById('dog-quote')!;
   public readonly creditsPrompt = document.getElementById('credits-prompt')!;
+  public readonly linkPrompt = document.getElementById('link-prompt')!;
   private readonly startPrompt = this.instructions.querySelector('.start-prompt')!;
   private readonly planetName = document.getElementById('planet-name')!;
   private readonly sectionName = document.getElementById('section-name')!;
