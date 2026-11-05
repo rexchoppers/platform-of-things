@@ -70,7 +70,6 @@ npm run preview
 ## Project Structure
 
 ```
-archive/             # Ivy before her movement was rewritten (see archive/README.md)
 blender/             # World sources and export scripts (see blender/README.md)
 src/
 ├── assets/          # Music, sky textures, and exported worlds
