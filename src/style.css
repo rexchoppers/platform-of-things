@@ -318,9 +318,47 @@ kbd {
   right: 64px;
 }
 
+#crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 50;
+}
+
+#crosshair::before,
+#crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
+}
+
+#crosshair::before {
+  width: 2px;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#crosshair::after {
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#stats-screen.visible ~ #crosshair {
+  opacity: 0;
+}
+
 /* While paused, only the start screen shows. */
 .is-paused #hud,
 .is-paused #stats-screen,
+.is-paused #crosshair,
 .is-paused .prompt,
 .is-paused .note {
   opacity: 0;
