@@ -1,132 +1,74 @@
 import { PlanetConfig } from '../config/planets';
 import profileImage from '../assets/profile.jpeg';
 
-export class UIManager {
-  public readonly instructions: HTMLElement;
-  public readonly planetName: HTMLElement;
-  public readonly sectionName: HTMLElement;
-  public readonly planetDescription: HTMLElement;
-  public readonly hologramPanel: HTMLElement;
-  public readonly dogPrompt: HTMLElement;
-  public readonly dogQuote: HTMLElement;
-  public readonly slidePrompt: HTMLElement;
-  public readonly creditsPrompt: HTMLElement;
-  public readonly screenFade: HTMLElement;
-  public readonly bookshelfPrompt: HTMLElement;
+// Stops at 99%, because everything has to be ready before this text goes away.
+const loadingText = (arrived: number): string =>
+  arrived > 0 ? `Loading ${Math.min(Math.floor(arrived * 100), 99)}%` : 'Loading';
 
-  private isTransitioning = false;
+export class UIManager {
+  public readonly instructions = document.getElementById('instructions')!;
+  public readonly statsScreen = document.getElementById('stats-screen')!;
+  public readonly firePrompt = document.getElementById('fire-prompt')!;
+  public readonly getUpPrompt = document.getElementById('get-up-prompt')!;
+  public readonly projectorPrompt = document.getElementById('projector-prompt')!;
+  public readonly dogPrompt = document.getElementById('dog-prompt')!;
+  public readonly dogQuote = document.getElementById('dog-quote')!;
+  public readonly creditsPrompt = document.getElementById('credits-prompt')!;
+  public readonly linkPrompt = document.getElementById('link-prompt')!;
+  private readonly startPrompt = this.instructions.querySelector('.start-prompt')!;
+  private readonly planetName = document.getElementById('planet-name')!;
+  private readonly sectionName = document.getElementById('section-name')!;
+  private readonly planetDescription = document.getElementById('planet-description')!;
+  private readonly screenFade = document.getElementById('screen-fade')!;
+  private readonly portalName = document.getElementById('portal-name')!;
+  private readonly portalNote = document.getElementById('portal-note')!;
+  private hasStarted = false;
 
   constructor() {
-    this.instructions = document.getElementById('instructions')!;
-    this.planetName = document.getElementById('planet-name')!;
-    this.sectionName = document.getElementById('section-name')!;
-    this.planetDescription = document.getElementById('planet-description')!;
-    this.hologramPanel = document.getElementById('hologram-panel')!;
-    this.dogPrompt = document.getElementById('dog-prompt')!;
-    this.dogQuote = document.getElementById('dog-quote')!;
-    this.slidePrompt = document.getElementById('slide-prompt')!;
-    this.creditsPrompt = document.getElementById('credits-prompt')!;
-    this.screenFade = document.getElementById('screen-fade')!;
-    this.bookshelfPrompt = document.getElementById('bookshelf-prompt')!;
+    this.statsScreen.querySelector('img')!.src = profileImage;
+    this.statsScreen.querySelectorAll<HTMLElement>('[data-years-since]').forEach((element) => {
+      element.textContent = String(new Date().getFullYear() - Number(element.dataset.yearsSince));
+    });
+  }
 
-    // Set profile image
-    const avatarImg = this.hologramPanel.querySelector('.hologram-avatar img') as HTMLImageElement;
-    if (avatarImg) {
-      avatarImg.src = profileImage;
+  public setLoading(arrived: number): void {
+    this.startPrompt.textContent = loadingText(arrived);
+  }
+
+  public setReady(): void {
+    this.startPrompt.textContent = 'Click to start';
+  }
+
+  public setPaused(isPaused: boolean): void {
+    document.body.classList.toggle('is-paused', isPaused);
+    if (!isPaused) {
+      this.hasStarted = true;
+    } else if (this.hasStarted) {
+      this.startPrompt.textContent = 'Paused. Click to carry on.';
     }
+  }
+
+  public showPortalMessage(worldName: string): void {
+    this.portalName.textContent = worldName;
+    this.portalNote.textContent = '';
+    this.screenFade.classList.add('visible');
+  }
+
+  public setPortalLoading(arrived: number): void {
+    this.portalNote.textContent = loadingText(arrived);
+  }
+
+  public setPortalNote(note: string): void {
+    this.portalNote.textContent = note;
+  }
+
+  public hidePortalMessage(): void {
+    this.screenFade.classList.remove('visible');
   }
 
   public updatePlanetInfo(config: PlanetConfig): void {
     this.planetName.textContent = config.name;
     this.sectionName.textContent = config.section;
     this.planetDescription.textContent = config.description;
-  }
-
-  public showHologramPanel(): void {
-    this.hologramPanel.classList.add('visible');
-  }
-
-  public hideHologramPanel(): void {
-    this.hologramPanel.classList.remove('visible');
-  }
-
-  public showInstructions(): void {
-    this.instructions.style.display = 'flex';
-  }
-
-  public hideInstructions(): void {
-    this.instructions.style.display = 'none';
-  }
-
-  public showDogPrompt(): void {
-    this.dogPrompt.classList.add('visible');
-  }
-
-  public hideDogPrompt(): void {
-    this.dogPrompt.classList.remove('visible');
-  }
-
-  public showDogQuote(): void {
-    this.dogQuote.classList.add('visible');
-  }
-
-  public hideDogQuote(): void {
-    this.dogQuote.classList.remove('visible');
-  }
-
-  public showSlidePrompt(): void {
-    this.slidePrompt.classList.add('visible');
-  }
-
-  public hideSlidePrompt(): void {
-    this.slidePrompt.classList.remove('visible');
-  }
-
-  public showCreditsPrompt(): void {
-    this.creditsPrompt.classList.add('visible');
-  }
-
-  public hideCreditsPrompt(): void {
-    this.creditsPrompt.classList.remove('visible');
-  }
-
-  public showBookshelfPrompt(categoryName: string): void {
-    const p = this.bookshelfPrompt.querySelector('p');
-    if (p) {
-      p.innerHTML = `Press <strong>E</strong> to browse ${categoryName}`;
-    }
-    this.bookshelfPrompt.classList.add('visible');
-  }
-
-  public hideBookshelfPrompt(): void {
-    this.bookshelfPrompt.classList.remove('visible');
-  }
-
-  public isInTransition(): boolean {
-    return this.isTransitioning;
-  }
-
-  public fadeTransition(onMidpoint: () => void): void {
-    if (this.isTransitioning) return;
-
-    this.isTransitioning = true;
-
-    // Fade out
-    this.screenFade.classList.add('active');
-
-    // At midpoint (when fully black), execute callback and fade back in
-    setTimeout(() => {
-      onMidpoint();
-
-      // Fade back in
-      setTimeout(() => {
-        this.screenFade.classList.remove('active');
-
-        // Transition complete
-        setTimeout(() => {
-          this.isTransitioning = false;
-        }, 400);
-      }, 100);
-    }, 400);
   }
 }

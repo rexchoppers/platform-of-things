@@ -3,93 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio - Explore My Universe</title>
+    <title>Platform of Things</title>
+    <meta name="description" content="Connor Brady's 3D portfolio. Walk through six worlds at night to explore my story, skills, education, articles, and projects." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rexchoppers.com/" />
+    <meta property="og:title" content="Platform of Things" />
+    <meta property="og:description" content="Connor Brady's 3D portfolio. Walk through six worlds at night to explore my story, skills, education, articles, and projects." />
+    <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body>
+  <body class="is-paused">
     <div id="mobile-notice">
-      <div class="notice-content">
-        <h1>Desktop Only</h1>
-        <p>This 3D experience is best enjoyed on a desktop browser.</p>
-        <a href="https://pot.rexchoppers.com" class="notice-link">Visit pot.rexchoppers.com</a>
-        <p class="notice-hint">For the full portfolio experience</p>
-      </div>
+      <h1>Desktop only</h1>
+      <p>This one needs a keyboard and mouse.</p>
+      <a href="https://pot.rexchoppers.com">Visit pot.rexchoppers.com</a>
     </div>
 
     <div id="instructions">
       <div class="content">
-        <h1>Welcome</h1>
-        <p class="start-prompt">Click to explore</p>
+        <h1>Platform of Things</h1>
+        <p class="start-prompt">Click to start</p>
         <div class="controls">
-          <p><strong>WASD</strong> Move</p>
-          <p><strong>Mouse</strong> Look</p>
-          <p><strong>Space</strong> Jump</p>
-          <p><strong>Shift</strong> Sprint</p>
-          <p><strong>E</strong> Interact</p>
-          <p><strong>ESC</strong> Pause</p>
+          <p><kbd>W A S D</kbd> walk</p>
+          <p><kbd>Mouse</kbd> look</p>
+          <p><kbd>Space</kbd> jump</p>
+          <p><kbd>Shift</kbd> run</p>
+          <p><kbd>E</kbd> use</p>
+          <p><kbd>Esc</kbd> pause</p>
         </div>
       </div>
     </div>
 
     <div id="hud">
-      <div class="planet-info">
-        <h2 id="planet-name">Hearth</h2>
-        <p id="section-name">Welcome</p>
-      </div>
-      <p id="planet-description">Your starting point. Explore the portals to learn more about me.</p>
+      <h2 id="planet-name"></h2>
+      <p id="section-name"></p>
+      <p id="planet-description"></p>
     </div>
 
-    <div id="hologram-panel">
-      <div class="hologram-content">
-        <div class="hologram-header">
-          <div class="hologram-avatar">
-            <img src="/assets/profile.jpeg" alt="Profile" />
-          </div>
-          <div class="hologram-title">
-            <h2>Connor Brady</h2>
-            <p>Senior Software Engineer</p>
-          </div>
-        </div>
-        <div class="hologram-body">
-          <p>Welcome</p>
-          <ul>
-            <li><strong>Chronicle</strong> – Story</li>
-            <li><strong>Grove</strong> – Skills</li>
-            <li><strong>Haven</strong> – Education</li>
-            <li><strong>Inkwell</strong> – Articles</li>
-            <li><strong>Workshop</strong> – Projects</li>
-          </ul>
+    <div id="stats-screen">
+      <div class="stats-header">
+        <img alt="Connor Brady" />
+        <div>
+          <h2>Connor Brady</h2>
+          <p>Senior Software Engineer</p>
         </div>
       </div>
+      <dl>
+        <div><dt>years programming</dt><dd data-years-since="2012">14</dd></div>
+        <div><dt>years professionally</dt><dd data-years-since="2017">9</dd></div>
+        <div><dt>companies</dt><dd>4</dd></div>
+        <div><dt>technologies</dt><dd>31</dd></div>
+        <div><dt>certifications</dt><dd>5</dd></div>
+        <div><dt>good dog</dt><dd>1</dd></div>
+      </dl>
+      <ul>
+        <li><span>Chronicle</span> <em>Story</em></li>
+        <li><span>Grove</span> <em>Skills</em></li>
+        <li><span>Haven</span> <em>Education</em></li>
+        <li><span>Inkwell</span> <em>Articles</em></li>
+        <li><span>Workshop</span> <em>Projects</em></li>
+      </ul>
     </div>
 
-    <div id="dog-quote">
-      <div class="quote-content">
-        <p class="quote-text">"The gift which I am sending you is called a dog, and is, in fact, the most precious and valuable possession of mankind."</p>
-        <p class="quote-author">– Theodorus Gaza</p>
-      </div>
+    <div id="dog-quote" class="note">
+      <p>"The gift which I am sending you is called a dog, and is, in fact, the most precious and valuable possession of mankind."</p>
+      <cite>Theodorus Gaza</cite>
     </div>
 
-    <div id="dog-prompt">
-      <p>Press <strong>E</strong> to pet Ivy</p>
-    </div>
+    <p id="dog-prompt" class="prompt"><kbd>E</kbd> Pet Ivy</p>
+    <p id="credits-prompt" class="prompt"><kbd>E</kbd> Read the credits</p>
+    <p id="fire-prompt" class="prompt"><kbd>E</kbd> Sit by the fire</p>
+    <p id="get-up-prompt" class="prompt"><kbd>E</kbd> Get up</p>
+    <p id="projector-prompt" class="prompt"><kbd>E</kbd> Next slide</p>
+    <p id="link-prompt" class="prompt"><kbd>E</kbd> <span></span></p>
 
-    <div id="slide-prompt">
-      <p>Click projector to change slide</p>
-    </div>
-
-    <div id="credits-prompt">
-      <p>Press <strong>E</strong> to view credits</p>
-    </div>
-
-    <div id="bookshelf-prompt">
-      <p>Press <strong>E</strong> to browse</p>
-    </div>
-
-    <!-- Quick link to website -->
-    <a id="website-link" href="https://pot.rexchoppers.com" target="_blank" title="Visit Website">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <a id="website-link" class="corner-button" href="https://pot.rexchoppers.com" target="_blank" title="Visit website" aria-label="Visit website">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="2" y1="12" x2="22" y2="12"></line>
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
@@ -97,7 +87,14 @@
     </a>
 
     <div id="crosshair"></div>
-    <div id="screen-fade"></div>
+
+    <div id="screen-fade">
+      <div>
+        <h1 id="portal-name"></h1>
+        <p id="portal-note"></p>
+      </div>
+    </div>
+
     <canvas id="canvas"></canvas>
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Collisions } from '../environment/Collisions';
 import { Terrain } from '../environment/Terrain';
 
 interface Leg {
@@ -9,11 +10,21 @@ interface Leg {
 }
 
 export class Dog {
+  private static readonly BODY_RADIUS = 0.5;
+  private static readonly STEP_HEIGHT = 0.35;
+  private static readonly CATCH_UP_DISTANCE = 30;
+
+  // Following. The player walks at about 6 and sprints at about 12.5.
+  private static readonly START_FOLLOWING = 5.5;
+  private static readonly STOP_FOLLOWING = 3.4;
+  private static readonly TROT_SPEED = 6.5;
+  private static readonly RUN_SPEED = 15;
+  private static readonly ACCELERATION = 14;
+  private static readonly BRAKING = 18;
+  private static readonly SIT_AFTER_SECONDS = 3.5;
+
   public mesh: THREE.Group;
   public name: string;
-
-  private targetPosition: THREE.Vector3 = new THREE.Vector3();
-  private velocity: THREE.Vector3 = new THREE.Vector3();
 
   // Body parts for animation
   //@ts-ignore
@@ -40,16 +51,15 @@ export class Dog {
   // Animation state
   private isMoving: boolean = false;
   private walkCycle: number = 0;
-  //@ts-ignore
-  private targetWalkCycle: number = 0;
   private animationBlend: number = 0;
   private tailWag: number = 0;
   private currentSpeed: number = 0;
 
-  // Movement settings
-  private followDistance: number = 4;
-  private moveSpeed: number = 35;
-  private runSpeed: number = 55;
+  private runBlend: number = 0;
+  private sitBlend: number = 0;
+  private idleSeconds: number = 0;
+  private isFollowing: boolean = false;
+  private isTurningOnTheSpot: boolean = false;
 
   // Interaction state
   private isPetted: boolean = false;
@@ -98,7 +108,6 @@ export class Dog {
     const bodyGeo = new THREE.BoxGeometry(1.2, 0.8, 1.8);
     const bodyMesh = new THREE.Mesh(bodyGeo, furMaterial);
     bodyMesh.position.y = 0.9;
-    bodyMesh.castShadow = true;
     this.spine.add(bodyMesh);
 
     // Chest/shoulders
@@ -131,7 +140,6 @@ export class Dog {
     // Head mesh
     const headGeo = new THREE.BoxGeometry(0.8, 0.65, 0.75);
     const headMesh = new THREE.Mesh(headGeo, furMaterial);
-    headMesh.castShadow = true;
     this.head.add(headMesh);
 
     // Snout
@@ -200,7 +208,38 @@ export class Dog {
     this.spine.add(this.backRightLeg.group);
 
     // Scale the whole dog
-    this.mesh.scale.set(0.7, 0.7, 0.7);
+    this.mesh.scale.set(0.62, 0.62, 0.62);
+
+    this.mesh.add(this.createContactShadow());
+  }
+
+  // The world's shadow map is drawn once, so anything that moves brings its own soft shadow.
+  private createContactShadow(): THREE.Mesh {
+    const shadow = new THREE.Mesh(
+      new THREE.CircleGeometry(1, 20),
+      new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec2 vUv;
+          void main() {
+            float fade = 1.0 - smoothstep(0.2, 1.0, length(vUv - 0.5) * 2.0);
+            gl_FragColor = vec4(0.0, 0.0, 0.0, 0.5 * fade);
+          }
+        `,
+      })
+    );
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.scale.set(0.95, 1.5, 1);
+    shadow.position.y = 0.04;
+    return shadow;
   }
 
   //@ts-ignore
@@ -250,59 +289,73 @@ export class Dog {
     this.pettedTimer = 2; // 2 seconds of happy response
   }
 
-  public update(delta: number, playerPosition: THREE.Vector3, flatRadius: number = 40): void {
-    // Calculate direction to player
-    this.targetPosition.copy(playerPosition);
-    this.targetPosition.y = 0;
+  public update(delta: number, playerPosition: THREE.Vector3): void {
+    const position = this.mesh.position;
 
-    const currentFlat = new THREE.Vector3(this.mesh.position.x, 0, this.mesh.position.z);
-    const distanceToPlayer = currentFlat.distanceTo(this.targetPosition);
-
-    // Determine movement state
-    const shouldMove = distanceToPlayer > this.followDistance;
-    const shouldRun = distanceToPlayer > this.followDistance * 2.5;
-
-    // Smooth animation blend
-    const targetBlend = shouldMove ? 1 : 0;
-    this.animationBlend += (targetBlend - this.animationBlend) * delta * 5;
-
-    if (shouldMove) {
-      this.isMoving = true;
-
-      const direction = new THREE.Vector3()
-        .subVectors(this.targetPosition, currentFlat)
-        .normalize();
-
-      // Smooth speed transitions
-      const targetSpeed = shouldRun ? this.runSpeed : this.moveSpeed;
-      this.currentSpeed += (targetSpeed - this.currentSpeed) * delta * 3;
-
-      // Apply movement
-      this.velocity.x = direction.x * this.currentSpeed;
-      this.velocity.z = direction.z * this.currentSpeed;
-
-      this.mesh.position.x += this.velocity.x * delta;
-      this.mesh.position.z += this.velocity.z * delta;
-
-      // Smooth rotation
-      const targetAngle = Math.atan2(direction.x, direction.z);
-      let angleDiff = targetAngle - this.mesh.rotation.y;
-
-      // Normalize angle difference
-      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-
-      this.mesh.rotation.y += angleDiff * delta * 6;
-    } else {
-      this.isMoving = false;
-      this.currentSpeed *= 0.9;
-      this.velocity.x *= 0.9;
-      this.velocity.z *= 0.9;
+    // She has no pathfinding, so if something big traps her she catches up on her own.
+    if (Math.hypot(playerPosition.x - position.x, playerPosition.z - position.z) > Dog.CATCH_UP_DISTANCE) {
+      position.x = playerPosition.x + 2;
+      position.z = playerPosition.z + 2;
+      this.currentSpeed = 0;
     }
 
-    // Update Y position based on terrain
-    const terrainY = Terrain.getTerrainHeight(this.mesh.position.x, this.mesh.position.z, flatRadius);
-    this.mesh.position.y = terrainY;
+    const toPlayerX = playerPosition.x - position.x;
+    const toPlayerZ = playerPosition.z - position.z;
+    const distance = Math.hypot(toPlayerX, toPlayerZ);
+
+    // Separate start and stop distances keep her from flickering between walking and standing.
+    if (distance > Dog.START_FOLLOWING) this.isFollowing = true;
+    else if (distance < Dog.STOP_FOLLOWING) this.isFollowing = false;
+
+    let turn = Math.atan2(toPlayerX, toPlayerZ) - this.mesh.rotation.y;
+    while (turn > Math.PI) turn -= Math.PI * 2;
+    while (turn < -Math.PI) turn += Math.PI * 2;
+
+    // She gets up before she moves, keeps up with the player, eases off on arrival,
+    // and slows for sharp turns instead of sliding sideways.
+    let targetSpeed = 0;
+    if (this.isFollowing && this.sitBlend < 0.25) {
+      const pace = Math.min(Dog.RUN_SPEED, Dog.TROT_SPEED + Math.max(0, distance - 7) * 1.6);
+      const arriving = (distance - Dog.STOP_FOLLOWING) * 2.5 + 1;
+      const alignment = Math.max(0.3, Math.cos(Math.min(Math.abs(turn), Math.PI / 2)));
+      targetSpeed = Math.min(pace, arriving) * alignment;
+    }
+    const change = targetSpeed - this.currentSpeed;
+    const maxChange = (change > 0 ? Dog.ACCELERATION : Dog.BRAKING) * delta;
+    this.currentSpeed += THREE.MathUtils.clamp(change, -maxChange, maxChange);
+    this.isMoving = this.currentSpeed > 0.3;
+
+    // When standing still she only shuffles round once the player has moved well out of view.
+    const turnLimit = this.sitBlend > 0.5 ? 1.7 : 0.9;
+    if (Math.abs(turn) > turnLimit) this.isTurningOnTheSpot = !this.isFollowing;
+    else if (Math.abs(turn) < 0.2 || this.isFollowing) this.isTurningOnTheSpot = false;
+
+    if (this.isFollowing || this.isMoving || this.isTurningOnTheSpot) {
+      const turnRate = this.isTurningOnTheSpot ? 2.5 : this.currentSpeed > 9 ? 3.5 : 5;
+      this.mesh.rotation.y += THREE.MathUtils.clamp(turn, -turnRate * delta, turnRate * delta);
+    }
+
+    // She moves the way she faces.
+    position.x += Math.sin(this.mesh.rotation.y) * this.currentSpeed * delta;
+    position.z += Math.cos(this.mesh.rotation.y) * this.currentSpeed * delta;
+
+    Collisions.resolve(position, Dog.BODY_RADIUS, position.y, Dog.STEP_HEIGHT);
+    position.y = Math.max(
+      Terrain.getHeight(position.x, position.z),
+      Collisions.surfaceAt(position.x, position.z, position.y, Dog.STEP_HEIGHT)
+    );
+
+    // Sits down after a few seconds of standing still.
+    const isIdle = !this.isFollowing && !this.isMoving && !this.isTurningOnTheSpot;
+    this.idleSeconds = isIdle ? this.idleSeconds + delta : 0;
+    const sitTarget = this.idleSeconds > Dog.SIT_AFTER_SECONDS ? 1 : 0;
+    const sitRate = sitTarget > this.sitBlend ? 2.5 : 5;
+    this.sitBlend += THREE.MathUtils.clamp(sitTarget - this.sitBlend, -sitRate * delta, sitRate * delta);
+
+    // Legs follow her actual speed, so they never run ahead of her body.
+    const legTarget = Math.max(Math.min(this.currentSpeed / 2.5, 1), this.isTurningOnTheSpot ? 0.4 : 0);
+    this.animationBlend += (legTarget - this.animationBlend) * Math.min(delta * 8, 1);
+    this.runBlend = THREE.MathUtils.smoothstep(this.currentSpeed, 7, 12);
 
     // Update petted timer
     if (this.isPetted) {
@@ -315,90 +368,62 @@ export class Dog {
 
     // Run all animations
     this.animateWalk(delta);
-    this.animateBody(delta);
+    this.animateBody();
     this.animateTail(delta);
     this.animateHead(delta, playerPosition);
   }
 
   private animateWalk(delta: number): void {
-    // Animation speed based on movement speed
-    const cycleSpeed = 8 + (this.currentSpeed / this.moveSpeed) * 6;
-    this.walkCycle += delta * cycleSpeed * this.animationBlend;
+    this.walkCycle += delta * (6 + this.currentSpeed * 0.9) * Math.min(this.animationBlend * 2, 1);
 
-    // Gait phases - diagonal pairs move together
     const phase = this.walkCycle;
-    const blend = this.animationBlend;
+    const run = this.runBlend;
 
-    // Front left & Back right (diagonal pair 1)
-    this.animateLeg(this.frontLeftLeg, phase, blend, true);
-    this.animateLeg(this.backRightLeg, phase, blend, false);
-
-    // Front right & Back left (diagonal pair 2, offset by half cycle)
-    this.animateLeg(this.frontRightLeg, phase + Math.PI, blend, true);
-    this.animateLeg(this.backLeftLeg, phase + Math.PI, blend, false);
+    // Walking moves diagonal pairs together. Running gathers front legs and back legs into a bound.
+    this.animateLeg(this.frontLeftLeg, phase, true);
+    this.animateLeg(this.frontRightLeg, phase + THREE.MathUtils.lerp(Math.PI, 0.5, run), true);
+    this.animateLeg(this.backLeftLeg, phase + Math.PI, false);
+    this.animateLeg(this.backRightLeg, phase + THREE.MathUtils.lerp(0, Math.PI + 0.5, run), false);
   }
 
-  private animateLeg(leg: Leg, phase: number, blend: number, isFront: boolean): void {
-    // Create a more natural stepping motion
-    const sinPhase = Math.sin(phase);
-    const cosPhase = Math.cos(phase);
+  private animateLeg(leg: Leg, phase: number, isFront: boolean): void {
+    const blend = this.animationBlend;
+    const stride = THREE.MathUtils.lerp(0.42, 0.85, this.runBlend);
 
-    // Upper leg (hip rotation)
-    // Forward swing when sin is positive, backward when negative
-    const hipSwing = sinPhase * 0.35 * blend;
-
-    // Add slight lift during forward swing
-    const hipLift = Math.max(0, cosPhase) * 0.1 * blend;
-
-    leg.upper.rotation.x = hipSwing;
-    leg.upper.rotation.z = hipLift * (leg.group.position.x > 0 ? -1 : 1);
-
-    // Lower leg (knee bend)
-    // Bend more during the lift phase of the stride
-    const liftPhase = Math.max(0, -cosPhase);
-    const kneeBend = liftPhase * 0.6 * blend;
-
-    // Add slight extension during push-off
-    const pushOff = Math.max(0, -sinPhase) * 0.15 * blend;
-
-    leg.lower.rotation.x = kneeBend - pushOff;
-
-    // Back legs have slightly different mechanics
+    // The hip swings the leg forward while the knee lifts it, then pushes back with the leg straight.
+    const lift = Math.max(0, -Math.cos(phase));
+    const push = Math.max(0, -Math.sin(phase));
+    let hip = Math.sin(phase) * stride * blend + 0.05 * (1 - blend);
+    let knee = lift * THREE.MathUtils.lerp(0.65, 1.05, this.runBlend) * blend - push * 0.15 * blend + 0.15 * (1 - blend);
     if (!isFront) {
-      leg.upper.rotation.x *= 0.9;
-      leg.lower.rotation.x += 0.1 * blend; // Back legs stay slightly more bent
+      hip *= 0.9;
+      knee += 0.1 * blend;
     }
 
-    // Idle pose - slight natural bend
-    const idleBlend = 1 - blend;
-    leg.upper.rotation.x += 0.05 * idleBlend;
-    leg.lower.rotation.x += 0.15 * idleBlend;
+    // Sitting: front legs stay straight under the chest, back legs fold beneath her.
+    const sit = this.sitBlend;
+    leg.upper.rotation.x = THREE.MathUtils.lerp(hip, isFront ? 0.55 : -1.25, sit);
+    leg.lower.rotation.x = THREE.MathUtils.lerp(knee, isFront ? 0 : 1.6, sit);
+    leg.upper.rotation.z = Math.max(0, Math.cos(phase)) * 0.08 * blend * (leg.group.position.x > 0 ? -1 : 1);
   }
 
-  //@ts-ignore
-  private animateBody(delta: number): void {
+  private animateBody(): void {
     const blend = this.animationBlend;
+    const run = this.runBlend;
+    const sit = this.sitBlend;
 
-    // Body bob - twice per walk cycle (each step)
-    const bobPhase = this.walkCycle * 2;
-    const bob = Math.abs(Math.sin(bobPhase)) * 0.03 * blend;
-    this.body.position.y = bob;
+    // Bobs with each step, and more on a run. A petted dog bounces.
+    const bobPhase = this.walkCycle * (run > 0.5 ? 1 : 2);
+    const happyBounce = this.isPetted ? Math.abs(Math.sin(this.tailWag * 0.5)) * 0.06 : 0;
+    this.body.position.y = Math.abs(Math.sin(bobPhase)) * THREE.MathUtils.lerp(0.03, 0.12, run) * blend + happyBounce;
+    this.body.position.x = Math.sin(this.walkCycle) * 0.02 * blend * (1 - run);
+    this.body.rotation.z = Math.sin(this.walkCycle) * 0.03 * blend * (1 - run);
 
-    // Subtle side-to-side sway
-    const sway = Math.sin(this.walkCycle) * 0.02 * blend;
-    this.body.position.x = sway;
-
-    // Spine flex - subtle s-curve motion
-    const spinePhase = this.walkCycle;
-    this.spine.rotation.y = Math.sin(spinePhase) * 0.04 * blend;
-
-    // Slight pitch during movement
-    const pitch = Math.sin(bobPhase) * 0.02 * blend;
-    this.spine.rotation.x = pitch;
-
-    // Body roll with steps
-    const roll = Math.sin(this.walkCycle) * 0.03 * blend;
-    this.body.rotation.z = roll;
+    // Her spine sways on a walk and flexes on a run. Sitting tips her back onto her haunches.
+    this.spine.rotation.y = Math.sin(this.walkCycle) * 0.04 * blend * (1 - run);
+    const flex = Math.sin(this.walkCycle) * THREE.MathUtils.lerp(0.02, 0.13, run) * blend;
+    this.spine.rotation.x = THREE.MathUtils.lerp(flex, -0.55, sit);
+    this.spine.position.z = sit * 0.5;
   }
 
   private animateTail(delta: number): void {
@@ -432,7 +457,7 @@ export class Dog {
     // Neck extends forward slightly when moving
     const neckForward = blend * 0.1;
     this.neck.position.z = 1.1 + neckForward;
-    this.neck.rotation.x = blend * 0.15;
+    this.neck.rotation.x = blend * 0.15 + this.sitBlend * 0.55;
 
     if (!this.isMoving) {
       // Look at player when idle
