@@ -33,7 +33,7 @@ SKY_PREVIEW = os.path.join(ROOT, "blender", ".preview", "sky_composite_articles.
 
 SEED = 20261501
 
-# Inkwell's colours from src/config/planets.ts.
+# Inkwell's colours. Sky, ambient, and moon match src/config/planets.ts.
 GROUND = kit.linear(0x2a2a3a)
 SKY = kit.linear(0x0f0f1a)
 AMBIENT = kit.linear(0x50507e)

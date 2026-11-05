@@ -32,7 +32,7 @@ SKY_PREVIEW = os.path.join(ROOT, "blender", ".preview", "sky_composite_education
 
 SEED = 20261401
 
-# Haven's colours from src/config/planets.ts.
+# Haven's colours. Sky, ambient, and moon match src/config/planets.ts.
 GROUND = kit.linear(0x4a4a3a)
 SKY = kit.linear(0x1e1e28)
 AMBIENT = kit.linear(0x50506a)

@@ -37,7 +37,7 @@ LOGO_ATLAS = os.path.join(ROOT, "src", "assets", "worlds", "grove", "logos.webp"
 
 SEED = 20261301
 
-# Grove's colours from src/config/planets.ts.
+# Grove's colours. Sky, ambient, and moon match src/config/planets.ts.
 GROUND = kit.linear(0x1a3a4a)
 SKY = kit.linear(0x0a1628)
 AMBIENT = kit.linear(0x16637c)

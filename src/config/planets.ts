@@ -1,7 +1,6 @@
 export interface PlanetConfig {
   name: string;
   section: string;
-  groundColor: number;
   skyColor: number;
   ambientColor: number;
   lightColor: number;
@@ -14,7 +13,6 @@ export const planets: Record<string, PlanetConfig> = {
   home: {
     name: 'Hearth',
     section: 'Welcome',
-    groundColor: 0x3d5c3d,
     skyColor: 0x12131f,
     ambientColor: 0x404060,
     lightColor: 0xffffff,
@@ -25,7 +23,6 @@ export const planets: Record<string, PlanetConfig> = {
   story: {
     name: 'Chronicle',
     section: 'My Story',
-    groundColor: 0x4a3728,
     skyColor: 0x1d1233,
     ambientColor: 0x5a4266,
     lightColor: 0xffccaa,
@@ -36,7 +33,6 @@ export const planets: Record<string, PlanetConfig> = {
   skills: {
     name: 'Grove',
     section: 'Skills',
-    groundColor: 0x1a3a4a,
     skyColor: 0x0a1628,
     ambientColor: 0x16637c,
     lightColor: 0x80dfff,
@@ -47,7 +43,6 @@ export const planets: Record<string, PlanetConfig> = {
   education: {
     name: 'Haven',
     section: 'Education',
-    groundColor: 0x4a4a3a,
     skyColor: 0x1e1e28,
     ambientColor: 0x50506a,
     lightColor: 0xffffee,
@@ -58,7 +53,6 @@ export const planets: Record<string, PlanetConfig> = {
   articles: {
     name: 'Inkwell',
     section: 'Articles',
-    groundColor: 0x2a2a3a,
     skyColor: 0x0f0f1a,
     ambientColor: 0x50507e,
     lightColor: 0xaaaaff,
@@ -69,7 +63,6 @@ export const planets: Record<string, PlanetConfig> = {
   projects: {
     name: 'Workshop',
     section: 'Projects',
-    groundColor: 0x3a2020,
     skyColor: 0x1a0a0a,
     ambientColor: 0x6a4030,
     lightColor: 0xffaa66,

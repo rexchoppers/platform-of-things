@@ -32,7 +32,7 @@ SKY_PREVIEW = os.path.join(ROOT, "blender", ".preview", "sky_composite_story.exr
 
 SEED = 20261201
 
-# Chronicle's colours from src/config/planets.ts.
+# Chronicle's colours. Sky, ambient, and moon match src/config/planets.ts.
 GROUND = kit.linear(0x4a3728)
 SKY = kit.linear(0x1d1233)
 AMBIENT = kit.linear(0x5a4266)

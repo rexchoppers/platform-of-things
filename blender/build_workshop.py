@@ -33,7 +33,7 @@ SKY_PREVIEW = os.path.join(ROOT, "blender", ".preview", "sky_composite_projects.
 
 SEED = 20261601
 
-# Workshop's colours from src/config/planets.ts.
+# Workshop's colours. Sky, ambient, and moon match src/config/planets.ts.
 GROUND = kit.linear(0x3a2020)
 SKY = kit.linear(0x1a0a0a)
 AMBIENT = kit.linear(0x6a4030)
