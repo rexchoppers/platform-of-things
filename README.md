@@ -6,7 +6,7 @@ A 3D interactive portfolio website built with Three.js. Explore different worlds
 
 Platform of Things is a first-person exploration experience where each section of a traditional portfolio is a world to walk around.
 
-The worlds are being rebuilt in Blender, one at a time. Hearth, a campsite in a forest clearing, Chronicle, an open-air cinema showing my story, and Grove, a night garden with my skills floating over flower beds, are done. Everything from the previous version is in [`archive/`](archive/README.md), ready to bring back.
+The worlds are being rebuilt in Blender, one at a time. Hearth, a campsite in a forest clearing, Chronicle, an open-air cinema showing my story, Grove, a night garden with my skills floating over flower beds, and Haven, a graduation stage with my qualifications on the big board, are done. Everything from the previous version is in [`archive/`](archive/README.md), ready to bring back.
 
 ## Controls
 
