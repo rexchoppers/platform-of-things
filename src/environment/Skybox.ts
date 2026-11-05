@@ -17,6 +17,7 @@ const blackTexture = (): THREE.DataTexture => {
 };
 
 export class Skybox {
+  public readonly texturesLoaded: Promise<unknown>;
   private readonly mesh: THREE.Mesh;
   private readonly uniforms: Record<string, THREE.IUniform>;
 
@@ -167,30 +168,49 @@ export class Skybox {
     );
     this.mesh.renderOrder = -1;
 
-    this.loadTextures();
+    this.texturesLoaded = this.loadTextures();
   }
 
-  private loadTextures(): void {
+  private loadTextures(): Promise<unknown> {
     const loader = new THREE.TextureLoader();
-    loader.load(nightSkyUrl, (texture) => {
-      // Mipmaps would draw a seam where the longitude wraps.
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.generateMipmaps = false;
-      texture.minFilter = THREE.LinearFilter;
-      this.uniforms.galaxyMap.value = texture;
-    });
-    loader.load(cloudsUrl, (texture) => {
-      texture.colorSpace = THREE.NoColorSpace;
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      this.uniforms.cloudMap.value = texture;
-    });
-    loader.load(moonUrl, (texture) => {
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.anisotropy = 4;
-      this.uniforms.moonMap.value = texture;
-    });
+    // A texture that fails leaves that part of the sky black, and the game still starts.
+    const load = (url: string, setUp: (texture: THREE.Texture) => void): Promise<void> =>
+      new Promise((resolve) => {
+        loader.load(
+          url,
+          (texture) => {
+            setUp(texture);
+            resolve();
+          },
+          undefined,
+          () => {
+            console.error(`Failed to load sky texture ${url}`);
+            resolve();
+          }
+        );
+      });
+
+    return Promise.all([
+      load(nightSkyUrl, (texture) => {
+        // Mipmaps would draw a seam where the longitude wraps.
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.generateMipmaps = false;
+        texture.minFilter = THREE.LinearFilter;
+        this.uniforms.galaxyMap.value = texture;
+      }),
+      load(cloudsUrl, (texture) => {
+        texture.colorSpace = THREE.NoColorSpace;
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        this.uniforms.cloudMap.value = texture;
+      }),
+      load(moonUrl, (texture) => {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = 4;
+        this.uniforms.moonMap.value = texture;
+      }),
+    ]);
   }
 
   public getMesh(): THREE.Mesh {

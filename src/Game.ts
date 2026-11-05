@@ -2,12 +2,16 @@ import * as THREE from 'three';
 import { SceneManager } from './core/SceneManager';
 import { PlayerController } from './core/PlayerController';
 import { Skybox } from './environment/Skybox';
+import { getLoadProgress } from './environment/WorldAssets';
 import { ShootingStars } from './environment/ShootingStars';
 import { WorldEntered, WorldManager } from './systems/WorldManager';
 import { Interactions } from './systems/Interactions';
 import { Dog } from './objects/Dog';
 import { MusicSystem } from './systems/MusicSystem';
 import { UIManager } from './ui/UIManager';
+
+const FIRST_WORLD = 'home';
+const PROGRESS_MS = 100;
 
 export class Game {
   private readonly sceneManager = new SceneManager();
@@ -59,11 +63,14 @@ export class Game {
   }
 
   public async start(): Promise<void> {
-    this.uiManager.setLoading(true);
-    await this.worldManager.start('home');
+    // Waits for the sky as well, so it can't pop in after you've started.
+    this.uiManager.setLoading(0);
+    const showProgress = window.setInterval(() => this.uiManager.setLoading(getLoadProgress(FIRST_WORLD)), PROGRESS_MS);
+    await Promise.all([this.worldManager.start(FIRST_WORLD), this.skybox.texturesLoaded]);
+    window.clearInterval(showProgress);
     this.animate();
     this.isWorldReady = true;
-    this.uiManager.setLoading(false);
+    this.uiManager.setReady();
   }
 
   private onWorldEntered({ manifest, slideshow, isFirstWorld }: WorldEntered): void {

@@ -1,6 +1,10 @@
 import { PlanetConfig } from '../config/planets';
 import profileImage from '../assets/profile.jpeg';
 
+// Stops at 99%, because everything has to be ready before this text goes away.
+const loadingText = (arrived: number): string =>
+  arrived > 0 ? `Loading ${Math.min(Math.floor(arrived * 100), 99)}%` : 'Loading';
+
 export class UIManager {
   public readonly instructions = document.getElementById('instructions')!;
   public readonly statsScreen = document.getElementById('stats-screen')!;
@@ -27,8 +31,12 @@ export class UIManager {
     });
   }
 
-  public setLoading(isLoading: boolean): void {
-    this.startPrompt.textContent = isLoading ? 'Loading' : 'Click to start';
+  public setLoading(arrived: number): void {
+    this.startPrompt.textContent = loadingText(arrived);
+  }
+
+  public setReady(): void {
+    this.startPrompt.textContent = 'Click to start';
   }
 
   public setPaused(isPaused: boolean): void {
@@ -40,10 +48,18 @@ export class UIManager {
     }
   }
 
-  public showPortalMessage(worldName: string, note: string): void {
+  public showPortalMessage(worldName: string): void {
     this.portalName.textContent = worldName;
-    this.portalNote.textContent = note;
+    this.portalNote.textContent = '';
     this.screenFade.classList.add('visible');
+  }
+
+  public setPortalLoading(arrived: number): void {
+    this.portalNote.textContent = loadingText(arrived);
+  }
+
+  public setPortalNote(note: string): void {
+    this.portalNote.textContent = note;
   }
 
   public hidePortalMessage(): void {

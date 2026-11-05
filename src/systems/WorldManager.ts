@@ -10,7 +10,7 @@ import { FloatingLogos } from '../environment/FloatingLogos';
 import { ProjectorBeam } from '../environment/ProjectorBeam';
 import { MOON_DIRECTION, Skybox } from '../environment/Skybox';
 import { Terrain } from '../environment/Terrain';
-import { hasWorld, loadWorld, preloadWorlds, updateWorldAnimation, WorldManifest } from '../environment/WorldAssets';
+import { getLoadProgress, loadWorld, preloadWorlds, updateWorldAnimation, WorldManifest } from '../environment/WorldAssets';
 import { PlayerController } from '../core/PlayerController';
 import { PortalData, Portals } from './Portals';
 import { Slideshow } from './Slideshow';
@@ -23,7 +23,8 @@ const SHADOW_REACH = 75; // Half the width of the area the moon's shadow map cov
 const RETURN_DISTANCE = 4.5; // How far in front of a tent's door you stand when you leave it
 const FADE_MS = 450;
 const HOLD_MS = 500;
-const UNBUILT_HOLD_MS = 1700;
+const FAILED_HOLD_MS = 1700; // Long enough to read why you're still here
+const PROGRESS_MS = 100;
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => window.setTimeout(resolve, ms));
 
@@ -194,22 +195,27 @@ export class WorldManager {
     this.isTraveling = true;
     this.player.setFrozen(true);
 
-    const canEnter = hasWorld(portal.world);
-    this.ui.showPortalMessage(planets[portal.world].name, canEnter ? '' : 'Still being built');
+    this.ui.showPortalMessage(planets[portal.world].name);
     await wait(FADE_MS);
 
-    if (canEnter) {
-      try {
-        await this.enter(portal.world, leaving.id);
-      } catch (error) {
-        console.error(`Failed to load world "${portal.world}"`, error);
-        this.placeOutside(portal);
-      }
-    } else {
+    // Worlds download in the background, so this only shows if you beat one there.
+    const showProgress = window.setInterval(() => {
+      const arrived = getLoadProgress(portal.world);
+      if (arrived < 1) this.ui.setPortalLoading(arrived);
+    }, PROGRESS_MS);
+    let hold = HOLD_MS;
+    try {
+      await this.enter(portal.world, leaving.id);
+      this.ui.setPortalNote('');
+    } catch (error) {
+      console.error(`Failed to load world "${portal.world}"`, error);
       this.placeOutside(portal);
+      this.ui.setPortalNote("Couldn't load. Try again in a moment.");
+      hold = FAILED_HOLD_MS;
     }
+    window.clearInterval(showProgress);
 
-    await wait(canEnter ? HOLD_MS : UNBUILT_HOLD_MS);
+    await wait(hold);
     this.ui.hidePortalMessage();
     await wait(FADE_MS);
     this.player.setFrozen(false);

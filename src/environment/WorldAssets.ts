@@ -194,8 +194,11 @@ async function loadHeights(url: string, manifest: WorldManifest): Promise<Height
   return { size, resolution, data };
 }
 
-export function hasWorld(worldId: string): boolean {
-  return worldId in SOURCES;
+// How much of each world has arrived, from 0 to 1. The model is nearly all of a world's download.
+const progress = new Map<string, number>();
+
+export function getLoadProgress(worldId: string): number {
+  return progress.get(worldId) ?? 0;
 }
 
 // Each world downloads once, and stays ready for the rest of the visit.
@@ -219,10 +222,14 @@ export function preloadWorlds(): void {
 
 async function fetchWorld(worldId: string): Promise<LoadedWorld> {
   const source = SOURCES[worldId];
+  progress.set(worldId, 0);
   const [gltf, heightfield] = await Promise.all([
-    new GLTFLoader().loadAsync(source.modelUrl),
+    new GLTFLoader().loadAsync(source.modelUrl, (event) => {
+      if (event.total > 0) progress.set(worldId, Math.min(event.loaded / event.total, 1));
+    }),
     loadHeights(source.heightsUrl, source.manifest),
   ]);
   prepareMeshes(gltf.scene);
+  progress.set(worldId, 1);
   return { root: gltf.scene, heightfield, manifest: source.manifest };
 }
