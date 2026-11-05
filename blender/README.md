@@ -13,10 +13,14 @@ Worlds are built in Blender and exported to `src/assets/worlds/<name>/`. The gam
 | `build_grove.py` | Regenerates `grove.blend` from scratch. This overwrites hand edits. |
 | `worlds/haven.blend` | Haven's stage, seats, forest, and ground cover. |
 | `build_haven.py` | Regenerates `haven.blend` from scratch. This overwrites hand edits. |
+| `worlds/inkwell.blend` | Inkwell's library, forest, and ground cover. |
+| `build_inkwell.py` | Regenerates `inkwell.blend` from scratch. This overwrites hand edits. |
+| `worlds/workshop.blend` | Workshop's forge, project benches, forest, and ground cover. |
+| `build_workshop.py` | Regenerates `workshop.blend` from scratch. This overwrites hand edits. Add projects to its `PROJECTS` list, and they replace the Coming Soon signs. |
 | `build_logos.py` | Packs `logos/*.svg` into `src/assets/worlds/grove/logos.webp`, and writes `logos/atlas.json`. Needs `rsvg-convert`. |
 | `build_sky.py` | Regenerates `sky.blend` and bakes `src/assets/sky/`. |
 | `export_world.py` | Exports an open `.blend` into the game's assets. |
-| `hearth_props.py`, `chronicle_props.py`, `grove_props.py`, `haven_props.py` | Each world's items: cabin, projector, flower beds, stage, and so on. |
+| `hearth_props.py`, `chronicle_props.py`, `grove_props.py`, `haven_props.py`, `inkwell_props.py`, `workshop_props.py` | Each world's items: cabin, projector, flower beds, stage, bookshelves, forge, and so on. |
 | `landscape.py` | Forest, ground cover, painted ground, terrain, portal tents, and previews that worlds share. |
 | `kit.py` | Shared colours, models, placement, and preview code for world scripts. |
 
@@ -32,7 +36,7 @@ Worlds are built in Blender and exported to `src/assets/worlds/<name>/`. The gam
   --python blender/export_world.py -- hearth
 ```
 
-For Chronicle, open `chronicle.blend` and export with `-- chronicle`. For Grove, open `grove.blend` and export with `-- grove`. For Haven, open `haven.blend` and export with `-- haven`.
+For Chronicle, open `chronicle.blend` and export with `-- chronicle`. For Grove, open `grove.blend` and export with `-- grove`. For Haven, open `haven.blend` and export with `-- haven`. For Inkwell, open `inkwell.blend` and export with `-- inkwell`. For Workshop, open `workshop.blend` and export with `-- workshop`.
 
 ## Move the spawn point or fire
 
@@ -47,6 +51,8 @@ Move these Empties in Blender, then export:
 - `Logo.*` set where Grove's floating skill logos hang. `uv`, `width`, `height`, and `colour` properties set which logo it is, its size, and its glow.
 - `Aurora` sets Grove's aurora: which way it lies, how far away it hangs, and how high its base is.
 - `Confetti` sets the middle of the lowest level Haven's confetti falls to.
+- `Constellation` sets the middle of the band of letters over Inkwell.
+- `Link.*` set where pressing E opens a page, with `label` and `url` properties for what the prompt says and what it opens. Move one along with its shelf or bench.
 - `DogStart` sets where Ivy starts. `CreditsSign` sets where the credits prompt appears, so move it along with the sign.
 
 The `walk_radius` custom property on `Spawn` sets how far from the centre the player can walk.
