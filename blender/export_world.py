@@ -10,7 +10,7 @@ Writes to src/assets/worlds/<name>/:
     world.glb       Terrain and everything on it, instanced with EXT_mesh_gpu_instancing
     heights.bin     Little-endian Float32 grid sampled from the Terrain object
     manifest.json   Heightfield size, collision shapes, and marker Empties such as Spawn, DogStart,
-                    Portal.*, FirePoint, Screen, Aurora, Logo.*, and any Empty with a light_candela property
+                    Portal.*, FirePoint, Screen, Aurora, Confetti, Logo.*, and any Empty with a light_candela property
 """
 
 import json
@@ -34,11 +34,13 @@ SOLID_GROUPS = ("Campsite", "Props", "Deadwood", "Rocks", "TreesHero", "TreesMid
 # Too small to trip over, or not on the ground.
 NO_COLLISION = (
     "coffee_cup", "book_stack", "paper_stack", "leash", "dog_toys", "rubber_duck", "stepping_stone",
-    "bird_house", "radio", "light_wire", "fire_logs", "tripod", "clapperboard", "picnic_blanket",
+    "bird_house", "radio", "light_wire", "fire_logs", "tripod", "clapperboard", "picnic_blanket", "aisle_carpet",
 )
 # Uneven tops that would leave the player hovering in mid air.
 NEVER_STAND_ON = ("bicycle", "garden_tools", "bench", "director_chair", "projector", "film_camera")
 TALLEST_TO_STAND_ON = 1.1
+# Taller than that, but with steps leading up.
+ALWAYS_STAND_ON = ("stage_platform", "stage_step")
 SMALLEST_FOOTPRINT = 0.2
 TRUNK_RADIUS = 0.36  # At ground level, for a tree at scale 1
 # Shapes whose outline misleads: tent guy lines, cabin eaves, and so on. Half sizes.
@@ -53,6 +55,7 @@ FOOTPRINT_OVERRIDES = {
     "projector": {"radius": 0.45},
     "film_camera": {"radius": 0.34},
     "stone_plinth": {"radius": 1.4},
+    "banner_pole": {"radius": 0.14},
 }
 
 
@@ -112,6 +115,7 @@ def read_markers():
         "projector": optional_position("Projector"),
         "screen": read_screen(),
         "aurora": optional_position("Aurora"),
+        "confetti": optional_position("Confetti"),
         "logos": [
             {
                 "position": to_game(obj.location),
@@ -178,7 +182,7 @@ def collider_for(obj):
     centre = world @ Vector(((low[0] + high[0]) / 2, (low[1] + high[1]) / 2, 0.0))
     x, _, z = to_game(centre)
     height = high[2] * obj.scale.z
-    can_stand = height <= TALLEST_TO_STAND_ON and not name.startswith(NEVER_STAND_ON)
+    can_stand = (height <= TALLEST_TO_STAND_ON or name.startswith(ALWAYS_STAND_ON)) and not name.startswith(NEVER_STAND_ON)
     top = round(world.translation.z + height, 3) if can_stand else None
 
     if abs(half_x - half_y) < 0.15 * max(half_x, half_y):

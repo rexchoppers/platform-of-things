@@ -66,12 +66,12 @@ def yaw_toward(x, y, target_x, target_y):
     return math.atan2(target_x - x, -(target_y - y))
 
 
-def text_mesh(body, size, material, location, colour=(0.9, 0.9, 0.85)):
+def text_mesh(body, size, material, location, colour=(0.9, 0.9, 0.85), align="CENTER"):
     """Lettering as real geometry, so it stays sharp up close. Faces local -Y."""
     curve = bpy.data.curves.new(f"{body.lower().replace(' ', '_')}_text", "FONT")
     curve.body = body
     curve.size = size
-    curve.align_x = "CENTER"
+    curve.align_x = align
     curve.align_y = "CENTER"
     temporary = bpy.data.objects.new(curve.name, curve)
     bpy.context.scene.collection.objects.link(temporary)
