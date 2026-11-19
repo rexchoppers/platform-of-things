@@ -178,21 +178,7 @@ def add_toolbox(m, x, y, z):
 
 def project_bench(m, variant):
     """A heavy bench with a sign above it. Each variant has different work laid out on top."""
-    top = PALE_WOOD
-    m.box((0, 0, 0.92), (2.6, 0.92, 0.1), top)
-    for x in (-1.15, 1.15):
-        for y in (-0.36, 0.36):
-            m.box((x, y, 0.44), (0.13, 0.13, 0.88), top * 0.72)
-    m.box((0, 0, 0.3), (2.3, 0.7, 0.05), top * 0.62)
-    m.box((0, 0.36, 0.72), (2.3, 0.05, 0.1), top * 0.72)
-
-    # The sign stands on two posts at the back, with a mast in the middle for the string lights.
-    back = 0.5
-    for x in (-1.1, 1.1):
-        m.tube((x, back, -0.05), (x, back, SIGN_HEIGHT + 0.4), 0.06, 0.05, 6, DARK_WOOD * 1.2)
-    m.tube((0, back, SIGN_HEIGHT + 0.3), (0, back, MAST_TOP), 0.03, 0.025, 5, DARK_WOOD * 1.2)
-    m.box((0, back, SIGN_HEIGHT), (2.72, 0.08, 0.76), DARK_WOOD * 1.1)
-
+    bench_frame(m)
     table = 0.97
     if variant == 0:
         add_blueprint(m, -0.55, -0.05, table + 0.004)
@@ -212,8 +198,129 @@ def project_bench(m, variant):
         add_blueprint(m, 0.05, -0.12, table + 0.004)
 
 
+# Trellis: a model of the 47th floor, where a team of agents works at their desks.
+OFFICE_FLOOR = linear(0x5d6470)
+OFFICE_DESK = linear(0xd8d2c4)
+SCREEN = linear(0x1a1a2e) + linear(0x4a7cff) * 0.6
+AGENT = linear(0xd97757)
+MANAGER = linear(0x3a5a8c)
+SKIN = linear(0xe8c4a0)
+VINE = linear(0x2f6b2a)
+VINE_FLOWER = linear(0xf2c94c)
+
+
+def add_mini_desk(m, x, y, z, rng):
+    """A desk the size of a hand, with a glowing screen facing you and an agent hard at work in front of it."""
+    m.box((x, y, z + 0.075), (0.3, 0.14, 0.012), OFFICE_DESK)
+    for dx in (-0.13, 0.13):
+        m.box((x + dx, y, z + 0.035), (0.012, 0.12, 0.07), OFFICE_DESK * 0.6)
+    m.box((x, y + 0.04, z + 0.135), (0.17, 0.012, 0.1), linear(0x1a1a1a))
+    m.box((x, y + 0.033, z + 0.135), (0.15, 0.004, 0.084), SCREEN * float(rng.uniform(0.85, 1.15)), glow=True)
+    m.box((x, y + 0.045, z + 0.09), (0.02, 0.01, 0.03), linear(0x1a1a1a))
+
+    # The agent, on a chair at the front, leaning in to its screen.
+    cy = y - 0.12
+    m.box((x, cy, z + 0.05), (0.09, 0.09, 0.012), linear(0x2a2a2a))
+    m.tube((x, cy, z), (x, cy, z + 0.045), 0.008, 0.008, 4, METAL)
+    m.box((x, cy - 0.045, z + 0.1), (0.09, 0.012, 0.09), linear(0x2a2a2a))
+    m.tube((x, cy, z + 0.055), (x, cy + 0.015, z + 0.14), 0.032, 0.026, 7, AGENT * float(rng.uniform(0.9, 1.1)))
+    m.ball((x, cy + 0.025, z + 0.17), 0.028, SKIN)
+    for side in (-1, 1):
+        m.tube((x + side * 0.03, cy + 0.01, z + 0.125), (x + side * 0.035, y - 0.04, z + 0.085), 0.008, 0.007, 4, AGENT)
+
+
+def add_figure(m, x, y, z, colour, height):
+    m.tube((x - 0.012, y, z), (x - 0.012, y, z + height * 0.45), 0.01, 0.01, 4, linear(0x2a2a2a))
+    m.tube((x + 0.012, y, z), (x + 0.012, y, z + height * 0.45), 0.01, 0.01, 4, linear(0x2a2a2a))
+    m.tube((x, y, z + height * 0.43), (x, y, z + height * 0.82), 0.03, 0.026, 7, colour)
+    m.ball((x, y, z + height * 0.9), 0.028, SKIN)
+
+
+def lattice_lines(left, right, low, high, spacing):
+    """Diagonal slats across a rectangle, both ways, as (start, end) pairs in (x, z)."""
+    lines = []
+    width = right - left
+    for direction in (1, -1):
+        offset = -(high - low)
+        while offset < width:
+            # Points on the line are (left + offset + t, low + t) for one direction, mirrored for the other.
+            t0 = max(0.0, -offset)
+            t1 = min(high - low, width - offset)
+            if t1 - t0 > 0.02:
+                xs = [left + offset + t0, left + offset + t1]
+                if direction < 0:
+                    xs = [right - (x - left) for x in xs]
+                lines.append(((xs[0], low + t0), (xs[1], low + t1)))
+            offset += spacing
+    return lines
+
+
+def add_leaf(m, centre, rng):
+    m.ball(centre, float(rng.uniform(0.035, 0.06)), VINE * float(rng.uniform(0.7, 1.25)), squash=0.45, jitter=0.25)
+
+
+def trellis_bench(m):
+    """Trellis's bench: a model office of agents at work, with a vine climbing a trellis behind it."""
+    bench_frame(m)
+    table = 0.97
+    rng = m.rng
+
+    # The 47th floor, laid on the bench.
+    floor = table + 0.02
+    m.box((0, -0.02, table + 0.01), (2.1, 0.78, 0.02), OFFICE_FLOOR)
+    for x in (-0.66, 0.0, 0.66):
+        add_mini_desk(m, x, 0.12, floor, rng)
+    add_figure(m, 0.36, -0.28, floor, MANAGER, 0.2)  # You, the manager, watching them work
+    m.tube((-0.98, 0.2, floor), (-0.98, 0.2, floor + 0.16), 0.035, 0.03, 8, linear(0xe6eef5), cap=linear(0x6fa8dc))
+    m.tube((0.98, 0.22, floor), (0.98, 0.22, floor + 0.07), 0.04, 0.05, 7, linear(0xa0522d))
+    for _ in range(6):
+        angle = float(rng.uniform(0, math.tau))
+        m.ball((0.98 + math.cos(angle) * 0.03, 0.22 + math.sin(angle) * 0.03, floor + 0.1), 0.04, VINE, squash=0.8, jitter=0.3)
+
+    # The trellis fills the gap between the posts, under the sign, and a vine climbs it.
+    back = 0.5
+    low, high = 1.02, 1.62
+    slat = PALE_WOOD * 1.1
+    for z in (low, high):
+        m.box((0, back, z), (2.2, 0.05, 0.04), DARK_WOOD * 1.2)
+    for (x0, z0), (x1, z1) in lattice_lines(-1.05, 1.05, low, high, 0.22):
+        m.tube((x0, back - 0.01, z0), (x1, back - 0.01, z1), 0.012, 0.012, 4, slat)
+        for _ in range(int(rng.integers(0, 3))):
+            t = float(rng.uniform(0, 1))
+            add_leaf(m, (x0 + (x1 - x0) * t, back - 0.04, z0 + (z1 - z0) * t), rng)
+
+    for post_x in (-1.1, 1.1):
+        for i in range(26):
+            z = 0.1 + i * 0.09
+            angle = i * 1.1 + float(rng.uniform(-0.3, 0.3))
+            add_leaf(m, (post_x + math.cos(angle) * 0.07, back + math.sin(angle) * 0.07, z), rng)
+            if i % 7 == 3:
+                m.ball((post_x + math.cos(angle) * 0.09, back + math.sin(angle) * 0.09, z + 0.03), 0.025, VINE_FLOWER)
+
+
+def bench_frame(m):
+    top = PALE_WOOD
+    m.box((0, 0, 0.92), (2.6, 0.92, 0.1), top)
+    for x in (-1.15, 1.15):
+        for y in (-0.36, 0.36):
+            m.box((x, y, 0.44), (0.13, 0.13, 0.88), top * 0.72)
+    m.box((0, 0, 0.3), (2.3, 0.7, 0.05), top * 0.62)
+    m.box((0, 0.36, 0.72), (2.3, 0.05, 0.1), top * 0.72)
+
+    # The sign stands on two posts at the back, with a mast in the middle for the string lights.
+    back = 0.5
+    for x in (-1.1, 1.1):
+        m.tube((x, back, -0.05), (x, back, SIGN_HEIGHT + 0.4), 0.06, 0.05, 6, DARK_WOOD * 1.2)
+    m.tube((0, back, SIGN_HEIGHT + 0.3), (0, back, MAST_TOP), 0.03, 0.025, 5, DARK_WOOD * 1.2)
+    m.box((0, back, SIGN_HEIGHT), (2.72, 0.08, 0.76), DARK_WOOD * 1.1)
+
+
 def bench_recipe(variant):
     return lambda m: project_bench(m, variant)
+
+
+# Benches made for one project. Name one as a project's fourth field in build_workshop.py.
+PROJECT_BENCHES = {"trellis": trellis_bench}
 
 
 def build_all(materials):
@@ -230,6 +337,8 @@ def build_all(materials):
     }
     for variant in range(BENCH_VARIANTS):
         recipes[f"project_bench_{variant}"] = bench_recipe(variant)
+    for name, recipe in PROJECT_BENCHES.items():
+        recipes[f"project_bench_{name}"] = recipe
     items = {}
     for seed, (name, recipe) in enumerate(recipes.items()):
         model = Model(seed + 2100)

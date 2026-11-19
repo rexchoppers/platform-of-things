@@ -62,9 +62,21 @@ BENCH_COUNT = 13
 EMPTY_BENCH_SIGN = "Coming Soon"
 
 # Add projects here, and they fill the benches from your left as you look from the tent.
-# Each is (what its sign says, what the prompt calls it, the page E opens). Use \n to split a long sign.
+# sign is the big lettering, tagline the small line under it, name what the prompt calls it,
+# and url the page E opens. bench is optional, and names a bench of its own from
+# workshop_props.PROJECT_BENCHES. Use \n to split a long sign.
 # Benches with no project keep the sign above and open nothing.
-PROJECTS = ()
+PROJECTS = (
+    {
+        "sign": "Trellis",
+        "tagline": "A team of agents, run as an office",
+        "name": "Trellis",
+        "url": "https://github.com/rexchoppers/trellis",
+        "bench": "trellis",
+    },
+)
+SIGN_SIZE = 0.22
+TAGLINE_SIZE = 0.085
 BENCH_FIRST_ANGLE = 15.0  # Degrees around the forge. 0 is east and -90 is south
 BENCH_STEP = 17.5
 
@@ -188,15 +200,24 @@ def build_yard(world, materials):
     anchors = []
     for index, (x, y) in enumerate(BENCH_SPOTS):
         yaw = yaw_toward(x, y, *BENCHES_FACE)
-        put(f"project_bench_{index % BENCH_VARIANTS}", x, y, yaw)
         project = PROJECTS[index] if index < len(PROJECTS) else None
-        sign_text = project[0] if project else EMPTY_BENCH_SIGN
-        lettering = landscape.text_mesh(sign_text, 0.22, unlit, (0.0, SIGN_REACH, SIGN_HEIGHT), cream)
-        lettering.transform(Matrix.Translation((x, y, 0.0)) @ Matrix.Rotation(yaw, 4, "Z"))
+        bench = project.get("bench", index % BENCH_VARIANTS) if project else index % BENCH_VARIANTS
+        put(f"project_bench_{bench}", x, y, yaw)
+        bench_place = Matrix.Translation((x, y, 0.0)) @ Matrix.Rotation(yaw, 4, "Z")
+        tagline = project.get("tagline") if project else None
+        sign_text = project["sign"] if project else EMPTY_BENCH_SIGN
+        # With a tagline, the name moves up to make room for it.
+        sign_z = SIGN_HEIGHT + (0.1 if tagline else 0.0)
+        lettering = landscape.text_mesh(sign_text, SIGN_SIZE, unlit, (0.0, SIGN_REACH, sign_z), cream)
+        lettering.transform(bench_place)
         signs.append(lettering)
+        if tagline:
+            small = landscape.text_mesh(tagline, TAGLINE_SIZE, unlit, (0.0, SIGN_REACH, SIGN_HEIGHT - 0.17), cream * 0.75)
+            small.transform(bench_place)
+            signs.append(small)
         if project:
             front_x, front_y = x + math.sin(yaw) * 1.5, y - math.cos(yaw) * 1.5
-            world.marker(f"Link.{index:02d}", front_x, front_y, 1.5, label=f"Read about {project[1]}", url=project[2])
+            world.marker(f"Link.{index:02d}", front_x, front_y, 1.5, label=f"Read about {project['name']}", url=project["url"])
         # Where the string lights tie on: the mast at the bench's back.
         anchors.append(np.array([x - math.sin(yaw) * 0.5, y + math.cos(yaw) * 0.5, MAST_TOP]))
     world.place(glow_group, landscape.join_meshes("bench_signs", signs, unlit), 0.0, 0.0, name="PropGlow_bench_signs")
@@ -264,6 +285,7 @@ def main():
             "bench": ((6.5, -6.0, 2.0), (11.8, -9.0, 1.7)),
             "signs": ((0.0, 2.5, 2.0), (0.0, -16.0, 2.4)),
             "tent": ((-4.0, 1.5, 2.0), (0.0, 22.0, 3.0)),
+            "trellis": ((11.4, 4.4, 1.9), (13.5, 1.6, 1.7)),
         }
         landscape.render_previews(SITE, scene, os.path.abspath(preview), shots)
 
